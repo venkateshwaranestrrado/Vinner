@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.browse.BrowseFragment">
+
+    <include layout="@layout/toolbar" app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/include"/>
+
+
+    <androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:text="Browse by category "
+                android:textColor="#1466AF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/ivProtection"
+                android:layout_width="100dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_protection"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
+
+            <ImageView
+                android:id="@+id/ivCleaning"
+                android:layout_width="100dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_cleaning"
+                app:layout_constraintRight_toLeftOf="@+id/ivProtection"
+                app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
+
+            <ImageView
+                android:id="@+id/ivPurifiers"
+                android:layout_width="100dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_air_purifier"
+                app:layout_constraintLeft_toRightOf="@+id/ivProtection"
+                app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
+
+            <TextView
+            android:id="@+id/tvProtection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Protection"
+            android:layout_marginTop="16dp"
+            android:textColor="#1466AF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivProtection" />
+            <TextView
+                android:id="@+id/tvCleaning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cleaning"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="55dp"
+                android:textColor="#1466AF"
+                app:layout_constraintRight_toLeftOf="@+id/tvProtection"
+                app:layout_constraintTop_toBottomOf="@+id/ivCleaning"  />
+            <TextView
+                android:id="@+id/tvPurifier"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Air purifiers"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="50dp"
+                android:textColor="#1466AF"
+                app:layout_constraintLeft_toRightOf="@+id/tvProtection"
+                app:layout_constraintTop_toBottomOf="@+id/ivCleaning"  />
+
+            <ImageView
+                android:id="@+id/ivSanitization"
+                android:layout_width="100dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_sanitization"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvProtection" />
+            <ImageView
+                android:id="@+id/ivhandcare"
+                android:layout_width="100dp"
+                android:layout_height="75dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_hand_care"
+                app:layout_constraintRight_toLeftOf="@+id/ivSanitization"
+                app:layout_constraintTop_toBottomOf="@+id/tvProtection" />
+
+            <TextView
+                android:id="@+id/tvSanitization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sanitization"
+                android:layout_marginTop="16dp"
+                android:textColor="#1466AF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivSanitization" />
+            <TextView
+                android:id="@+id/tvhandcare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hand Care"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="50dp"
+                android:textColor="#1466AF"
+                app:layout_constraintRight_toLeftOf="@+id/tvSanitization"
+                app:layout_constraintTop_toBottomOf="@+id/ivhandcare"  />
+            <TextView
+                android:id="@+id/tvbrowse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Browse By Industry"
+                android:layout_marginTop="16dp"
+                android:textColor="#1466AF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvhandcare" />
+            <ImageView
+                android:id="@+id/ivhealthcare"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_health"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvbrowse" />
+            <ImageView
+                android:id="@+id/ivhore"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_hore"
+                app:layout_constraintRight_toLeftOf="@+id/ivhealthcare"
+                app:layout_constraintTop_toBottomOf="@+id/tvbrowse" />
+            <ImageView
+                android:id="@+id/ivhomes"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_homes"
+                app:layout_constraintLeft_toRightOf="@+id/ivhealthcare"
+                app:layout_constraintTop_toBottomOf="@+id/tvbrowse" />
+            <TextView
+                android:id="@+id/tvhealthcare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Health Care"
+                android:layout_marginTop="16dp"
+                android:textColor="#1466AF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivhealthcare" />
+            <TextView
+                android:id="@+id/tvhore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HoreCa"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="55dp"
+                android:textColor="#1466AF"
+                app:layout_constraintRight_toLeftOf="@+id/tvhealthcare"
+                app:layout_constraintTop_toBottomOf="@+id/ivhealthcare"  />
+            <TextView
+                android:id="@+id/tvhomes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Homes"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="55dp"
+                android:textColor="#1466AF"
+                app:layout_constraintLeft_toRightOf="@+id/tvhealthcare"
+                app:layout_constraintTop_toBottomOf="@+id/ivhealthcare"  />
+
+            <ImageView
+                android:id="@+id/ivgovernment"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_government"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvhealthcare" />
+            <ImageView
+                android:id="@+id/iveducation"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_education"
+                app:layout_constraintRight_toLeftOf="@+id/ivgovernment"
+                app:layout_constraintTop_toBottomOf="@+id/tvhealthcare" />
+            <ImageView
+                android:id="@+id/ivTransport"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/ic_trans"
+                app:layout_constraintLeft_toRightOf="@+id/ivgovernment"
+                app:layout_constraintTop_toBottomOf="@+id/tvhealthcare" />
+            <TextView
+                android:id="@+id/tvgovernment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Government"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="60dp"
+                android:textColor="#1466AF"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivgovernment" />
+
+            <TextView
+                android:id="@+id/tvEducation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Education"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="50dp"
+                android:paddingBottom="60dp"
+                android:textColor="#1466AF"
+                app:layout_constraintRight_toLeftOf="@+id/tvgovernment"
+                app:layout_constraintTop_toBottomOf="@+id/ivgovernment"  />
+            <TextView
+                android:id="@+id/tvtransport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transportation"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="35dp"
+                android:paddingBottom="60dp"
+                android:textColor="#1466AF"
+                app:layout_constraintLeft_toRightOf="@+id/tvgovernment"
+                app:layout_constraintTop_toBottomOf="@+id/ivgovernment"  />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: in.juspay:godel:0.6.25.4.1423@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f7d69fca8eeb286924be8802286f58f/jetified-godel-0.6.25.4.1423/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f7d69fca8eeb286924be8802286f58f/jetified-godel-0.6.25.4.1423/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1f7d69fca8eeb286924be8802286f58f/jetified-godel-0.6.25.4.1423/res" />
+    </CLASSES>
+    <JAVADOC />
+    <LIBRARY_FILE />
+    <LIBRARY_FILE />
+    <SOURCES />
+  </library>
+</component>

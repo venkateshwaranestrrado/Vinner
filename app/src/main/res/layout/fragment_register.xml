@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/RootView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/_16sdp"
+    android:paddingRight="@dimen/_16sdp">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".39" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_250sdp"
+        android:src="@drawable/login_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:text="REGISTER"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@+id/guideline"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline2" />
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:background="@color/sky_blue"
+        android:ems="10"
+        android:hint="User Name"
+        android:inputType="textPassword"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRegister" />
+
+    <EditText
+        android:id="@+id/etemail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:background="@color/sky_blue"
+        android:ems="10"
+        android:hint="Email Id"
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+
+    <EditText
+        android:id="@+id/etReferral"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_14sdp"
+        android:background="#E3F3FF"
+        android:ems="10"
+        android:hint="Referral (Optional) "
+        android:inputType="textEmailAddress"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etemail" />
+
+    <Button
+        android:id="@+id/tvRSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_14sdp"
+        android:layout_marginLeft="@dimen/_14sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_14sdp"
+        android:background="@color/green"
+        android:text="SUBMIT"
+        android:textSize="@dimen/_14sdp"
+        android:textColor="@color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etReferral" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

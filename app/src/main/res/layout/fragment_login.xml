@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/login_bg"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".38" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".97" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".7" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:src="@mipmap/login_logo"
+        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_30sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:ems="10"
+        android:gravity="center"
+        android:text="LOGIN"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_18sdp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_32sdp"
+        android:background="@color/sky_blue"
+        android:ems="10"
+        android:hint="Phone Number"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:padding="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:singleLine="true"
+        android:textSize="@dimen/_10sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLogin" />
+
+    <Button
+        android:id="@+id/tvSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_32sdp"
+        android:layout_marginLeft="@dimen/_32sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_32sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:background="@color/green"
+        android:gravity="center"
+        android:text="SUBMIT"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone" />
+
+    <TextView
+        android:id="@+id/tvnewuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:text="New user ?"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:textColor="@color/dark_blue"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintLeft_toRightOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/tvSubmit" />
+
+    <TextView
+        android:id="@+id/tvnewregister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:text=" Register"
+        android:textColor="@color/green"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintLeft_toRightOf="@+id/tvnewuser"
+        app:layout_constraintTop_toBottomOf="@+id/tvSubmit" />
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:src="@drawable/ic_login_img"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline4" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
