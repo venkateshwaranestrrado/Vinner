@@ -121,7 +121,7 @@ class HomeFragment : Fragment() {
 
                 homeList.layoutManager =
                     LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-                homeList.adapter = HomeProductsAdapter(requireActivity(), it!!.data!!.results)
+//                homeList.adapter = HomeProductsAdapter(requireActivity(), it!!.data!!.results)
 
 
 

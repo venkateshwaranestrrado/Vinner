@@ -35,6 +35,10 @@ interface APIService {
 
     ): Observable<Model>
 
+    @FormUrlEncoded
+    @POST("home")
+    fun home(): Observable<Model>
+
 
     @POST("product")
     fun getHomeList(): Observable<Model>

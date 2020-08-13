@@ -80,6 +80,19 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
         return data
     }
 
+    fun home(): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+        apiService!!.home()?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({ApiClient.apiServices
+                data.value = it
+            }, {
+                it.printStackTrace()
+
+            })
+        return data
+    }
+
     private fun getHomeList(): MutableLiveData<Model?> {
         var data = MutableLiveData<Model?>()
 
