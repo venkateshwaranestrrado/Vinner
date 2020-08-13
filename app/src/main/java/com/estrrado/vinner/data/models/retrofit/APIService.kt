@@ -13,18 +13,25 @@ interface APIService {
     @FormUrlEncoded
     @POST("register")
     fun registerUser(
-        @Field("username") username: String?,
+        @Field("name") username: String?,
         @Field("email") email: String?,
         @Field("mobile") mobile: String?,
         @Field("password") password: String?,
         @Field("confirm_password") confirm: String?
-
     ): Observable<Model>
 
     @FormUrlEncoded
     @POST("sendotp")
     fun sendotp(
         @Field("mobile") mobile: String?
+
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("verifyotp")
+    fun verifyOtp(
+        @Field("mobile") mobile: String?,
+        @Field("otp") otp: String?
 
     ): Observable<Model>
 

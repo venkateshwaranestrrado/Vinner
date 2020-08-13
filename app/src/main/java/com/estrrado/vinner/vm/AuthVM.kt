@@ -4,11 +4,12 @@ import androidx.lifecycle.ViewModel
 
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.data.models.request.Input
+import com.estrrado.vinner.data.models.request.RequestModel
 
 class AuthVM(var respo: VinnerRespository) : ViewModel() {
-//    fun fragment_login(input: Input) = respo.privateLoginCall(input)
-//    fun register(input: Input) = respo.privateRegisterCall(input)
-//    fun forgot(input: Input) = respo.privateForgotCall(input)
+    fun login(input: Input) = respo.login(input)
+    fun register(input: Input) = respo.register(input)
+    fun verifyOTP(input: RequestModel) = respo.verifyOTP(input)
 //    fun resetPassword(input: Input) = respo.privateResetPasswordCall(input)
 //    fun getProfile() = respo.privateGetProfile()
 //    fun updateProfile(input: Input) = respo.privateUpdateProfile(input)

@@ -6,6 +6,9 @@ import android.os.Handler
 
 import androidx.appcompat.app.AppCompatActivity
 import com.estrrado.vinner.R
+import com.estrrado.vinner.helper.IS_LOGIN
+import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.TRUE
 
 
 class SplashActivity : AppCompatActivity() {
@@ -14,8 +17,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.splash_page)
         Handler().postDelayed({
-           startActivity(Intent(this, MainActivity::class.java))
-        finish()
+            if (Preferences.get(this, IS_LOGIN).equals(TRUE)) {
+                startActivity(Intent(this, VinnerActivity::class.java))
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+            finish()
         }, 1000)
 
     }
