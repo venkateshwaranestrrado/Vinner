@@ -66,6 +66,7 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                         Observer {
                             printToast(this, it?.message.toString())
                             if (it?.status.equals(SUCCESS)) {
+                                Preferences.put(this, ACCESS_TOKEN, it!!.data!!.getAccessToken()!!)
                                 Preferences.put(this, IS_LOGIN, TRUE)
                                 startActivity(Intent(this, VinnerActivity::class.java))
                                 finish()

@@ -1,57 +1,42 @@
 package com.estrrado.vinner.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
+import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CategoryAdapter
 import com.estrrado.vinner.adapters.HomeProductsAdapter
 import com.estrrado.vinner.adapters.SliderAdapter
-import com.estrrado.vinner.data.CategoryItem
-
-import com.estrrado.vinner.data.LatestProductItem
-import com.estrrado.vinner.data.models.response.Data
-import com.estrrado.vinner.data.models.response.Model
+import com.estrrado.vinner.data.models.BannerSlider
+import com.estrrado.vinner.data.models.Category
+import com.estrrado.vinner.data.models.Featured
+import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.data.models.retrofit.ApiClient
+import com.estrrado.vinner.helper.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.SUCCESS
+import com.estrrado.vinner.helper.printToast
 import com.estrrado.vinner.vm.HomeVM
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
-import okhttp3.*
-import java.io.IOException
-import java.lang.IllegalStateException
-
+import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 class HomeFragment : Fragment() {
     var vModel: HomeVM? = null
-    private lateinit var homeViewModel: HomeViewModel
-    private val banners = listOf(R.drawable.banner,R.drawable.banner,R.drawable.banner
-
-    )
     var mTimer = Timer()
-    var timerLoad:Boolean = true
-    private val productItem= listOf( LatestProductItem("Vital Oxide","20 AED",R.drawable.pro1),
-        LatestProductItem("Vital Oxide","20 AED",R.drawable.pro1),
-        LatestProductItem("Vital Oxide","20 AED",R.drawable.pro1)
-    )
+    var timerLoad: Boolean = true
 
-    private val categoryItem= listOf(
-        CategoryItem(R.drawable.ic_cleaning,"Cleaning"),
-        CategoryItem(R.drawable.ic_protection,"Protection"),
-        CategoryItem(R.drawable.ic_air_purifier,"Air purifier"),
-        CategoryItem(R.drawable.ic_hand_care,"Hand care"),
-        CategoryItem(R.drawable.ic_sanitization,"Sanitization")
-    )
     override fun onResume() {
-
         super.onResume()
         initControl()
     }
@@ -61,37 +46,75 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       /* homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)*/
+        vModel = ViewModelProvider(
+            this,
+            MainViewModel(
+                HomeVM(
+                    VinnerRespository.getInstance(
+                        activity,
+                        ApiClient.apiServices!!
+                    )
+                )
+            )
+        ).get(HomeVM::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         // val textView: TextView = root.findViewById(R.id.text_home)
-       /* homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            //textView.text = it
-        })*/
+        /* homeViewModel.text.observe(viewLifecycleOwner, Observer {
+             //textView.text = it
+         })*/
 
         return root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as VinnerActivity).open()
-     /*  vModel =
-            ViewModelProviders.of(
-                this,
-                VinnerFactory(
-                    HomeVM(
-                        VinnerRespository.getInstance(
-                            activity,
-                            ApiClient.apiServices
-                        )
-                    )
-                )
-            ).get(HomeVM::class.java)*/
-       initControl()
+        initControl()
     }
 
     private fun initControl() {
-       // Helper.showLoading(activity)
-        pager.adapter = SliderAdapter(requireActivity(),banners)
+        // Helper.showLoading(activity)
+        categoryList.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        homeList.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+
+        getHome()
+
+    }
+
+    private fun getHome() {
+
+        val requestModel = RequestModel()
+        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+        requestModel.countryCode = "AE"
+
+        vModel!!.home(requestModel).observe(this,
+            Observer {
+                if (it?.status.equals(SUCCESS)) {
+                    setBannerImgs(it!!.data!!.bannerSlider)
+                    setProducts(it.data!!.featured)
+                    setCategories(it.data!!.categories)
+                    Glide.with(this!!.activity!!)
+                        .load(it!!.data?.logo)
+                        .thumbnail(0.1f)
+                        .into(search)
+                } else printToast(this!!.context!!, it?.message.toString())
+
+            })
+    }
+
+    private fun setCategories(categories: List<Category>?) {
+        categoryList.adapter = CategoryAdapter(requireActivity(), categories)
+    }
+
+    private fun setProducts(featured: List<Featured>?) {
+        homeList.adapter = HomeProductsAdapter(this!!.activity!!, featured)
+    }
+
+    private fun setBannerImgs(bannerSlider: List<BannerSlider>?) {
+        pager.adapter = SliderAdapter(requireActivity(), bannerSlider)
         pager.setPageTransformer(false) { v, p ->
             var position = Math.abs(Math.abs(p) - 1)
             v.scaleX = position / 2 + 0.6f
@@ -102,46 +125,8 @@ class HomeFragment : Fragment() {
 
         pager.currentItem = 0
         tab.setupWithViewPager(pager)
-
-
-        //val call = ApiClient.apiServices!!.getHomeList()
-
-
-
-
-        categoryList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        categoryList.adapter=CategoryAdapter(requireActivity(),categoryItem)
-
-       // fetchJson()
-
-  try {
-
-
-            vModel!!.getHomeList().observe(this, Observer {
-
-                homeList.layoutManager =
-                    LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-//                homeList.adapter = HomeProductsAdapter(requireActivity(), it!!.data!!.results)
-
-
-
-           // Log.d("Home Fragment",it!!.data!!.)
-
-
-
-
-
-
-
-            })
-        }
-
-        catch(e: Exception) {
-
-
-        }
-
     }
+
     override fun onDestroy() {
 
         timerLoad = true
@@ -151,9 +136,8 @@ class HomeFragment : Fragment() {
     }
 
 
-
     private fun timerPager(viewPager: ViewPager) {
-        if(timerLoad) {
+        if (timerLoad) {
             timerLoad = false
             mTimer.cancel()
             mTimer.purge()
@@ -182,60 +166,6 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    private fun getHomeList(): MutableLiveData<Model?> {
-
-        Log.d("Home","testing")
-        var data = MutableLiveData<Model?>()
-    /* ApiClient.apiServices!!.getHomeList()!!.subscribeOn(
-            Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("Home",data.value.toString())
-                data.value = it
-
-            }, {
-                it.printStackTrace()
-                //Helper.hideLoading()
-
-            })*/
-        return data
-    }
-
-
-//    fun fetchJson() {
-//
-//        val url = "https://estrradodemo.com/vinner/api/product"
-//
-//        val request = Request.Builder().url(url).build()
-//        val client = OkHttpClient()
-//        client.newCall(request).enqueue(object: Callback {
-//            override fun onResponse(call: Call, response: Response) {
-//                val body = response.body().toString()
-//                println(body)
-//
-//                val gson = GsonBuilder().create()
-//
-//                try {
-//                    val fromUserJson = Gson().toJson(body)
-//                    val feed = gson.fromJson(fromUserJson, Data::class.java)
-//                }
-//                catch (e:IllegalStateException){
-//                    Log.d("Message",e.message)
-//
-//                }
-//
-//               // Log.d("Message",feed.get(0).toString())
-//
-//
-//
-//            }
-//
-//            override fun onFailure(call: Call, e: IOException) {
-//                println("Request Failed")
-//            }
-//        })
-//
-//    }
 
 }
 

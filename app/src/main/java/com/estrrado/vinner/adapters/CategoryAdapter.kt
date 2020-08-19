@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.CategoryItem
+import com.estrrado.vinner.data.models.Category
+import kotlinx.android.synthetic.main.toolbar.*
 
 class CategoryAdapter (
     private var activity: FragmentActivity,
-    private var dataList: List<CategoryItem?>?
+    private var dataList: List<Category>?
 ) :
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -31,8 +33,11 @@ override fun getItemCount(): Int {
 }
 
 override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    holder.name.text = (dataList?.get(position) as CategoryItem).name?:""
-    Glide.with(activity).load((dataList?.get(position) as CategoryItem).image).into(holder.image)
+    holder.name.text = dataList?.get(position)!!.categoryName
+    Glide.with(activity)
+        .load(dataList?.get(position)!!.categoryImage)
+        .thumbnail(0.1f)
+        .into(holder.image)
     holder.mView!!.setOnClickListener {
         // Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_productFragment, bundleOf(BRAND_ID to dataList!![position]!!.brandId))
     }

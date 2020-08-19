@@ -37,7 +37,10 @@ interface APIService {
 
     @FormUrlEncoded
     @POST("home")
-    fun home(): Observable<Model>
+    fun home(
+        @Field("access_token") mobile: String?,
+        @Field("country_code") otp: String?
+    ): Observable<Model>
 
 
     @POST("product")

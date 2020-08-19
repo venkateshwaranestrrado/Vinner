@@ -61,19 +61,19 @@ class RequestFragment : Fragment(),View.OnClickListener {
     }
 
     private fun initControl() {
-        pager.adapter = SliderAdapter(requireActivity(),banners)
-        pager.setPageTransformer(false) { v, p ->
-            var position = Math.abs(Math.abs(p) - 1)
-            v.scaleX = position / 2 + 0.6f
-            v.scaleY = position / 2 + 0.5f
-
-        }
+//        pager.adapter = SliderAdapter(requireActivity(),banners)
+//        pager.setPageTransformer(false) { v, p ->
+//            var position = Math.abs(Math.abs(p) - 1)
+//            v.scaleX = position / 2 + 0.6f
+//            v.scaleY = position / 2 + 0.5f
+//
+//        }
 
 
         pager.currentItem = 0
         tab.setupWithViewPager(pager)
         homeList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        homeList.adapter = HomeProductsAdapter(requireActivity(), productItem)
+//        homeList.adapter = HomeProductsAdapter(requireActivity(), productItem)
         //requestList.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         //requestList.adapter= RequestAdapter(requireActivity(),categoryItem)
         timerPager(pager)
