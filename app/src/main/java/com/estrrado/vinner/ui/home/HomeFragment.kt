@@ -14,13 +14,13 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CategoryAdapter
-import com.estrrado.vinner.adapters.HomeProductsAdapter
+import com.estrrado.vinner.adapters.ProductsAdapter
 import com.estrrado.vinner.adapters.SliderAdapter
 import com.estrrado.vinner.data.models.BannerSlider
 import com.estrrado.vinner.data.models.Category
 import com.estrrado.vinner.data.models.Featured
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.data.models.retrofit.ApiClient
+import com.estrrado.vinner.data.retrofit.ApiClient
 import com.estrrado.vinner.helper.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.SUCCESS
@@ -110,7 +110,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setProducts(featured: List<Featured>?) {
-        homeList.adapter = HomeProductsAdapter(this!!.activity!!, featured)
+        homeList.adapter = ProductsAdapter(this!!.activity!!, featured, null)
     }
 
     private fun setBannerImgs(bannerSlider: List<BannerSlider>?) {

@@ -1,4 +1,4 @@
-package com.estrrado.vinner.data.models.retrofit
+package com.estrrado.vinner.data.retrofit
 
 
 import com.estrrado.vinner.helper.WebConfig
@@ -8,7 +8,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 object ApiClient {

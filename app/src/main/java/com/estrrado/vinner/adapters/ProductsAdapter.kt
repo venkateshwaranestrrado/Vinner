@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.Featured
+import com.estrrado.vinner.data.models.response.Data
 
-class HomeProductsAdapter(
+class ProductsAdapter(
     private var activity: FragmentActivity,
-    private var dataList: List<Featured?>?
-) : RecyclerView.Adapter<HomeProductsAdapter.ViewHolder>() {
+    private var dataList: List<Featured?>?,
+    private var productList: List<Data>?
+) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,16 +29,40 @@ class HomeProductsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return dataList?.size ?: 0
+        if (dataList != null)
+            return dataList?.size ?: 0
+        else
+            return productList?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.name.text = dataList?.get(position)!!.prdName
-        holder.qty.text = dataList?.get(position)!!.qty + " " + dataList?.get(position)!!.unit
-        holder.price.text =
-            dataList?.get(position)!!.price + " " + dataList?.get(position)!!.currency
-        if (dataList?.get(position)!!.rating != null && !dataList?.get(position)!!.rating.equals(""))
-            holder.rating.rating = dataList?.get(position)!!.rating!!.toFloat()
+
+        var name = ""
+        var qty = ""
+        var price = ""
+        var rating = ""
+        var img = ""
+
+        if (dataList != null) {
+            name = dataList?.get(position)!!.prdName!!
+            qty = dataList?.get(position)!!.qty + " " + dataList?.get(position)!!.unit
+            price = dataList?.get(position)!!.price + " " + dataList?.get(position)!!.currency
+            rating = dataList?.get(position)!!.rating!!
+            img = dataList?.get(position)!!.prdImage!!
+        }else{
+            name = productList?.get(position)!!.productTitle!!
+            qty = productList?.get(position)!!.qty + " " + productList?.get(position)!!.unit
+            price = productList?.get(position)!!.price + " " + productList?.get(position)!!.currency
+            rating = productList?.get(position)!!.rating.toString()
+            img = productList?.get(position)!!.getProductImage()!!
+        }
+
+        holder.name.text = name
+        holder.qty.text = qty
+        holder.price.text = price
+
+        if (rating != null && !rating.equals(""))
+            holder.rating.rating = rating!!.toFloat()
 
         /*if (dataList!![position]!!.fav!!) {
             holder.like.setImageResource(R.drawable.ic_heart_select)
@@ -56,7 +82,7 @@ class HomeProductsAdapter(
              }
          }*/
 
-        Glide.with(activity).load(dataList?.get(position)!!.prdImage)
+        Glide.with(activity).load(img)
             .into(holder.image)
         holder.image.setOnClickListener {
             Navigation.findNavController(it).navigate(

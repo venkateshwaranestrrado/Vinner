@@ -5,7 +5,7 @@
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
     android:layout_height="?actionBarSize"
-    android:background="#1466AF"
+    android:background="@color/dark_blue"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     tools:targetApi="p">
 
@@ -14,7 +14,7 @@
         android:layout_width="25dp"
         android:layout_height="50dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/_14sdp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,7 @@
         android:layout_width="25dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="@dimen/_10sdp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,19 +37,14 @@
         app:srcCompat="@drawable/ic_search"
         tools:ignore="VectorDrawableCompat" />
 
-    <!--<Spinner
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintTop_toTopOf="parent"
+    <Spinner
+        android:id="@+id/spnr_region"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-
-        />
--->
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="@dimen/_10sdp"/>
 
 
     <TextView

@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.estrrado.vinner.R
 import com.estrrado.vinner.activity.VinnerActivity
-import com.estrrado.vinner.adapters.HomeProductsAdapter
-import com.estrrado.vinner.adapters.SliderAdapter
 import com.estrrado.vinner.data.CategoryItem
 import com.estrrado.vinner.data.LatestProductItem
 import kotlinx.android.synthetic.main.fragment_home.homeList

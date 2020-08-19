@@ -1,13 +1,12 @@
 package com.estrrado.vinner
 
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.estrrado.vinner.data.models.request.Input
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Model
-import com.estrrado.vinner.data.models.retrofit.APIService
-import com.estrrado.vinner.data.models.retrofit.ApiClient
+import com.estrrado.vinner.data.retrofit.APIService
+import com.estrrado.vinner.data.retrofit.ApiClient
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,9 +25,6 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
                     }
             }
     }
-
-    fun privateGetHomeList(): LiveData<Model?> = getHomeList()
-
 
     fun register(input: Input): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
@@ -96,17 +92,17 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
         return data
     }
 
-    private fun getHomeList(): MutableLiveData<Model?> {
-        var data = MutableLiveData<Model?>()
-
-
-            apiService?.getHomeList()!!.subscribeOn(Schedulers.io())
+    fun getProductList(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.getProductList(
+                input.accessToken,
+                input.limit,
+                input.offset,
+                input.countryCode
+            )!!.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-
                         data.value = it
-
-
 
                 }, {
                     it.printStackTrace()

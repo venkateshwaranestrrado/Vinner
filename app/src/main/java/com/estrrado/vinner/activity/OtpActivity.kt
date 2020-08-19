@@ -8,9 +8,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
-import com.estrrado.vinner.data.models.request.Input
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.data.models.retrofit.ApiClient
+import com.estrrado.vinner.data.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.vm.AuthVM
 import com.estrrado.vinner.vm.MainViewModel
