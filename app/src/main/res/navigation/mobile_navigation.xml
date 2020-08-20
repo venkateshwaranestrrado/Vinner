@@ -7,64 +7,49 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.estrrado.vinner.ui.home.HomeFragment"
-
-        tools:layout="@layout/fragment_home" >
-        <action android:id="@+id/action_homeFragment_to_ProductFragment" app:destination="@id/navigation_product"
+        android:name="com.estrrado.vinner.ui.home.HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_ProductFragment"
+            app:destination="@id/navigation_product"
             app:launchSingleTop="true" />
 
     </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.estrrado.vinner.ui.request.RequestFragment"
-
-        tools:layout="@layout/fragment_request" />
+        android:name="com.estrrado.vinner.ui.request.RequestFragment" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.estrrado.vinner.ui.CartFragment"
-
-        tools:layout="@layout/cart_fragment" />
+        android:name="com.estrrado.vinner.ui.CartFragment" />
     <fragment
         android:id="@+id/navigation_browse"
-        android:name="com.estrrado.vinner.ui.browse.BrowseFragment"
-
-        tools:layout="@layout/browse_fragment" />
+        android:name="com.estrrado.vinner.ui.browse.BrowseFragment" />
     <fragment
         android:id="@+id/navigation_more"
         android:name="com.estrrado.vinner.ui.more.MoreFragment"
-        android:label="More"
-        tools:layout="@layout/more_fragment" />
+        android:label="More" />
 
     <fragment
         android:id="@+id/navigation_product"
-        android:name="com.estrrado.vinner.ui.ProductDetails"
-
-        tools:layout="@layout/product_details_fragment" />
+        android:name="com.estrrado.vinner.ui.ProductDetails" />
     <fragment
         android:id="@+id/navigation_cart"
-        android:name="com.estrrado.vinner.ui.CartFragment"
-        tools:layout="@layout/cart_fragment" />
+        android:name="com.estrrado.vinner.ui.CartFragment" />
 
     <fragment
         android:id="@+id/navigation_demo"
-        android:name="com.estrrado.vinner.ui.request.RequestDemo"
-        tools:layout="@layout/request_demo" />
+        android:name="com.estrrado.vinner.ui.request.RequestDemo" />
 
     <fragment
         android:id="@+id/navigation_service"
-        android:name="com.estrrado.vinner.ui.request.RequestService"
-        tools:layout="@layout/request_service" />
+        android:name="com.estrrado.vinner.ui.request.RequestService" />
     <fragment
         android:id="@+id/navigation_editprofile"
-        android:name="com.estrrado.vinner.ui.more.EditProfile"
-        tools:layout="@layout/edit_profile" />
+        android:name="com.estrrado.vinner.ui.more.EditProfile" />
     <fragment
         android:id="@+id/navigation_track"
-        android:name="com.estrrado.vinner.ui.more.TrackFragment"
-        tools:layout="@layout/track_order" />
-
+        android:name="com.estrrado.vinner.ui.more.TrackFragment" />
 
 
 </navigation>

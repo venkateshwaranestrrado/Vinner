@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.estrrado.vinner.R
 import com.estrrado.vinner.activity.VinnerActivity
-import kotlinx.android.synthetic.main.product_details_fragment.*
+import kotlinx.android.synthetic.main.fragment_product_details.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,7 +37,7 @@ class ProductDetails : Fragment(),View.OnClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.product_details_fragment, container, false)
+        val root = inflater.inflate(R.layout.fragment_product_details, container, false)
 
         return root
         }
