@@ -30,9 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_5sdp"
-        android:text="Verified Purchase"
         android:textColor="@color/black"
-        android:textSize="@dimen/_8sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintBottom_toBottomOf="@+id/rating_total"
         app:layout_constraintLeft_toRightOf="@+id/rating_total"
         app:layout_constraintTop_toTopOf="@+id/rating_total" />
@@ -42,9 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:text="Reviewed in India"
         android:textColor="@color/black_50"
-        android:textSize="@dimen/_8sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rating_total" />
 
@@ -65,15 +63,15 @@
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/black_50"
         android:layout_marginTop="@dimen/_8sdp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_rating_count"/>
+        android:background="@color/black_50"
+        app:layout_constraintTop_toBottomOf="@+id/txt_rating_count" />
 
-    <include
-        android:id="@+id/lyt_rat_container"
-        android:layout_height="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_rating"
         android:layout_width="match_parent"
-        layout="@layout/item_review"
-        app:layout_constraintTop_toBottomOf="@+id/view1"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@+id/view1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

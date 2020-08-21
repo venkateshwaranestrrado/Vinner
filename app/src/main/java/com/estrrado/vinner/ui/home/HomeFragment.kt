@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -70,6 +71,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as VinnerActivity).open()
         initControl()
+        tv_prod_see_all.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.action_navigation_home_to_productListFragment)
+        }
     }
 
     private fun initControl() {
@@ -110,7 +114,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setProducts(featured: List<Featured>?) {
-        homeList.adapter = ProductsAdapter(this!!.activity!!, featured, null)
+        homeList.adapter = ProductsAdapter(this!!.activity!!, featured, null, view)
     }
 
     private fun setBannerImgs(bannerSlider: List<BannerSlider>?) {

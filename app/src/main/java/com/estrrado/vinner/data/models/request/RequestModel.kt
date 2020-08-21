@@ -6,6 +6,7 @@ class RequestModel(
     var otp: String? = null,
     var accessToken: String? = null,
     var countryCode: String? = null,
+    var productId: String? = null,
     var limit: Int? = 0,
     var offset: Int? = 0
 )

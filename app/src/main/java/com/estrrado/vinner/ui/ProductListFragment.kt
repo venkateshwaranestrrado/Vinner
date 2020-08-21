@@ -81,7 +81,7 @@ class ProductListFragment : Fragment() {
         vModel!!.getProductList(requestModel).observe(this,
             Observer {
                 if (it?.status.equals(SUCCESS)) {
-                    recycle_products.adapter = ProductsAdapter(this!!.activity!!,null, it!!.productList )
+//                    recycle_products.adapter = ProductsAdapter(this!!.activity!!,null, it!!.productList, view)
                 } else printToast(this!!.context!!, it?.message.toString())
 
             })

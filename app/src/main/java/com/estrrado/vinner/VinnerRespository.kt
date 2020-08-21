@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.estrrado.vinner.data.models.request.Input
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Model
+import com.estrrado.vinner.data.models.response.ProductsModel
 import com.estrrado.vinner.data.retrofit.APIService
 import com.estrrado.vinner.data.retrofit.ApiClient
 
@@ -92,8 +93,25 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
         return data
     }
 
-    fun getProductList(input: RequestModel): MutableLiveData<Model?> {
+    fun productDetail(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
+        apiService!!.productDetail(
+            input.accessToken,
+            input.countryCode,
+            input.productId
+        )?.subscribeOn(Schedulers.io())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe({ApiClient.apiServices
+                data.value = it
+            }, {
+                it.printStackTrace()
+
+            })
+        return data
+    }
+
+    fun getProductList(input: RequestModel): MutableLiveData<ProductsModel?> {
+        val data = MutableLiveData<ProductsModel?>()
             apiService?.getProductList(
                 input.accessToken,
                 input.limit,
@@ -103,7 +121,6 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                         data.value = it
-
                 }, {
                     it.printStackTrace()
 

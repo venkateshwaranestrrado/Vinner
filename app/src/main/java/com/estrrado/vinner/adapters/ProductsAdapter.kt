@@ -6,18 +6,24 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.Featured
 import com.estrrado.vinner.data.models.response.Data
+import com.estrrado.vinner.data.models.response.Datum
+import com.estrrado.vinner.helper.PRODUCT_ID
 
 class ProductsAdapter(
     private var activity: FragmentActivity,
     private var dataList: List<Featured?>?,
-    private var productList: List<Data>?
+    private var productList: List<Datum>?,
+    private var view: View?
 ) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
 
@@ -42,6 +48,7 @@ class ProductsAdapter(
         var price = ""
         var rating = ""
         var img = ""
+        var productId = ""
 
         if (dataList != null) {
             name = dataList?.get(position)!!.prdName!!
@@ -49,12 +56,14 @@ class ProductsAdapter(
             price = dataList?.get(position)!!.price + " " + dataList?.get(position)!!.currency
             rating = dataList?.get(position)!!.rating!!
             img = dataList?.get(position)!!.prdImage!!
+            productId = dataList?.get(position)!!.prdId!!
         }else{
             name = productList?.get(position)!!.productTitle!!
             qty = productList?.get(position)!!.qty + " " + productList?.get(position)!!.unit
             price = productList?.get(position)!!.price + " " + productList?.get(position)!!.currency
             rating = productList?.get(position)!!.rating.toString()
             img = productList?.get(position)!!.getProductImage()!!
+            productId = productList?.get(position)!!.getProductId()!!
         }
 
         holder.name.text = name
@@ -84,11 +93,16 @@ class ProductsAdapter(
 
         Glide.with(activity).load(img)
             .into(holder.image)
-        holder.image.setOnClickListener {
-            Navigation.findNavController(it).navigate(
-                R.id.action_homeFragment_to_ProductFragment
+//        holder.image.setOnClickListener {
+//            Navigation.findNavController(it).navigate(
+//                R.id.action_homeFragment_to_ProductFragment
+//
+//            )
+//        }
 
-            )
+        holder.cardView.setOnClickListener {
+            val bundle = bundleOf(PRODUCT_ID to productId)
+            view?.findNavController()?.navigate(R.id.action_homeFragment_to_ProductFragment, bundle)
         }
 
     }
@@ -111,6 +125,7 @@ class ProductsAdapter(
         val image: ImageView = v.findViewById(R.id.image)
         val qty: TextView = v.findViewById(R.id.qty)
         val rating: RatingBar = v.findViewById(R.id.ratingBar2)
+        val cardView: CardView = v.findViewById(R.id.lyt_container)
 
         // val like: ImageView = v.findViewById(R.id.like)
         val itemview: View = v

@@ -1,6 +1,7 @@
 package com.estrrado.vinner.data.retrofit
 
 import com.estrrado.vinner.data.models.response.Model
+import com.estrrado.vinner.data.models.response.ProductsModel
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -47,6 +48,14 @@ interface APIService {
         @Field("limit") limit: Int?,
         @Field("offset") offset: Int?,
         @Field("country_code") countryCode: String?
+    ): Observable<ProductsModel>
+
+    @FormUrlEncoded
+    @POST("product_detail")
+    fun productDetail(
+        @Field("access_token") accessToken: String?,
+        @Field("country_code") countryCode: String?,
+        @Field("product_id") productId: String?
     ): Observable<Model>
 
 

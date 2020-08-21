@@ -5,7 +5,8 @@
     android:layout_width="@dimen/_130sdp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/_14sdp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/lyt_container">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

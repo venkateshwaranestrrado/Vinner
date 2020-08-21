@@ -1,9 +1,6 @@
 package com.estrrado.vinner.data.models.response
 
-import com.estrrado.vinner.data.models.BannerSlider
-import com.estrrado.vinner.data.models.Category
-import com.estrrado.vinner.data.models.Featured
-import com.estrrado.vinner.data.models.Region
+import com.estrrado.vinner.data.models.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -89,72 +86,41 @@ class Data {
         this.redirect = redirect
     }
 
-    @SerializedName("product_id")
+    @SerializedName("product")
     @Expose
-    private var productId: String? = null
+    private var product: Product? = null
 
-    @SerializedName("product_title")
+    @SerializedName("reviews")
     @Expose
-    var productTitle: String? = null
+    private var reviews: List<Review?>? = null
 
-    @SerializedName("qty")
+    @SerializedName("related_products")
     @Expose
-    var qty: String? = null
+    private var relatedProducts: List<Any?>? = null
 
-    @SerializedName("unit")
-    @Expose
-    var unit: String? = null
-
-    @SerializedName("price")
-    @Expose
-    internal var price: String? = null
-
-    @SerializedName("currency")
-    @Expose
-    var currency: String? = null
-
-    @SerializedName("product_image")
-    @Expose
-    private var productImage: String? = null
-
-    @SerializedName("rating")
-    @Expose
-    var rating: String? = null
-
-    @SerializedName("category")
-    @Expose
-    private var category: String? = null
-
-    fun getProductId(): String? {
-        return productId
+    fun getProduct(): Product? {
+        return product
     }
 
-    fun setProductId(productId: String?) {
-        this.productId = productId
+    fun setProduct(product: Product?) {
+        this.product = product
     }
 
-    fun getPrice(): String? {
-        return price
+    fun getReviews(): List<Review?>? {
+        return reviews
     }
 
-    fun setPrice(price: String?) {
-        this.price = price
+    fun setReviews(reviews: List<Review?>?) {
+        this.reviews = reviews
     }
 
-    fun getProductImage(): String? {
-        return productImage
+    fun getRelatedProducts(): List<Any?>? {
+        return relatedProducts
     }
 
-    fun setProductImage(productImage: String?) {
-        this.productImage = productImage
+    fun setRelatedProducts(relatedProducts: List<Any?>?) {
+        this.relatedProducts = relatedProducts
     }
 
-    fun getCategory(): String? {
-        return category
-    }
-
-    fun setCategory(category: String?) {
-        this.category = category
-    }
 
 }
