@@ -1,4 +1,4 @@
-package com.estrrado.vinner.ui.home
+package com.estrrado.vinner.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

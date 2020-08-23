@@ -3,10 +3,11 @@ package com.estrrado.vinner.data.models.response
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+
 class Datum {
     @SerializedName("product_id")
     @Expose
-    private var productId: String? = null
+    var productId: String? = null
 
     @SerializedName("product_title")
     @Expose
@@ -22,7 +23,7 @@ class Datum {
 
     @SerializedName("price")
     @Expose
-    internal var price: String? = null
+    var price: String? = null
 
     @SerializedName("currency")
     @Expose
@@ -30,7 +31,7 @@ class Datum {
 
     @SerializedName("product_image")
     @Expose
-    private var productImage: String? = null
+    var productImage: String? = null
 
     @SerializedName("rating")
     @Expose
@@ -38,37 +39,6 @@ class Datum {
 
     @SerializedName("category")
     @Expose
-    private var category: String? = null
+    var category: String? = null
 
-    fun getProductId(): String? {
-        return productId
-    }
-
-    fun setProductId(productId: String?) {
-        this.productId = productId
-    }
-
-    fun getPrice(): String? {
-        return price
-    }
-
-    fun setPrice(price: String?) {
-        this.price = price
-    }
-
-    fun getProductImage(): String? {
-        return productImage
-    }
-
-    fun setProductImage(productImage: String?) {
-        this.productImage = productImage
-    }
-
-    fun getCategory(): String? {
-        return category
-    }
-
-    fun setCategory(category: String?) {
-        this.category = category
-    }
 }

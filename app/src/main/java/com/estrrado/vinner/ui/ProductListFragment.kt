@@ -75,13 +75,13 @@ class ProductListFragment : Fragment() {
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
         requestModel.countryCode = "AE"
-        requestModel.limit = 0
+        requestModel.limit = 10
         requestModel.offset = 0
 
         vModel!!.getProductList(requestModel).observe(this,
             Observer {
                 if (it?.status.equals(SUCCESS)) {
-//                    recycle_products.adapter = ProductsAdapter(this!!.activity!!,null, it!!.productList, view)
+                    recycle_products.adapter = ProductsAdapter(this!!.activity!!,null, it!!.data, view)
                 } else printToast(this!!.context!!, it?.message.toString())
 
             })

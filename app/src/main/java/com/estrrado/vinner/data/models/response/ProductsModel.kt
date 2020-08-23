@@ -1,20 +1,25 @@
 package com.estrrado.vinner.data.models.response
 
-import com.bluelinelabs.logansquare.annotation.JsonField
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class ProductsModel(
-    @field:SerializedName("data")
-    @field:JsonField(name = arrayOf("data"))
-    val productList: List<Datum>? = null,
 
-    @field:SerializedName("message")
-    @field:JsonField(name = arrayOf("message"))
-    val message: String? = null,
+class ProductsModel {
+    @SerializedName("httpcode")
+    @Expose
+    var httpcode: Int? = null
 
+    @SerializedName("status")
+    @Expose
+    var status: String? = null
 
-    @field:SerializedName("status")
-    @field:JsonField(name = arrayOf("status"))
-    val status: String? = null
+    @SerializedName("message")
+    @Expose
+    var message: String? = null
 
-)
+    @SerializedName("data")
+    @Expose
+    var data: List<Datum>? =
+        null
+
+}

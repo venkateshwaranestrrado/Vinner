@@ -8,6 +8,8 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
+import androidx.core.view.marginLeft
+import androidx.core.view.marginTop
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -28,8 +30,11 @@ class ProductsAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView =
+        var itemView =
             LayoutInflater.from(activity).inflate(R.layout.item_home_product, parent, false)
+        if (dataList == null)
+            itemView =
+                LayoutInflater.from(activity).inflate(R.layout.item_product, parent, false)
         val holder = ViewHolder(itemView)
         return holder
     }
@@ -57,13 +62,13 @@ class ProductsAdapter(
             rating = dataList?.get(position)!!.rating!!
             img = dataList?.get(position)!!.prdImage!!
             productId = dataList?.get(position)!!.prdId!!
-        }else{
+        } else {
             name = productList?.get(position)!!.productTitle!!
             qty = productList?.get(position)!!.qty + " " + productList?.get(position)!!.unit
             price = productList?.get(position)!!.price + " " + productList?.get(position)!!.currency
             rating = productList?.get(position)!!.rating.toString()
-            img = productList?.get(position)!!.getProductImage()!!
-            productId = productList?.get(position)!!.getProductId()!!
+            img = productList?.get(position)!!.productImage!!
+            productId = productList?.get(position)!!.productId!!
         }
 
         holder.name.text = name
@@ -102,7 +107,12 @@ class ProductsAdapter(
 
         holder.cardView.setOnClickListener {
             val bundle = bundleOf(PRODUCT_ID to productId)
-            view?.findNavController()?.navigate(R.id.action_homeFragment_to_ProductFragment, bundle)
+            if (dataList != null)
+                view?.findNavController()
+                    ?.navigate(R.id.action_homeFragment_to_ProductFragment, bundle)
+            else
+                view?.findNavController()
+                    ?.navigate(R.id.action_productListFragment_to_navigation_product, bundle)
         }
 
     }
