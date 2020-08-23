@@ -58,5 +58,55 @@ interface APIService {
         @Field("product_id") productId: String?
     ): Observable<Model>
 
+    @FormUrlEncoded
+    @POST("cart_page")
+    fun cartPage(
+        @Field("access_token") accessToken: String?
+    ): Observable<Model>
 
+    @FormUrlEncoded
+    @POST("add_cart")
+    fun addCart(
+        @Field("access_token") accessToken: String?,
+        @Field("country_code") countryCode: String?,
+        @Field("product_id") productId: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("update_cart")
+    fun updateCart(
+        @Field("access_token") accessToken: String?,
+        @Field("cart_id") cartId: String?,
+        @Field("product_id") productId: String?,
+        @Field("product_qty") productQty: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("delete_cart")
+    fun deleteCart(
+        @Field("access_token") accessToken: String?,
+        @Field("cart_id") cartId: String?,
+        @Field("product_id") productId: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("empty_cart")
+    fun emptyCart(
+        @Field("access_token") accessToken: String?,
+        @Field("cart_id") cartId: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("shipping_operators")
+    fun shippingOperators(
+        @Field("access_token") accessToken: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("delivery_fee")
+    fun deliveryFee(
+        @Field("access_token") accessToken: String?,
+        @Field("operator_id") operatorId: String?
+    ): Observable<Model>
+    
 }

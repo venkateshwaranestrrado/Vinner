@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ import com.estrrado.vinner.adapters.SliderAdapter
 import com.estrrado.vinner.data.models.BannerSlider
 import com.estrrado.vinner.data.models.Category
 import com.estrrado.vinner.data.models.Featured
+import com.estrrado.vinner.data.models.Region
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.retrofit.ApiClient
 import com.estrrado.vinner.helper.ACCESS_TOKEN
@@ -31,6 +33,7 @@ import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
     var vModel: HomeVM? = null
@@ -97,6 +100,7 @@ class HomeFragment : Fragment() {
         vModel!!.home(requestModel).observe(this,
             Observer {
                 if (it?.status.equals(SUCCESS)) {
+                    setLocation(it!!.data!!.regions)
                     setBannerImgs(it!!.data!!.bannerSlider)
                     setProducts(it.data!!.featured)
                     setCategories(it.data!!.categories)
@@ -107,6 +111,18 @@ class HomeFragment : Fragment() {
                 } else printToast(this!!.context!!, it?.message.toString())
 
             })
+    }
+
+    private fun setLocation(region: List<Region>?) {
+
+        var regions:ArrayList<String> = ArrayList<String>()
+
+        for(i in 0 until region!!.size){
+            regions.add(region.get(i).countryName!!)
+        }
+
+        val aa = ArrayAdapter(this!!.context!!, R.layout.spinner_item, regions!!.toTypedArray())
+        spnr_region.adapter = aa
     }
 
     private fun setCategories(categories: List<Category>?) {

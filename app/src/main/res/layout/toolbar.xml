@@ -39,12 +39,12 @@
 
     <Spinner
         android:id="@+id/spnr_region"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="@dimen/_10sdp"/>
+        android:layout_marginRight="@dimen/_5sdp"/>
 
 
     <TextView
