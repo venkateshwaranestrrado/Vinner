@@ -10,7 +10,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CartAdapter
 import com.estrrado.vinner.data.CartItem
-import kotlinx.android.synthetic.main.cart_fragment.*
+import kotlinx.android.synthetic.main.fragment_cart.*
 
 class CartFragment: Fragment() {
     private val cartItems= listOf(CartItem("Beaver",R.mipmap.pro1),CartItem("Beaver",R.mipmap.pro1)
@@ -23,7 +23,7 @@ class CartFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.cart_fragment, container, false)
+        val root = inflater.inflate(R.layout.fragment_cart, container, false)
 
         return root
 

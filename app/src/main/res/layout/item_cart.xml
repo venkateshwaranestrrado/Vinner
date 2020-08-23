@@ -1,114 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:cardUseCompatPadding="true"
-
     android:layout_width="match_parent"
-    app:cardCornerRadius="4dp"
-
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    >
+    app:cardCornerRadius="@dimen/_4sdp"
+    app:cardUseCompatPadding="true">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:layout_margin="4dp">
+        android:layout_margin="@dimen/_4sdp"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/ivcheckout"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-           android:padding="2dp"
-            android:src="@mipmap/pro1"
-            />
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:padding="@dimen/_2sdp"
+            android:src="@mipmap/pro1" />
 
         <TextView
             android:id="@+id/product_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#1466AF"
-            android:text="Beaver "
-            android:textSize="12sp"
-            android:layout_marginTop="8dp"
-
-
-
-            android:layout_toRightOf="@+id/ivcheckout" />
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_toRightOf="@+id/ivcheckout"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_10sdp" />
 
         <TextView
             android:id="@+id/product_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#1466AF"
-            android:text="Cleansing Hand Spray"
-            android:textSize="12sp"
-            android:textStyle="bold"
-
             android:layout_below="@+id/product_name"
             android:layout_toRightOf="@+id/ivcheckout"
-            />
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/_12sdp"
+            android:textStyle="bold" />
+
         <TextView
             android:id="@+id/cost"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#61AF38"
-            android:text="20 AED"
-            android:textSize="12sp"
             android:layout_below="@+id/product_description"
             android:layout_toRightOf="@+id/ivcheckout"
-            />
+            android:textColor="@color/green"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/txt_qty_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/product_description"
+            android:layout_marginLeft="233dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/ivcheckout"
+            android:background="@color/green"
+            android:padding="@dimen/_3sdp"
+            android:text="-"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/txt_qty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/product_description"
+            android:layout_marginLeft="252dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_toRightOf="@+id/ivcheckout"
+            android:text="5"
+            android:textColor="@color/green"
+            android:textSize="@dimen/_12sdp" />
+
+        <TextView
+            android:id="@+id/txt_qty_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/product_description"
+            android:layout_marginLeft="268dp"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@+id/ivcheckout"
+            android:background="@color/green"
+            android:padding="@dimen/_3sdp"
+            android:text="+"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12sdp" />
+
         <TextView
             android:id="@+id/delivery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:text="Delivery in 3-4 days"
-
             android:layout_below="@+id/cost"
             android:layout_toRightOf="@+id/ivcheckout"
-            />
-       <!-- <Button
-            android:id="@+id/btremove"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:text="-"
+            android:textSize="@dimen/_8sdp" />
+        <!-- <Button
+             android:id="@+id/btremove"
+             android:layout_width="40dp"
+             android:layout_height="40dp"
+             android:text="-"
 
 
 
 
-            android:layout_toRightOf="@+id/cost"
-            android:layout_marginLeft="100dp"
-            android:layout_below="@+id/product_description"
+             android:layout_toRightOf="@+id/cost"
+             android:layout_marginLeft="100dp"
+             android:layout_below="@+id/product_description"
 
 
 
-            />
--->
+             />
+ -->
 
         <View
             android:id="@+id/view"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="8dp"
-
-            android:background="#c0c0c0"
-           android:layout_below="@+id/ivcheckout"/>
+            android:layout_height="0.5dp"
+            android:layout_below="@+id/ivcheckout"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/black_50" />
 
 
         <TextView
             android:id="@+id/tvRemove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="REMOVE"
-            android:textColor="@color/black"
             android:layout_below="@+id/view"
             android:layout_centerHorizontal="true"
-             />
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:text="REMOVE"
+            android:textColor="@color/black_50"
+            android:textSize="@dimen/_10sdp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
