@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
@@ -34,6 +37,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var cartItems: ArrayList<CartItem?>? = null
     var currency: String? = null
     var operators: List<Datum>? = null
+    var operatorId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,12 +89,18 @@ class CartFragment : Fragment(), CartadapterCallBack {
             }
 
         }
+
+        checkout.setOnClickListener {
+            val bundle = bundleOf(OPERATOR_ID to operatorId)
+            view?.findNavController()?.navigate(R.id.action_navigation_notifications_to_checkoutFragment, bundle)
+        }
     }
 
     private fun getDeleveryFee(position: Int) {
         val requestModel = RequestModel()
+        operatorId = operators!!.get(position).getShippingOperatorId()
         requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-        requestModel.operatorId = operators!!.get(position).getShippingOperatorId()
+        requestModel.operatorId = operatorId
 
         vModel!!.deliveryFee(requestModel).observe(this,
             Observer {

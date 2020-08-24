@@ -12,5 +12,6 @@ const val IS_LOGIN = "Is Login"
 const val ACCESS_TOKEN = "Access Token"
 const val TRUE = "true"
 const val PRODUCT_ID = "Product id"
+const val OPERATOR_ID = "Operator id"
 var regions:List<Region> = ArrayList<Region>()
 var logo:String = ""
