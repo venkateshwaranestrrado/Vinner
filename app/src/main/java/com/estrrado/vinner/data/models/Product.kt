@@ -47,6 +47,6 @@ class Product {
 
     @SerializedName("product_image")
     @Expose
-    var productImage: String? = null
+    val productImage: List<String>? = null
 
 }

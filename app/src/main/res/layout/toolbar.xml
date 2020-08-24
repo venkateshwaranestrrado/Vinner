@@ -39,12 +39,13 @@
 
     <Spinner
         android:id="@+id/spnr_region"
-        android:layout_width="@dimen/_150sdp"
+        android:layout_width="@dimen/_120sdp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="@dimen/_5sdp"/>
+        android:layout_marginRight="@dimen/_5sdp"
+        android:background="@drawable/bg_white_curved"/>
 
 
     <TextView
@@ -65,8 +66,8 @@
         tools:ignore="VectorDrawableCompat" />
 
     <ImageView
-        android:id="@+id/search"
-        android:layout_width="150dp"
+        android:id="@+id/img_logo"
+        android:layout_width="@dimen/_100sdp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="16dp" />

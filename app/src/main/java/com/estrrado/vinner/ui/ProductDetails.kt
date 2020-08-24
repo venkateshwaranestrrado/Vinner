@@ -21,6 +21,7 @@ import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_product_details.*
 import kotlinx.android.synthetic.main.fragment_review.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,6 +67,10 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 )
             )
         ).get(HomeVM::class.java)
+        Glide.with(this!!.activity!!)
+            .load(logo)
+            .thumbnail(0.1f)
+            .into(img_logo)
         productId = arguments?.getString(PRODUCT_ID)!!
         initControl()
         getProductdetail()
@@ -111,10 +116,12 @@ class ProductDetails : Fragment(), View.OnClickListener {
     private fun setProductDetail(detail: Data?) {
         val product = detail!!.getProduct()
         if (product != null) {
-            Glide.with(this!!.activity!!)
-                .load(product.productImage)
-                .thumbnail(0.1f)
-                .into(ivProducts)
+            if (product.productImage != null)
+                Glide.with(this!!.activity!!)
+                    .load(product.productImage!!.get(0))
+                    .thumbnail(0.1f)
+                    .into(ivProducts)
+            Helper.setLocation(spnr_region, this!!.context!!)
             productName.text = product.productName
             productDescription.text = product.category
             price.text = product.price + " " + product.currency

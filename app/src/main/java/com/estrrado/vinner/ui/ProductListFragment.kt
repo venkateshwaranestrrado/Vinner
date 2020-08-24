@@ -8,18 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.adapters.ProductsAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.retrofit.ApiClient
-import com.estrrado.vinner.helper.ACCESS_TOKEN
-import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.SUCCESS
-import com.estrrado.vinner.helper.printToast
+import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_product_list.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,6 +66,11 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Glide.with(this!!.activity!!)
+            .load(logo)
+            .thumbnail(0.1f)
+            .into(img_logo)
+        Helper.setLocation(spnr_region, this!!.context!!)
         recycle_products.setLayoutManager(GridLayoutManager(context, 2))
         getProductList()
     }
@@ -75,7 +79,7 @@ class ProductListFragment : Fragment() {
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
         requestModel.countryCode = "AE"
-        requestModel.limit = 10
+        requestModel.limit = null
         requestModel.offset = 0
 
         vModel!!.getProductList(requestModel).observe(this,

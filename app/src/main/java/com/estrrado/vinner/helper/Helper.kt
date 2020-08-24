@@ -9,11 +9,15 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.provider.MediaStore
 import android.view.Window
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 
 
 import com.estrrado.vinner.R
+import com.estrrado.vinner.data.models.Region
+import kotlinx.android.synthetic.main.toolbar.*
 import java.io.ByteArrayOutputStream
 
 
@@ -80,5 +84,15 @@ object Helper {
         activity.startActivity(intent)
 */
         return false
+    }
+
+    fun setLocation(spinner:Spinner, context: Context) {
+        val region:ArrayList<String> = ArrayList<String>()
+        for(i in 0 until regions!!.size){
+            region.add(regions.get(i).countryName!!)
+        }
+
+        val aa = ArrayAdapter(context, R.layout.spinner_item, region!!.toTypedArray())
+        spinner.adapter = aa
     }
 }
