@@ -7,6 +7,9 @@ class RequestModel(
     var accessToken: String? = null,
     var countryCode: String? = null,
     var productId: String? = null,
+    var cartId: String? = null,
+    var productQty: String? = null,
+    var operatorId: String? = null,
     var limit: Int? = 0,
     var offset: Int? = 0
 )

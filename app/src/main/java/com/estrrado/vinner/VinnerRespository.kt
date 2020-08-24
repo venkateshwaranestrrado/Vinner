@@ -128,4 +128,118 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
         return data
     }
 
+    fun getCartPage(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.cartPage(
+                input.accessToken
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun addCart(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.addCart(
+                input.accessToken,
+                input.countryCode,
+                input.productId
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun updateCart(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.updateCart(
+                input.accessToken,
+                input.cartId,
+                input.productId,
+                input.productQty
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun deleteCart(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.deleteCart(
+                input.accessToken,
+                input.cartId,
+                input.productId
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun emptyCart(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.emptyCart(
+                input.accessToken,
+                input.cartId
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun shippingOperators(input: RequestModel): MutableLiveData<ProductsModel?> {
+        val data = MutableLiveData<ProductsModel?>()
+            apiService?.shippingOperators(
+                input.accessToken
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun deliveryFee(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.deliveryFee(
+                input.accessToken,
+                input.operatorId
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
 }

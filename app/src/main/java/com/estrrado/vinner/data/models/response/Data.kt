@@ -122,6 +122,10 @@ class Data {
         this.relatedProducts = relatedProducts
     }
 
+    /*
+    cart page
+     */
+
     @SerializedName("cart")
     @Expose
     private var cart: Cart? = null
@@ -132,11 +136,7 @@ class Data {
 
     @SerializedName("cart_items")
     @Expose
-    private var cartItems: List<CartItem?>? = null
-
-    @SerializedName("address")
-    @Expose
-    private var address: String? = null
+    private var cartItems: ArrayList<CartItem?>? = null
 
     fun getCart(): Cart? {
         return cart
@@ -154,20 +154,12 @@ class Data {
         this.itemsTotal = itemsTotal
     }
 
-    fun getCartItems(): List<CartItem?>? {
+    fun getCartItems(): ArrayList<CartItem?>? {
         return cartItems
     }
 
-    fun setCartItems(cartItems: List<CartItem?>?) {
+    fun setCartItems(cartItems: ArrayList<CartItem?>?) {
         this.cartItems = cartItems
-    }
-
-    fun getAddress(): String? {
-        return address
-    }
-
-    fun setAddress(address: String?) {
-        this.address = address
     }
 
     /*
@@ -381,6 +373,22 @@ class Data {
 
     fun setOperator(operator: String?) {
         this.operator = operator
+    }
+
+    /*
+    address
+     */
+
+    @SerializedName("address")
+    @Expose
+    private var address: Address? = null
+
+    fun getAddress(): Address? {
+        return address
+    }
+
+    fun setAddress(address: Address) {
+        this.address = address
     }
 
 

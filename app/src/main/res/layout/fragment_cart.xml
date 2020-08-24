@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/include"
@@ -16,9 +16,9 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
+        style="@style/RootView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/RootView"
         android:layout_marginTop="@dimen/_10sdp"
         app:cardCornerRadius="4dp"
         app:cardUseCompatPadding="true"
@@ -27,7 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -39,18 +39,49 @@
                 android:layout_height="wrap_content"
                 android:padding="2dp"
                 android:text="Delivery Address"
-                android:textSize="12sp" />
+                android:textSize="@dimen/_10sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"/>
+
+            <TextView
+                android:id="@+id/txt_change_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Change Address"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/dark_blue"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Delivery Address"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDeliveryAddress"/>
+
+            <ImageView
+                android:id="@+id/img_edit_address"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:padding="2dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_change_address"/>
 
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/itemCount"
+        style="@style/RootView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/RootView"
-        android:text="2 Items"
         android:layout_marginTop="@dimen/_5sdp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -62,11 +93,11 @@
     <androidx.core.widget.NestedScrollView
 
         android:id="@+id/nest"
+        style="@style/RootView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:fillViewport="true"
-        style="@style/RootView"
         app:layout_constraintBottom_toTopOf="@+id/checkout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,9 +110,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/productList"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:nestedScrollingEnabled="true"
                 android:orientation="vertical"
                 android:overScrollMode="never"
@@ -102,6 +132,41 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
+                <!--                <androidx.cardview.widget.CardView-->
+                <!--                    android:id="@+id/card1"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent"-->
+                <!--                    android:padding="@dimen/_3sdp">-->
+
+                <Spinner
+                    android:id="@+id/spinner_operators"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/_minus5sdp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--                </androidx.cardview.widget.CardView>-->
+
+                <TextView
+                    android:id="@+id/textView21"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Expected Delivery"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/spinner_operators" />
+
+                <TextView
+                    android:id="@+id/txt_delivery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView21"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView21" />
+
                 <TextView
                     android:id="@+id/textView12"
                     android:layout_width="wrap_content"
@@ -110,7 +175,7 @@
                     android:text="Price Details"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/textView21" />
 
                 <View
                     android:id="@+id/editText"
@@ -154,17 +219,14 @@
                 <TextView
                     android:id="@+id/price"
                     android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
                     android:text="0"
-                    app:layout_constraintBottom_toTopOf="@+id/textView21"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView17"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editText"
-                    tools:ignore="UnknownId" />
+                    app:layout_constraintTop_toTopOf="@+id/textView17" />
 
                 <TextView
-                    android:id="@+id/delivery"
+                    android:id="@+id/txt_delivery_fee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -179,7 +241,7 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="0"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/delivery" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_delivery_fee" />
 
                 <View
                     android:id="@+id/editText2"
@@ -225,12 +287,12 @@
 
     <Button
         android:id="@+id/checkout"
+        style="@style/RootView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:background="@color/green"
         android:text="Checkout"
-        style="@style/RootView"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

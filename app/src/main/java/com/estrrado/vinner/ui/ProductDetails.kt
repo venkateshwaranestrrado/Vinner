@@ -28,7 +28,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class ProductDetails : Fragment(),View.OnClickListener {
+class ProductDetails : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -50,7 +50,7 @@ class ProductDetails : Fragment(),View.OnClickListener {
         val root = inflater.inflate(R.layout.fragment_product_details, container, false)
 
         return root
-        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,9 +71,9 @@ class ProductDetails : Fragment(),View.OnClickListener {
         getProductdetail()
     }
 
-    private fun initControl(){
+    private fun initControl() {
         addcart.setOnClickListener(this)
-
+        buy.setOnClickListener(this)
     }
 
     private fun getProductdetail() {
@@ -89,6 +89,22 @@ class ProductDetails : Fragment(),View.OnClickListener {
                     setProductDetail(it!!.data!!)
                 } else printToast(this!!.context!!, it?.message.toString())
 
+            })
+    }
+
+    private fun addToCart() {
+
+        val requestModel = RequestModel()
+        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+        requestModel.countryCode = "AE"
+        requestModel.productId = productId
+
+        vModel!!.addCart(requestModel).observe(this,
+            Observer {
+                printToast(this!!.context!!, it?.message.toString())
+                if (it?.status.equals(SUCCESS)) {
+                    setProductDetail(it!!.data!!)
+                }
             })
     }
 
@@ -108,17 +124,21 @@ class ProductDetails : Fragment(),View.OnClickListener {
             txt_rating_count.text = product.reatedCustomers + " " + "Customer ratings"
             txt_rating_total.text = product.rating + " " + "out of 5"
         }
-            recycle_rating.adapter = ReviewAdapter(this!!.activity!!, detail.getReviews())
+        recycle_rating.adapter = ReviewAdapter(this!!.activity!!, detail.getReviews())
 
     }
 
 
     override fun onClick(v: View?) {
 
-        when(v!!.id){
+        when (v!!.id) {
 
-            R.id.addcart->{
+            R.id.addcart -> {
+                addToCart()
+            }
 
+            R.id.buy -> {
+                addToCart()
                 Navigation.findNavController(v).navigate(
                     R.id.navigation_cart
 

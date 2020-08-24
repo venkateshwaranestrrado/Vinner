@@ -41,4 +41,28 @@ class Datum {
     @Expose
     var category: String? = null
 
+    @SerializedName("shipping_operator_id")
+    @Expose
+    private var shippingOperatorId: String? = null
+
+    @SerializedName("operator")
+    @Expose
+    private var operator: String? = null
+
+    fun getShippingOperatorId(): String? {
+        return shippingOperatorId
+    }
+
+    fun setShippingOperatorId(shippingOperatorId: String?) {
+        this.shippingOperatorId = shippingOperatorId
+    }
+
+    fun getOperator(): String? {
+        return operator
+    }
+
+    fun setOperator(operator: String?) {
+        this.operator = operator
+    }
+
 }

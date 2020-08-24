@@ -100,7 +100,7 @@ interface APIService {
     @POST("shipping_operators")
     fun shippingOperators(
         @Field("access_token") accessToken: String?
-    ): Observable<Model>
+    ): Observable<ProductsModel>
 
     @FormUrlEncoded
     @POST("delivery_fee")
