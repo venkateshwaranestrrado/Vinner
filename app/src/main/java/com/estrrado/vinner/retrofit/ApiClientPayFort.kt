@@ -1,7 +1,6 @@
-package com.estrrado.vinner.data.retrofit
+package com.estrrado.vinner.retrofit
 
 
-import com.estrrado.vinner.helper.WebConfig
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
@@ -10,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object ApiClient {
+object ApiClientPayFort {
 
     var apiData = WebConfig.TEST
     var LIVE_URL = apiData.getLiveUrl()

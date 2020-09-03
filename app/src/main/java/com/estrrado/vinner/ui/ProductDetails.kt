@@ -15,7 +15,7 @@ import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.ReviewAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Data
-import com.estrrado.vinner.data.retrofit.ApiClient
+import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel

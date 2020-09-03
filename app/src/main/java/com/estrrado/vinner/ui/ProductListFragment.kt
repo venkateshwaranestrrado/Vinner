@@ -13,7 +13,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.adapters.ProductsAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.data.retrofit.ApiClient
+import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel

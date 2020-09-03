@@ -15,4 +15,6 @@ class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun emptyCart(input: RequestModel) = respo.emptyCart(input)
     fun shippingOperators(input: RequestModel) = respo.shippingOperators(input)
     fun deliveryFee(input: RequestModel) = respo.deliveryFee(input)
+    fun signout(input: RequestModel) = respo.signout(input)
+    fun getPayfortToken(input: RequestModel) = respo.getPayfortToken(input)
 }

@@ -1,5 +1,6 @@
-package com.estrrado.vinner.data.retrofit
+package com.estrrado.vinner.retrofit
 
+import com.estrrado.vinner.data.models.PayfortTokenResponse
 import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.ProductsModel
 import io.reactivex.Observable
@@ -108,5 +109,22 @@ interface APIService {
         @Field("access_token") accessToken: String?,
         @Field("operator_id") operatorId: String?
     ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("signout")
+    fun signout(
+        @Field("access_token") accessToken: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("FortAPI/paymentApi")
+    fun payfortToken(
+        @Field("service_command") serviceCommand: String?,
+        @Field("access_code") accessCode: String?,
+        @Field("merchant_identifier") merchantIdentifier: String?,
+        @Field("language") language: String?,
+        @Field("device_id") deviceId: String?,
+        @Field("signature") signature: String?
+    ): Observable<PayfortTokenResponse>
     
 }

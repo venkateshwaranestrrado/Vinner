@@ -1,24 +1,26 @@
 package com.estrrado.vinner
 
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
+import com.estrrado.vinner.data.models.PayfortTokenResponse
 import com.estrrado.vinner.data.models.request.Input
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.ProductsModel
-import com.estrrado.vinner.data.retrofit.APIService
-import com.estrrado.vinner.data.retrofit.ApiClient
+import com.estrrado.vinner.retrofit.APIService
+import com.estrrado.vinner.retrofit.ApiClient
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class VinnerRespository(var context: FragmentActivity?, var apiService: APIService?) {
+class VinnerRespository(var context: Context?, var apiService: APIService?) {
 
     companion object {
         @Volatile
         private var instance: VinnerRespository? = null
 
-        fun getInstance(context: FragmentActivity?, apiService: APIService?) = instance
+        @JvmStatic fun getInstance(context: Context?, apiService: APIService?) = instance
             ?: synchronized(this) {
                 instance
                     ?: VinnerRespository(context, apiService).also {
@@ -231,6 +233,41 @@ class VinnerRespository(var context: FragmentActivity?, var apiService: APIServi
             apiService?.deliveryFee(
                 input.accessToken,
                 input.operatorId
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun signout(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+            apiService?.signout(
+                input.accessToken
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun getPayfortToken(input: RequestModel): MutableLiveData<PayfortTokenResponse?> {
+        val data = MutableLiveData<PayfortTokenResponse?>()
+            apiService?.payfortToken(
+                input.serviceCommand,
+                input.accessCode,
+                input.merchantIdentifier,
+                input.language,
+                input.deviceId,
+                input.signature
             )!!.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

@@ -1,4 +1,4 @@
-package com.estrrado.vinner.helper
+package com.estrrado.vinner.retrofit
 
 enum class WebConfig {
     PUBLISH{

@@ -1,30 +1,26 @@
 package com.estrrado.vinner.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
-import com.estrrado.vinner.activity.VinnerActivity
-import com.estrrado.vinner.adapters.CartAdapter
-import com.estrrado.vinner.data.models.Cart
-import com.estrrado.vinner.data.models.CartItem
+import com.estrrado.vinner.activity.PayFortSdkSample
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.data.models.response.Datum
-import com.estrrado.vinner.data.retrofit.ApiClient
+import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import kotlinx.android.synthetic.main.fragment_cart.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.fragment_cart.price
+import kotlinx.android.synthetic.main.fragment_cart.totalAmount
+import kotlinx.android.synthetic.main.fragment_cart.txt_delivery_fee
+import kotlinx.android.synthetic.main.fragment_cart.txt_sub_total
+import kotlinx.android.synthetic.main.fragment_checkout.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
 class CheckoutFragment : Fragment() {
@@ -59,6 +55,11 @@ class CheckoutFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         pageTitle.text = "Checkout"
         getDeleveryFee()
+
+        btn_payment.setOnClickListener {
+            startActivity(Intent(activity, PayFortSdkSample::class.java))
+            activity!!.finish()
+        }
     }
 
     private fun getDeleveryFee() {
