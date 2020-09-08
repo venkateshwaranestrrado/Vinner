@@ -90,127 +90,134 @@ class CartFragment : Fragment(), CartadapterCallBack {
         }
 
         checkout.setOnClickListener {
-            val bundle = bundleOf(OPERATOR_ID to operatorId)
-            view?.findNavController()?.navigate(R.id.action_navigation_notifications_to_checkoutFragment, bundle)
-        }
-    }
-
-    private fun getDeleveryFee(position: Int) {
-        val requestModel = RequestModel()
-        operatorId = operators!!.get(position).getShippingOperatorId()
-        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-        requestModel.operatorId = operatorId
-
-        vModel!!.deliveryFee(requestModel).observe(this,
-            Observer {
-                if (it?.status.equals(SUCCESS)) {
-                    txt_delivery.text = it!!.data!!.getDeliveryExpDate()
-                    txt_delivery_fee.text = it.data!!.getDeliveryFee() + " " + currency
-                    price.text = it!!.data!!.getPrice() + " " + currency
-                    txt_sub_total.text = it.data!!.getSubTotal() + " " + currency
-                    totalAmount.text = it.data!!.getTotalAmount() + " " + currency
-                } else printToast(this!!.context!!, it?.message.toString())
-            })
-    }
-
-    private fun getOperators() {
-        val requestModel = RequestModel()
-        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-
-        vModel!!.shippingOperators(requestModel).observe(this,
-            Observer {
-                if (it?.status.equals(SUCCESS)) {
-                    operators = it!!.data
-                    setOperators()
-                } else printToast(this!!.context!!, it?.message.toString())
-            })
-    }
-
-    private fun setOperators() {
-
-        var dOperator: ArrayList<String> = ArrayList<String>()
-
-        for (i in 0 until operators!!.size) {
-            dOperator.add(operators!!.get(i).getOperator()!!)
+//            if (operatorId != null) {
+//                val bundle = bundleOf(OPERATOR_ID to operatorId)
+                val bundle = bundleOf(OPERATOR_ID to "1")
+                view?.findNavController()
+                    ?.navigate(R.id.action_navigation_notifications_to_checkoutFragment, bundle)
+//            } else {
+//                printToast(this!!.context!!, "Please select shipping operators")
+//            }
         }
 
-        val aa = ArrayAdapter(this!!.context!!, R.layout.spinner_item, dOperator!!.toTypedArray())
-        spinner_operators.adapter = aa
+}
+
+private fun getDeleveryFee(position: Int) {
+    val requestModel = RequestModel()
+    operatorId = operators!!.get(position).getShippingOperatorId()
+    requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+    requestModel.operatorId = operatorId
+
+    vModel!!.deliveryFee(requestModel).observe(this,
+        Observer {
+            if (it?.status.equals(SUCCESS)) {
+                txt_delivery.text = it!!.data!!.getDeliveryExpDate()
+                txt_delivery_fee.text = it.data!!.getDeliveryFee() + " " + currency
+                price.text = it!!.data!!.getPrice() + " " + currency
+                txt_sub_total.text = it.data!!.getSubTotal() + " " + currency
+                totalAmount.text = it.data!!.getTotalAmount() + " " + currency
+            } else printToast(this!!.context!!, it?.message.toString())
+        })
+}
+
+private fun getOperators() {
+    val requestModel = RequestModel()
+    requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+
+    vModel!!.shippingOperators(requestModel).observe(this,
+        Observer {
+            if (it?.status.equals(SUCCESS)) {
+                operators = it!!.data
+                setOperators()
+            } else printToast(this!!.context!!, it?.message.toString())
+        })
+}
+
+private fun setOperators() {
+
+    var dOperator: ArrayList<String> = ArrayList<String>()
+
+    for (i in 0 until operators!!.size) {
+        dOperator.add(operators!!.get(i).getOperator()!!)
     }
 
-    private fun initControl() {
+    val aa = ArrayAdapter(this!!.context!!, R.layout.spinner_item, dOperator!!.toTypedArray())
+    spinner_operators.adapter = aa
+}
 
-        productList.layoutManager = LinearLayoutManager(activity as VinnerActivity)
-        // productList.isNestedScrollingEnabled = false
-    }
+private fun initControl() {
 
-    private fun getCart() {
-        val requestModel = RequestModel()
-        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+    productList.layoutManager = LinearLayoutManager(activity as VinnerActivity)
+    // productList.isNestedScrollingEnabled = false
+}
 
-        vModel!!.getCartPage(requestModel).observe(this,
-            Observer {
-                if (it?.status.equals(SUCCESS)) {
-                    cartId = it!!.data!!.getCartItems()!!.get(0)!!.cartId
-                    cartItems = it!!.data!!.getCartItems()
-                    cartAdapter = CartAdapter(requireActivity(), cartItems, this)
-                    productList.adapter = cartAdapter
-                    if (cartItems != null)
-                        itemCount.text = cartItems!!.size.toString() + " Items"
-                    if (it.data!!.getAddress() != null) {
-                        txt_address.text =
-                            it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName + ", " + it.data.getAddress()!!.zip
-                    }
-                    setCartDetails(it.data!!.getCart())
-                } else printToast(this!!.context!!, it?.message.toString())
-            })
-    }
+private fun getCart() {
+    val requestModel = RequestModel()
+    requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
 
-    private fun setCartDetails(cart: Cart?) {
-        if (!cart!!.totalAmount.equals("null")) {
-            price.text = cart!!.totalAmount + " " + cart.currency
-            totalAmount.text = cart.grandTotal + " " + cart.currency
-            currency = cart.currency
-        } else {
-            price.text = "0 " + cart.currency
-            totalAmount.text = "0 " + cart.currency
-        }
-    }
-
-    override fun productUpdated(productId: String, count: String, position: Int) {
-        val requestModel = RequestModel()
-        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-        requestModel.cartId = cartId
-        requestModel.productId = productId
-        requestModel.productQty = count
-        vModel!!.updateCart(requestModel).observe(this,
-            Observer {
-                if (it?.status.equals(SUCCESS)) {
-                    cartItems!!.get(position)!!.productTotal = it!!.data!!.getProductTotal()
-                    cartItems!!.get(position)!!.productQuantity = it!!.data!!.getProductQty()
-                    cartAdapter!!.notifyDataSetChanged()
-                    price.text = it!!.data!!.getTotalAmount() + " " + currency
-                    totalAmount.text = it.data!!.getGrandTotal() + " " + currency
-                } else printToast(this!!.context!!, it?.message.toString())
-            })
-    }
-
-    override fun productRemoved(productId: String, position: Int) {
-        val requestModel = RequestModel()
-        requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-        requestModel.cartId = cartId
-        requestModel.productId = productId
-        vModel!!.deleteCart(requestModel).observe(this,
-            Observer {
-                printToast(this!!.context!!, it?.message.toString())
-                if (it?.status.equals(SUCCESS)) {
-                    cartItems!!.removeAt(position)
-                    cartAdapter!!.notifyDataSetChanged()
-                    price.text = it!!.data!!.getTotalAmount() + " " + currency
-                    totalAmount.text = it.data!!.getGrandTotal() + " " + currency
+    vModel!!.getCartPage(requestModel).observe(this,
+        Observer {
+            if (it?.status.equals(SUCCESS)) {
+                cartId = it!!.data!!.getCartItems()!!.get(0)!!.cartId
+                cartItems = it!!.data!!.getCartItems()
+                cartAdapter = CartAdapter(requireActivity(), cartItems, this)
+                productList.adapter = cartAdapter
+                if (cartItems != null)
+                    itemCount.text = cartItems!!.size.toString() + " Items"
+                if (it.data!!.getAddress() != null) {
+                    txt_address.text =
+                        it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName + ", " + it.data.getAddress()!!.zip
                 }
-            })
+                setCartDetails(it.data!!.getCart())
+            } else printToast(this!!.context!!, it?.message.toString())
+        })
+}
+
+private fun setCartDetails(cart: Cart?) {
+    if (!cart!!.totalAmount.equals("null")) {
+        price.text = cart!!.totalAmount + " " + cart.currency
+        totalAmount.text = cart.grandTotal + " " + cart.currency
+        currency = cart.currency
+    } else {
+        price.text = "0 " + cart.currency
+        totalAmount.text = "0 " + cart.currency
     }
+}
+
+override fun productUpdated(productId: String, count: String, position: Int) {
+    val requestModel = RequestModel()
+    requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+    requestModel.cartId = cartId
+    requestModel.productId = productId
+    requestModel.productQty = count
+    vModel!!.updateCart(requestModel).observe(this,
+        Observer {
+            if (it?.status.equals(SUCCESS)) {
+                cartItems!!.get(position)!!.productTotal = it!!.data!!.getProductTotal()
+                cartItems!!.get(position)!!.productQuantity = it!!.data!!.getProductQty()
+                cartAdapter!!.notifyDataSetChanged()
+                price.text = it!!.data!!.getTotalAmount() + " " + currency
+                totalAmount.text = it.data!!.getGrandTotal() + " " + currency
+            } else printToast(this!!.context!!, it?.message.toString())
+        })
+}
+
+override fun productRemoved(productId: String, position: Int) {
+    val requestModel = RequestModel()
+    requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+    requestModel.cartId = cartId
+    requestModel.productId = productId
+    vModel!!.deleteCart(requestModel).observe(this,
+        Observer {
+            printToast(this!!.context!!, it?.message.toString())
+            if (it?.status.equals(SUCCESS)) {
+                cartItems!!.removeAt(position)
+                cartAdapter!!.notifyDataSetChanged()
+                price.text = it!!.data!!.getTotalAmount() + " " + currency
+                totalAmount.text = it.data!!.getGrandTotal() + " " + currency
+            }
+        })
+}
 }
 
 interface CartadapterCallBack {

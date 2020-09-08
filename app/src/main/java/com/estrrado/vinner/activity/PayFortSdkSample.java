@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.estrrado.vinner.R;
 import com.estrrado.vinner.VinnerRespository;
 import com.estrrado.vinner.retrofit.ApiClient;
-import com.estrrado.vinner.retrofit.ApiClientPayFort;
 import com.estrrado.vinner.vm.HomeVM;
 import com.estrrado.vinner.vm.MainViewModel;
 import com.payfort.fort.android.sdk.base.FortSdk;
@@ -58,7 +57,7 @@ public class PayFortSdkSample extends Activity {
                         new HomeVM(
                                 VinnerRespository.getInstance(
                                         PayFortSdkSample.this,
-                                        ApiClientPayFort.INSTANCE.getApiServices()
+                                        ApiClient.INSTANCE.getApiServices()
                     )
                 )
             )
@@ -128,7 +127,7 @@ public class PayFortSdkSample extends Activity {
         fortCallback.onActivityResult(requestCode, resultCode, data);
     }
 
-    private String getSignature() {
+    public static String getSignature() {
         Map<String, Object> requestMap = new HashMap<>();
         requestMap.put("command", "PURCHASE");
         requestMap.put("merchant_reference", "Test010");

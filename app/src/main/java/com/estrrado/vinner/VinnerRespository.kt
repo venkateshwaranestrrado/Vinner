@@ -9,7 +9,6 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.ProductsModel
 import com.estrrado.vinner.retrofit.APIService
-import com.estrrado.vinner.retrofit.ApiClient
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -39,7 +38,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.confirm_password
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe({ApiClient.apiServices
+            ?.subscribe({
                 data.value = it
             }, {
                 it.printStackTrace()
@@ -54,7 +53,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.mobile
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe({ApiClient.apiServices
+            ?.subscribe({
                 data.value = it
             }, {
                 it.printStackTrace()
@@ -70,7 +69,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.otp
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe({ApiClient.apiServices
+            ?.subscribe({
                 data.value = it
             }, {
                 it.printStackTrace()
@@ -86,7 +85,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.countryCode
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe({ApiClient.apiServices
+            ?.subscribe({
                 data.value = it
             }, {
                 it.printStackTrace()
@@ -103,7 +102,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.productId
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe({ApiClient.apiServices
+            ?.subscribe({
                 data.value = it
             }, {
                 it.printStackTrace()

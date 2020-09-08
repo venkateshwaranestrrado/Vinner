@@ -14,6 +14,7 @@ import com.estrrado.vinner.activity.PayFortSdkSample
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
+import com.estrrado.vinner.testpay.MainActivity
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_cart.price
@@ -57,7 +58,7 @@ class CheckoutFragment : Fragment() {
         getDeleveryFee()
 
         btn_payment.setOnClickListener {
-            startActivity(Intent(activity, PayFortSdkSample::class.java))
+            startActivity(Intent(activity, MainActivity::class.java))
             activity!!.finish()
         }
     }
