@@ -90,14 +90,14 @@ class CartFragment : Fragment(), CartadapterCallBack {
         }
 
         checkout.setOnClickListener {
-//            if (operatorId != null) {
-//                val bundle = bundleOf(OPERATOR_ID to operatorId)
-                val bundle = bundleOf(OPERATOR_ID to "1")
+            if (operatorId != null) {
+                val bundle = bundleOf(OPERATOR_ID to operatorId, CART_ID to cartId)
+//                val bundle = bundleOf(OPERATOR_ID to "1", CART_ID to cartId)
                 view?.findNavController()
                     ?.navigate(R.id.action_navigation_notifications_to_checkoutFragment, bundle)
-//            } else {
-//                printToast(this!!.context!!, "Please select shipping operators")
-//            }
+            } else {
+                printToast(this!!.context!!, "Please select shipping operators")
+            }
         }
 
 }

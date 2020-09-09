@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.estrrado.vinner.R
-import com.estrrado.vinner.testpay.ErrorModel
-import com.estrrado.vinner.testpay.WebCallback
+import com.estrrado.vinner.helper.CART_ID
+import com.estrrado.vinner.helper.TOTAL_PAYABLE
 import com.payfort.fort.android.sdk.base.FortSdk
 import com.payfort.fort.android.sdk.base.callbacks.FortCallBackManager
 import com.payfort.sdk.android.dependancies.base.FortInterfaces
@@ -21,7 +21,7 @@ import java.security.MessageDigest
  * https://docs.payfort.com/docs/mobile-sdk/build/index.html#before-starting-the-integration
  *
  * */
-class MainActivity : AppCompatActivity(), OnWebCallback {
+class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
     var fortCallback: FortCallBackManager? = null
     val TAG = "payTag"
@@ -150,14 +150,14 @@ class MainActivity : AppCompatActivity(), OnWebCallback {
         /**
         = 10000 => 100, should be multi by some value depending on your currency, check payfort Docs fore more detail
          */
-        hash.put("amount", "10000")
+        hash.put("amount", getIntent().getExtras()!!.getString(TOTAL_PAYABLE)!!)
         hash.put("language", "en")
         /**
          * merchant_reference represented purchase id, it should be unique
          * here we let user to entered as our test requirement.
          * */
 //        val x = editOne.text.toString()
-        hash.put("merchant_reference", "101")
+        hash.put("merchant_reference", getIntent().getExtras()!!.getString(CART_ID)!!)
         /**
          * you can also add any option key-value pairs
          * */
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity(), OnWebCallback {
                         Log.d(TAG, "onFailure")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
-                        Toast.makeText(this@MainActivity, "Error: ${p1?.get("response_message")}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@PayFortActivity, "Error: ${p1?.get("response_message")}", Toast.LENGTH_LONG).show()
 
 
                     }

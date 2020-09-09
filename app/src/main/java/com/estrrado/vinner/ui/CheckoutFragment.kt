@@ -10,11 +10,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
-import com.estrrado.vinner.activity.PayFortSdkSample
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
-import com.estrrado.vinner.testpay.MainActivity
+import com.estrrado.vinner.testpay.PayFortActivity
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_cart.price
@@ -28,6 +27,7 @@ class CheckoutFragment : Fragment() {
 
     var vModel: HomeVM? = null
     var operatorId: String? = null
+    var totalPayable: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,8 +58,12 @@ class CheckoutFragment : Fragment() {
         getDeleveryFee()
 
         btn_payment.setOnClickListener {
-            startActivity(Intent(activity, MainActivity::class.java))
-            activity!!.finish()
+            val bundle = Bundle()
+            bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
+            bundle.putString(TOTAL_PAYABLE, totalPayable)
+            val intent = Intent(activity, PayFortActivity::class.java)
+            intent.putExtras(bundle)
+            startActivity(intent)
         }
     }
 
@@ -76,6 +80,7 @@ class CheckoutFragment : Fragment() {
                     price.text = it!!.data!!.getPrice() + " " + it.data!!.getCurrency()
                     txt_sub_total.text = it.data!!.getSubTotal() + " " + it.data!!.getCurrency()
                     totalAmount.text = it.data!!.getTotalAmount() + " " + it.data!!.getCurrency()
+                    totalPayable = it.data!!.getTotalAmount()
                 } else printToast(this!!.context!!, it?.message.toString())
             })
     }

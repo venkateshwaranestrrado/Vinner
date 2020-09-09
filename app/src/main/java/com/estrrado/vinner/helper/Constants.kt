@@ -13,5 +13,7 @@ const val ACCESS_TOKEN = "Access Token"
 const val TRUE = "true"
 const val PRODUCT_ID = "Product id"
 const val OPERATOR_ID = "Operator id"
+const val CART_ID = "Cart id"
+const val TOTAL_PAYABLE = "Total Payable"
 var regions:List<Region> = ArrayList<Region>()
 var logo:String = ""

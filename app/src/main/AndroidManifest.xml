@@ -41,7 +41,7 @@
             android:name=".activity.PayFortSdkSample"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".testpay.MainActivity"
+            android:name=".testpay.PayFortActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
