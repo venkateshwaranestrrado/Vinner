@@ -1,8 +1,7 @@
 package com.estrrado.vinner.retrofit
 
-import com.estrrado.vinner.data.models.PayfortTokenResponse
 import com.estrrado.vinner.data.models.response.Model
-import com.estrrado.vinner.data.models.response.ProductsModel
+import com.estrrado.vinner.data.models.response.DataListModel
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -49,7 +48,7 @@ interface APIService {
         @Field("limit") limit: Int?,
         @Field("offset") offset: Int?,
         @Field("country_code") countryCode: String?
-    ): Observable<ProductsModel>
+    ): Observable<DataListModel>
 
     @FormUrlEncoded
     @POST("product_detail")
@@ -101,7 +100,7 @@ interface APIService {
     @POST("shipping_operators")
     fun shippingOperators(
         @Field("access_token") accessToken: String?
-    ): Observable<ProductsModel>
+    ): Observable<DataListModel>
 
     @FormUrlEncoded
     @POST("delivery_fee")
@@ -117,14 +116,15 @@ interface APIService {
     ): Observable<Model>
 
     @FormUrlEncoded
-    @POST("FortAPI/paymentApi")
-    fun payfortToken(
-        @Field("service_command") serviceCommand: String?,
-        @Field("access_code") accessCode: String?,
-        @Field("merchant_identifier") merchantIdentifier: String?,
-        @Field("language") language: String?,
-        @Field("device_id") deviceId: String?,
-        @Field("signature") signature: String?
-    ): Observable<PayfortTokenResponse>
+    @POST("category")
+    fun getCategory(
+        @Field("access_token") accessToken: String?
+    ): Observable<DataListModel>
+
+    @FormUrlEncoded
+    @POST("industry")
+    fun getIndustry(
+        @Field("access_token") accessToken: String?
+    ): Observable<DataListModel>
     
 }

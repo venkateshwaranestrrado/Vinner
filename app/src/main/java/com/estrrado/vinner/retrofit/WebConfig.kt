@@ -5,7 +5,7 @@ enum class WebConfig {
         override fun getLiveUrl() = "https://estrradodemo.com/vinner/api/"
         override fun getImagUrl() = "http://13.126.102.0:7016/iMAGEStorage/"
     },TEST{
-        override fun getLiveUrl() = "https://estrradodemo.com/vinner/api/"
+        override fun getLiveUrl() = "https://vinshopify.com/uat/api/"
         override fun getImagUrl() = "http://13.126.102.0:7016/iMAGEStorage/"
     };
 

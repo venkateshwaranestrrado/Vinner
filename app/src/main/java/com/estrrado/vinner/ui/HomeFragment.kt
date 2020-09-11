@@ -111,7 +111,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setCategories(categories: List<Category>?) {
-        categoryList.adapter = CategoryAdapter(requireActivity(), categories)
+        categoryList.adapter = CategoryAdapter(requireActivity(), categories, null)
     }
 
     private fun setProducts(featured: List<Featured>?) {

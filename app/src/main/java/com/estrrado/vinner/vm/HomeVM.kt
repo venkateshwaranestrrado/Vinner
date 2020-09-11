@@ -16,5 +16,6 @@ class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun shippingOperators(input: RequestModel) = respo.shippingOperators(input)
     fun deliveryFee(input: RequestModel) = respo.deliveryFee(input)
     fun signout(input: RequestModel) = respo.signout(input)
-    fun getPayfortToken(input: RequestModel) = respo.getPayfortToken(input)
+    fun getCategory(input: RequestModel) = respo.getCategory(input)
+    fun getIndustries(input: RequestModel) = respo.getIndustries(input)
 }

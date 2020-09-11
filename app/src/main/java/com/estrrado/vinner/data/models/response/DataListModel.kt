@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class ProductsModel {
+class DataListModel {
     @SerializedName("httpcode")
     @Expose
     var httpcode: Int? = null
@@ -19,7 +19,6 @@ class ProductsModel {
 
     @SerializedName("data")
     @Expose
-    var data: List<Datum>? =
-        null
+    var data: List<Datum>? = null
 
 }

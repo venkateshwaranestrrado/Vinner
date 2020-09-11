@@ -1,13 +1,12 @@
 package com.estrrado.vinner
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.estrrado.vinner.data.models.PayfortTokenResponse
 import com.estrrado.vinner.data.models.request.Input
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Model
-import com.estrrado.vinner.data.models.response.ProductsModel
+import com.estrrado.vinner.data.models.response.DataListModel
 import com.estrrado.vinner.retrofit.APIService
 
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -111,8 +110,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         return data
     }
 
-    fun getProductList(input: RequestModel): MutableLiveData<ProductsModel?> {
-        val data = MutableLiveData<ProductsModel?>()
+    fun getProductList(input: RequestModel): MutableLiveData<DataListModel?> {
+        val data = MutableLiveData<DataListModel?>()
             apiService?.getProductList(
                 input.accessToken,
                 input.limit,
@@ -212,8 +211,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         return data
     }
 
-    fun shippingOperators(input: RequestModel): MutableLiveData<ProductsModel?> {
-        val data = MutableLiveData<ProductsModel?>()
+    fun shippingOperators(input: RequestModel): MutableLiveData<DataListModel?> {
+        val data = MutableLiveData<DataListModel?>()
             apiService?.shippingOperators(
                 input.accessToken
             )!!.subscribeOn(Schedulers.io())
@@ -258,15 +257,25 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         return data
     }
 
-    fun getPayfortToken(input: RequestModel): MutableLiveData<PayfortTokenResponse?> {
-        val data = MutableLiveData<PayfortTokenResponse?>()
-            apiService?.payfortToken(
-                input.serviceCommand,
-                input.accessCode,
-                input.merchantIdentifier,
-                input.language,
-                input.deviceId,
-                input.signature
+    fun getCategory(input: RequestModel): MutableLiveData<DataListModel?> {
+        val data = MutableLiveData<DataListModel?>()
+            apiService?.getCategory(
+                input.accessToken
+            )!!.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                        data.value = it
+                }, {
+                    it.printStackTrace()
+
+                })
+        return data
+    }
+
+    fun getIndustries(input: RequestModel): MutableLiveData<DataListModel?> {
+        val data = MutableLiveData<DataListModel?>()
+            apiService?.getIndustry(
+                input.accessToken
             )!!.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

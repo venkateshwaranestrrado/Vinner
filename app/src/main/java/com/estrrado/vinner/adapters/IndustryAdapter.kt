@@ -17,46 +17,32 @@ import com.estrrado.vinner.data.models.Category
 import com.estrrado.vinner.data.models.response.Datum
 import kotlinx.android.synthetic.main.toolbar.*
 
-class CategoryAdapter(
+class IndustryAdapter(
     private var activity: FragmentActivity,
-    private var dataList: List<Category>?,
-    private var catList: List<Datum>?
+    private var industryList: List<Datum>?
 ) :
-    RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
+    RecyclerView.Adapter<IndustryAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
-            LayoutInflater.from(activity).inflate(R.layout.item_home_category, parent, false)
+            LayoutInflater.from(activity).inflate(R.layout.item_industry, parent, false)
         val holder = ViewHolder(itemView)
         return holder
     }
 
     override fun getItemCount(): Int {
-        if (dataList != null)
-            return dataList!!.size
-        else
-            return catList!!.size
+            return industryList!!.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (dataList != null) {
-            holder.name.text = dataList?.get(position)!!.categoryName
+            holder.name.text = industryList?.get(position)!!.getIndustryName()
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)
-                .load(dataList?.get(position)!!.categoryImage)
+                .load(industryList?.get(position)!!.getIndustryImage())
                 .transform(RoundedCorners(radius))
                 .thumbnail(0.1f)
                 .into(holder.image)
-        } else {
-            holder.name.text = catList?.get(position)!!.getCategoryName()
-            val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
-            Glide.with(activity)
-                .load(catList?.get(position)!!.getCategoryImage())
-                .transform(RoundedCorners(radius))
-                .thumbnail(0.1f)
-                .into(holder.image)
-        }
         holder.mView!!.setOnClickListener {
             // Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_productFragment, bundleOf(BRAND_ID to dataList!![position]!!.brandId))
         }
