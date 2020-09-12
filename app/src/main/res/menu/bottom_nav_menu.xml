@@ -13,7 +13,7 @@
         android:title="Request" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_cart"
         android:icon="@drawable/ic_bag"
         android:title="Bag" />
 

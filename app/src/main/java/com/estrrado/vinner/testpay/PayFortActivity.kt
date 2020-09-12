@@ -188,6 +188,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         Log.d(TAG, "onSuccess")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
+                        finish()
                     }
 
                     override fun onFailure(p0: MutableMap<String, Any>?, p1: MutableMap<String, Any>?) {
@@ -195,7 +196,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
                         Toast.makeText(this@PayFortActivity, "Error: ${p1?.get("response_message")}", Toast.LENGTH_LONG).show()
-
+                        finish()
 
                     }
 
@@ -203,6 +204,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         Log.d(TAG, "onCancel")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
+                        finish()
                     }
 
                 })

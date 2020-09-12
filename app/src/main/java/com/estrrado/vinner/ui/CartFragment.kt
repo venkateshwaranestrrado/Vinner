@@ -94,7 +94,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 val bundle = bundleOf(OPERATOR_ID to operatorId, CART_ID to cartId)
 //                val bundle = bundleOf(OPERATOR_ID to "1", CART_ID to cartId)
                 view?.findNavController()
-                    ?.navigate(R.id.action_navigation_notifications_to_checkoutFragment, bundle)
+                    ?.navigate(R.id.action_navigation_cart_to_checkoutFragment, bundle)
             } else {
                 printToast(this!!.context!!, "Please select shipping operators")
             }

@@ -286,5 +286,4 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
                 })
         return data
     }
-
 }
