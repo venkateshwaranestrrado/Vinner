@@ -36,7 +36,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_register)
         initControl()
-        pHNEnumber= Preferences.get(this, MOBILE)
+        pHNEnumber = Preferences.get(this, MOBILE)
         edt_mobile.setText(pHNEnumber)
     }
 
@@ -59,7 +59,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.tvRSubmit -> {
-                progressregister.visibility=View.VISIBLE
                 if (Helper.isNetworkAvailable(this)) {
                     val userName = etUsername.text.toString()
                     val email = etemail.text.toString()
@@ -75,16 +74,15 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                         hasText(edt_password, REQUIRED) && hasText(edt_confirm_password, REQUIRED)
                     ) {
                         if (!email.matches(emailPattern.toRegex())) {
-                            progressregister.visibility=View.GONE
+                            progressregister.visibility = View.GONE
 
                             printToast(this, EMAIL_ID_NOT_VALID)
                         } else if (!password.equals(confirmPassword)) {
-                            progressregister.visibility=View.GONE
+                            progressregister.visibility = View.GONE
 
                             printToast(this, PASSWORD_DOES_NOT_MATCH)
-                        }
-                        else
-                        {
+                        } else {
+                            progressregister.visibility = View.VISIBLE
                             authenticateVM!!.register(
                                 Input(
                                     userName,
@@ -96,45 +94,20 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                                 )
                             ).observe(this,
                                 Observer {
-//                                    printToast(this, it?.message.toString())
+                                    printToast(this, it?.message.toString())
                                     if (it?.status.equals(SUCCESS)) {
-                                        progressregister.visibility=View.GONE
+                                        progressregister.visibility = View.GONE
                                         startActivity(Intent(this, LoginActivity::class.java))
                                         finish()
                                     }
-//                                    progressregister.visibility=View.GONE
-//                                    Toast.makeText(this,"Invalid Credentials",Toast.LENGTH_SHORT).show()
-
+                                    progressregister.visibility = View.GONE
                                 })
                         }
                     }
-//                    progressregister.visibility=View.GONE
-//                    Toast.makeText(this,"Invalid Credentials",Toast.LENGTH_SHORT).show()
+                } else {
+                    progressregister.visibility = View.GONE
+                    printToast(this, "No Network Available")
                 }
-                else{
-                    progressregister.visibility=View.GONE
-                    Toast.makeText(this,"No Network Available", Toast.LENGTH_SHORT).show()
-                }
-
-                /*  val call: Call<Input> = ApiClient.apiServices!!.registerUser("prabudh","prabudh.pk@gmail.com","9895097555","123456","123456")
-                  call.enqueue(object : Callback<Input> {
-
-                      override fun onResponse(call: Call<Input>, response: Response<Input>) {
-                          var str_response = response!!.body()!!.toString()
-                          val gson = Gson()
-
-                          var json_contact:JSONObject = JSONObject( gson.toJson(str_response))
-                          var shttp:String=json_contact.getString("http")
-
-                          Log.d("Testing",shttp)
-
-                      }
-
-                      override fun onFailure(call: Call<Input>?, t: Throwable?) {
-                          Log.d("Testing failure",t!!.localizedMessage.toString())
-                      }
-
-                  })*/
 
             }
 
