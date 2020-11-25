@@ -1,5 +1,6 @@
 package com.estrrado.vinner.data.models.response
 
+import com.bluelinelabs.logansquare.annotation.JsonField
 import com.estrrado.vinner.data.models.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -34,13 +35,21 @@ class Data {
     @Expose
     private var username: String? = null
 
-    @SerializedName("email")
+    @SerializedName("review_id")
     @Expose
-    private var email: String? = null
+    private var review_id: String? = null
 
-    @SerializedName("mobile")
+//    @SerializedName("email")
+//    @Expose
+//    private var email: String? = null
+//
+//    @SerializedName("mobile")
+//    @Expose
+//    private var mobile: String? = null
+
+    @SerializedName("error")
     @Expose
-    private var mobile: String? = null
+    private var error: String? = null
 
     @SerializedName("redirect")
     @Expose
@@ -62,21 +71,21 @@ class Data {
         this.username = username
     }
 
-    fun getEmail(): String? {
-        return email
-    }
-
-    fun setEmail(email: String?) {
-        this.email = email
-    }
-
-    fun getMobile(): String? {
-        return mobile
-    }
-
-    fun setMobile(mobile: String?) {
-        this.mobile = mobile
-    }
+//    fun getEmail(): String? {
+//        return email
+//    }
+//
+//    fun setEmail(email: String?) {
+//        this.email = email
+//    }
+//
+//    fun getMobile(): String? {
+//        return mobile
+//    }
+//
+//    fun setMobile(mobile: String?) {
+//        this.mobile = mobile
+//    }
 
     fun getRedirect(): String? {
         return redirect
@@ -94,9 +103,11 @@ class Data {
     @Expose
     private var reviews: List<Review?>? = null
 
+
+
     @SerializedName("related_products")
     @Expose
-    private var relatedProducts: List<Any?>? = null
+    private var related_products: ArrayList<RelatedProducts>? = null
 
     fun getProduct(): Product? {
         return product
@@ -114,12 +125,12 @@ class Data {
         this.reviews = reviews
     }
 
-    fun getRelatedProducts(): List<Any?>? {
-        return relatedProducts
+    fun getRelatedProducts(): ArrayList<RelatedProducts>? {
+        return related_products
     }
 
-    fun setRelatedProducts(relatedProducts: List<Any?>?) {
-        this.relatedProducts = relatedProducts
+    fun setRelatedProducts(relatedProducts: ArrayList<RelatedProducts>? ) {
+        this.related_products = relatedProducts
     }
 
     /*
@@ -132,7 +143,7 @@ class Data {
 
     @SerializedName("items_total")
     @Expose
-    private var itemsTotal: Int? = null
+    private var itemsTotal: String? = null
 
     @SerializedName("cart_items")
     @Expose
@@ -146,11 +157,11 @@ class Data {
         this.cart = cart
     }
 
-    fun getItemsTotal(): Int? {
+    fun getItemsTotal(): String? {
         return itemsTotal
     }
 
-    fun setItemsTotal(itemsTotal: Int?) {
+    fun setItemsTotal(itemsTotal: String?) {
         this.itemsTotal = itemsTotal
     }
 
@@ -390,6 +401,112 @@ class Data {
     fun setAddress(address: Address) {
         this.address = address
     }
+
+    @field:SerializedName("user_id")
+    @field:JsonField(name = arrayOf("user_id"))
+    val user_id: String? = null
+
+    @field:SerializedName("current_stock")
+    @field:JsonField(name = arrayOf("current_stock"))
+    val current_stock: String? = null
+
+    @field:SerializedName("name")
+    @field:JsonField(name = arrayOf("name"))
+    val name: String? = null
+
+    @field:SerializedName("address1")
+    @field:JsonField(name = arrayOf("address1"))
+    val address1: String? = null
+
+
+    @field:SerializedName("address2")
+    @field:JsonField(name = arrayOf("address2"))
+    val address2: String? = null
+
+    @field:SerializedName("post")
+    @field:JsonField(name = arrayOf("post"))
+    val post: String? = null
+
+    @field:SerializedName("state")
+    @field:JsonField(name = arrayOf("state"))
+    val state: String? = null
+
+    @field:SerializedName("mobile")
+    @field:JsonField(name = arrayOf("mobile"))
+    val mobile: String? = null
+
+
+    @field:SerializedName("email")
+    @field:JsonField(name = arrayOf("email"))
+    val email: String? = null
+
+    @field:SerializedName("district")
+    @field:JsonField(name = arrayOf("district"))
+    val district: String? = null
+
+
+    @field:SerializedName("path")
+    @field:JsonField(name = arrayOf("path"))
+    val path: String? = null
+
+    @field:SerializedName("order_date")
+    @field:JsonField(name = arrayOf("order_date"))
+    val order_date: String? = null
+    @field:SerializedName("order_id")
+    @field:JsonField(name = arrayOf("order_id"))
+    val order_id: String? = null
+  @field:SerializedName("order_total")
+    @field:JsonField(name = arrayOf("order_total"))
+    val order_total: String? = null
+
+    @field:SerializedName("items_count")
+    @field:JsonField(name = arrayOf("items_count"))
+    val items_count: String? = null
+
+    @field:SerializedName("product_details")
+    @field:JsonField(name = arrayOf("product_details"))
+    val product_details: ArrayList<Productdetails>? = null
+
+    @field:SerializedName("delivered")
+    @field:JsonField(name = arrayOf("delivered"))
+    val delivered: String? = null
+
+    @field:SerializedName("ordered")
+    @field:JsonField(name = arrayOf("ordered"))
+    val ordered: String? = null
+
+    @field:SerializedName("delivery_status")
+    @field:JsonField(name = arrayOf("delivery_status"))
+    val delivery_status: String? = null
+
+    @field:SerializedName("payment_method")
+    @field:JsonField(name = arrayOf("payment_method"))
+    val payment_method: String? = null
+
+
+    @field:SerializedName("shipping_cost")
+    @field:JsonField(name = arrayOf("shipping_cost"))
+    val shipping_cost: String? = null
+
+    @field:SerializedName("tax")
+    @field:JsonField(name = arrayOf("tax"))
+    val tax: String? = null
+
+
+    @field:SerializedName("billing_address")
+    @field:JsonField(name = arrayOf("billing_address"))
+    val billing_address: ArrayList<Billingaddress?>? = null
+
+    @field:SerializedName("shipping_address")
+    @field:JsonField(name = arrayOf("shipping_address"))
+    val shipping_address: ArrayList<Shippingaddress?>? = null
+
+    @field:SerializedName("payment_status")
+    @field:JsonField(name = arrayOf("payment_status"))
+    val payment_status: ArrayList<payment_status?>? = null
+
+
+
 
 
 }

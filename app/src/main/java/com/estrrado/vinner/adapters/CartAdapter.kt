@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
+import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Preferences.PRODUCTNAME
 import com.estrrado.vinner.ui.CartadapterCallBack
 
 class CartAdapter(
@@ -31,6 +33,7 @@ class CartAdapter(
 
     override fun onBindViewHolder(holder: CartAdapter.ViewHolder, position: Int) {
         holder.name.text = dataList?.get(position)!!.productName
+        Preferences.put(activity,PRODUCTNAME,dataList?.get(position)!!.productName!!)
         holder.txtDesc.text = dataList?.get(position)!!.categoryName
         holder.txtCost.text =
             dataList?.get(position)!!.productTotal + " " + dataList?.get(position)!!.currency

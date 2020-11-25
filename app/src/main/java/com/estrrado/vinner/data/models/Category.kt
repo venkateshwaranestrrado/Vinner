@@ -17,4 +17,8 @@ class Category {
     @Expose
     var categoryImage: String? = null
 
+    @SerializedName("current_stock")
+    @Expose
+    var current_stock: String? = null
+
 }

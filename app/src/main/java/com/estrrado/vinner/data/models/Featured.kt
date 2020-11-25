@@ -25,6 +25,10 @@ class Featured {
     @Expose
     var unit: String? = null
 
+    @SerializedName("current_stock")
+    @Expose
+    var current_stock: String? = null
+
     @SerializedName("price")
     @Expose
     var price: String? = null

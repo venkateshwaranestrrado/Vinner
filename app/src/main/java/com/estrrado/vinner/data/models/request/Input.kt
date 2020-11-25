@@ -27,7 +27,11 @@ class Input(
 
     @field:SerializedName("status")
     @field:JsonField(name = arrayOf("status"))
-    val status: String? = null
+    val status: String? = null ,
+
+    @field:SerializedName("c_code")
+    @field:JsonField(name = arrayOf("c_code"))
+    val c_code: String? = null
 
 )
 

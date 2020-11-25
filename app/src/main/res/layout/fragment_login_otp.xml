@@ -121,6 +121,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
             android:maxLines="1"
+            android:gravity="center_horizontal"
             android:singleLine="true"
             android:textSize="@dimen/_14sdp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -139,4 +140,14 @@
         app:layout_constraintLeft_toRightOf="@+id/guideline4"
         app:layout_constraintRight_toLeftOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+
+    <include
+        android:id="@+id/progressotp"
+        layout="@layout/item_progress_sheet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

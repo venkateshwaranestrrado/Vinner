@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 
 
 class CartItem {
-    @SerializedName("cart_item_id ")
+    @SerializedName("cart_item_id")
     @Expose
     var cartItemId: String? = null
 
-    @SerializedName("cart_id ")
+    @SerializedName("cart_id")
     @Expose
     var cartId: String? = null
 
-    @SerializedName("product_id ")
+    @SerializedName("product_id")
     @Expose
     var productId: String? = null
 
-    @SerializedName("product_name ")
+    @SerializedName("product_name")
     @Expose
     var productName: String? = null
 
@@ -29,7 +29,7 @@ class CartItem {
     @Expose
     var productQuantity: String? = null
 
-    @SerializedName("product_total ")
+    @SerializedName("product_total")
     @Expose
     var productTotal: String? = null
 

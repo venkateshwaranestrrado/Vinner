@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object ServiceGenerator {
-    var apiData = WebConfig.TEST
+    var apiData = WebConfig.PUBLISH
     var apiBaseUrl = apiData.getLiveUrl()
 
     var apiPayFortData = WebConfigPayFort.TEST

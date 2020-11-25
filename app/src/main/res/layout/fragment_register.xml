@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -99,6 +99,8 @@
             android:layout_marginRight="@dimen/_14sdp"
             android:background="@color/sky_blue"
             android:ems="10"
+            android:enabled="false"
+            android:focusable="false"
             android:hint="Phone Number"
             android:inputType="phone"
             android:padding="@dimen/_5sdp"
@@ -170,6 +172,16 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etReferral" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+
+
+    <include
+        android:id="@+id/progressregister"
+        layout="@layout/item_progress_sheet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,12 +14,25 @@
         <action
             android:id="@+id/action_navigation_home_to_productListFragment"
             app:destination="@id/productListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_productCategory"
+            app:destination="@id/productCategory" />
 
     </fragment>
-
-    <fragment
+    <dialog
         android:id="@+id/navigation_dashboard"
-        android:name="com.estrrado.vinner.ui.request.RequestFragment" />
+        android:name="com.estrrado.vinner.ui.BottomsheetFragment"
+        android:label="bottom_dummy"
+        tools:layout="@layout/fragment_bottomsheet">
+        <action
+            android:id="@+id/action_navigation_dashboard_to_request_demo"
+            app:destination="@id/checkoutFragment" />
+
+    </dialog>
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_dashboard"-->
+<!--        android:name="com.estrrado.vinner.ui.request.RequestFragment" />-->
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -30,11 +43,25 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_browse"
-        android:name="com.estrrado.vinner.ui.browse.BrowseFragment" />
+        android:name="com.estrrado.vinner.ui.browse.BrowseFragment" >
+        <action
+            android:id="@+id/action_navigation_browse_to_productCategory"
+            app:destination="@id/productCategory" />
+        <action
+            android:id="@+id/action_navigation_browse_to_industrycategory"
+            app:destination="@id/industrycategory" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_more"
         android:name="com.estrrado.vinner.ui.more.MoreFragment"
-        android:label="More" />
+        android:label="More" >
+        <action
+            android:id="@+id/action_navigation_more_to_addAddress"
+            app:destination="@id/addAddress" />
+        <action
+            android:id="@+id/action_navigation_more_to_orderList"
+            app:destination="@id/orderList" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_product"
@@ -45,6 +72,9 @@
         <action
             android:id="@+id/action_navigation_cart_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
+        <action
+            android:id="@+id/action_navigation_cart_to_address_list"
+            app:destination="@id/address_list" />
     </fragment>
 
     <fragment
@@ -53,7 +83,14 @@
 
     <fragment
         android:id="@+id/navigation_service"
-        android:name="com.estrrado.vinner.ui.request.RequestService" />
+        android:name="com.estrrado.vinner.ui.request.RequestService" >
+        <action
+            android:id="@+id/action_navigation_service_to_navigation_home"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_service_to_navigation_home2"
+            app:destination="@id/navigation_home" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_editprofile"
         android:name="com.estrrado.vinner.ui.more.EditProfile" />
@@ -73,6 +110,55 @@
         android:id="@+id/checkoutFragment"
         android:name="com.estrrado.vinner.ui.CheckoutFragment"
         android:label="CheckoutFragment" />
+    <fragment
+        android:id="@+id/requestdemo"
+        android:name="com.estrrado.vinner.ui.request.RequestDemo"
+        android:label="CheckoutFragment" />
+    <fragment
+        android:id="@+id/addAddress"
+        android:name="com.estrrado.vinner.ui.Address_list" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/address_list"
+        android:name="com.estrrado.vinner.ui.Address_list"
+        android:label="fragment_address_list2"
+        tools:layout="@layout/fragment_address_list" >
+        <action
+            android:id="@+id/action_address_list_to_addAddress"
+            app:destination="@id/addAddress" />
+    </fragment>
+    <fragment
+        android:id="@+id/productCategory"
+        android:name="com.estrrado.vinner.ui.ProductCategory"
+        android:label="fragment_product_category"
+        tools:layout="@layout/fragment_product_category" >
+        <action
+            android:id="@+id/action_productCategory_to_navigation_product"
+            app:destination="@id/navigation_product" />
+    </fragment>
+    <fragment
+        android:id="@+id/industrycategory"
+        android:name="com.estrrado.vinner.ui.Industrycategory"
+        android:label="Industrycategory" >
+        <action
+            android:id="@+id/action_industrycategory_to_navigation_product"
+            app:destination="@id/navigation_product" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderList"
+        android:name="com.estrrado.vinner.ui.OrderList"
+        android:label="OrderList" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.estrrado.vinner.ui.SearchFragment"
+        android:label="fragment_search"
+
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_navigation_product"
+            app:destination="@id/navigation_product" />
+    </fragment>
 
 
 </navigation>

@@ -13,7 +13,7 @@ import javax.inject.Singleton
 
 @Module
 object ApiModule {
-    var apiData = WebConfig.TEST
+    var apiData = WebConfig.PUBLISH
     var LIVE_URL = apiData.getLiveUrl()
     var scheme: String = ""
         set(url) {

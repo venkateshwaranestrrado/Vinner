@@ -24,7 +24,8 @@
     <string name="related_products">Related Products</string>
     <string name="debit_credit_card">Debit / Credit Card</string>
     <string name="visa_card">Visa Card</string>
-    <string name="paypal">Paypal</string>
+    <string name="paypal">Payfort</string>
+    <string name="hint_resource">Products</string>
     <string-array name="city">
         <item>City</item>
 
@@ -38,4 +39,7 @@
         <item>Packages</item>
 
     </string-array>
+    <string name="rs"> \u20B9 </string>
+    <string name="magazine">Postage &amp; Packing    :</string>
+    <string name="hint"><font size="10">Address Type</font></string>
 </resources>

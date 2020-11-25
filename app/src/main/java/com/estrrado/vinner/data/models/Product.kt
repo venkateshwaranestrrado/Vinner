@@ -33,6 +33,10 @@ class Product {
     @Expose
     var rating: String? = null
 
+    @SerializedName("return_policy")
+    @Expose
+    var return_policy: String? = null
+
     @SerializedName("reated_customers")
     @Expose
     var reatedCustomers: String? = null
@@ -48,5 +52,7 @@ class Product {
     @SerializedName("product_image")
     @Expose
     val productImage: List<String>? = null
+
+
 
 }

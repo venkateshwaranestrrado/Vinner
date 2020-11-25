@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.browse.BrowseFragment"
-    android:paddingBottom="@dimen/_45sdp">
+    android:background="@color/white"
+    tools:context=".ui.browse.BrowseFragment">
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar"
+        layout="@layout/toolbar_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -53,7 +53,7 @@
                 android:id="@+id/tvbrowse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginTop="18dp"
                 android:text="Browse By Industry"
                 android:textColor="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,8 +65,9 @@
                 android:id="@+id/recycle_industry"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvbrowse"
-                android:layout_marginTop="@dimen/_10sdp"/>
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/progressbrowse"
+                app:layout_constraintTop_toBottomOf="@+id/tvbrowse" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,4 +76,12 @@
     </androidx.core.widget.NestedScrollView>
 
 
+    <include
+        android:id="@+id/progressbrowse"
+        layout="@layout/item_progress_sheet"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
