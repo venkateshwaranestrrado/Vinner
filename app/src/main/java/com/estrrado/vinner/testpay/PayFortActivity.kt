@@ -4,14 +4,38 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
-import com.estrrado.vinner.helper.CART_ID
-import com.estrrado.vinner.helper.TOTAL_PAYABLE
+import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.activity.LoginActivity
+import com.estrrado.vinner.adapters.ProductsAdapter
+import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.*
+import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
+import com.estrrado.vinner.helper.Constants.CART_ID
+import com.estrrado.vinner.helper.Constants.HOUSENAME
+import com.estrrado.vinner.helper.Constants.LANDMARK
+import com.estrrado.vinner.helper.Constants.OPERATOR_ID
+import com.estrrado.vinner.helper.Constants.PINCODE
+import com.estrrado.vinner.helper.Constants.ROAD_NAME
+import com.estrrado.vinner.helper.Constants.SUCCESS
+import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
+import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.retrofit.ApiClient
+import com.estrrado.vinner.ui.OrderList
+import com.estrrado.vinner.ui.more.AddAddress
+import com.estrrado.vinner.vm.HomeVM
+import com.estrrado.vinner.vm.MainViewModel
 import com.payfort.fort.android.sdk.base.FortSdk
 import com.payfort.fort.android.sdk.base.callbacks.FortCallBackManager
 import com.payfort.sdk.android.dependancies.base.FortInterfaces
 import com.payfort.sdk.android.dependancies.models.FortRequest
+import kotlinx.android.synthetic.main.fragment_product_list.*
 import webconnect.com.webconnect.WebConnect
 import webconnect.com.webconnect.listener.OnWebCallback
 import java.security.MessageDigest
@@ -22,7 +46,15 @@ import java.security.MessageDigest
  *
  * */
 class PayFortActivity : AppCompatActivity(), OnWebCallback {
-
+    var vModel: HomeVM? = null
+    var operatorId: String? = null
+    var address: String? = null
+    var totalPayable: String? = null
+    var housename: String? = null
+    var Roadname: String? = null
+    var landmark: String? = null
+    var pincode: String? = null
+    var addressType: String? = null
     var fortCallback: FortCallBackManager? = null
     val TAG = "payTag"
     lateinit var deviceId: String
@@ -30,38 +62,26 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-        /**
-         * get device id using there SDK.
-         * */
+        vModel = ViewModelProvider(
+            this,
+            MainViewModel(
+                HomeVM(
+                    VinnerRespository.getInstance(
+                        this,
+                        ApiClient.apiServices!!
+                    )
+                )
+            )
+        ).get(HomeVM::class.java)
         deviceId = FortSdk.getDeviceId(this)
 //        deviceId = "sdjabdgvhgchkahsbdausiydfhuscnjihoiuhodivoduih"
 
-        /**
-         * initialize Fort callback
-         * */
         initFortCallback()
 
-        /**
-         * set onClick listener
-         * */
-//        btn.setOnClickListener {
-            /**
-             * start purchase operation by getting access_token first
-             * */
             getToknSdk()
 //        }
     }
 
-
-
-
-    /**
-     * return hashing of any string
-     * note: we use SHA-256 Cryptographic Hash Algorithm
-     *  but you should use same one selected in your payfort account.
-     * */
     fun getHashString(t: String): String {
         val bytes = t.toByteArray()
         val md = MessageDigest.getInstance("SHA-256")
@@ -70,26 +90,10 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         return hashSt
     }
 
-
-    /**
-     * get access token from payfort server for each purchase operation
-     *  here I'm using retrofit library to call api,, you can use whatEver you are comfortable with it.
-     * */
     private fun getToknSdk() {
-//        textOne.text = "get signature..."
+
         val param = linkedMapOf<String, String>()
 
-        /**
-         * You should make one string with no space e.g key1=value1key2=value2
-         * you should include all params
-         * you should order them ASC
-         * you should put  SHA request phrase ' in this example => Hello' at the beginning  e.g  Hellokey1=value1key2=value2
-         * you should put  SHA response phrase ' in this example => Hello' at the end  e.g  Hellokey1=value1key2=value2Hellow
-         *  check Docs for more details
-         * */
-        /**
-         * you should get 'access_code' from your payfort account
-         * */
         param.put("access_code", "WGG6Avj6KSL4SX4zfWGQ")
         param.put("device_id", deviceId)
         param.put("language", "en")
@@ -142,7 +146,8 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          * */
         model.isShowResponsePage = true
         val hash = hashMapOf<String, String>()
-
+        val tsLong = System.currentTimeMillis() / 1000
+        val ts = tsLong.toString()
 //        getHashString.put("command", "PURCHASE")
         hash.put("command", "AUTHORIZATION")
         hash.put("customer_email", "m.salem@clickapps.co")
@@ -157,7 +162,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          * here we let user to entered as our test requirement.
          * */
 //        val x = editOne.text.toString()
-        hash.put("merchant_reference", getIntent().getExtras()!!.getString(CART_ID)!!)
+        hash.put("merchant_reference", ts+getIntent().getExtras()!!.getString(CART_ID)!!)
         /**
          * you can also add any option key-value pairs
          * */
@@ -185,6 +190,40 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         FortSdk.ENVIRONMENT.TEST, 5,
                         fortCallback, true, object : FortInterfaces.OnTnxProcessed {
                     override fun onSuccess(p0: MutableMap<String, Any>?, p1: MutableMap<String, Any>?) {
+
+
+                        vModel!!.PaymentStatus(RequestModel(
+                            accessToken = Preferences.get(this@PayFortActivity, ACCESS_TOKEN),
+                            address_type = getIntent().getExtras()!!.getString(ADDDRESS_TYPE),
+                            housename = getIntent().getExtras()!!.getString(HOUSENAME),
+                            road_name = getIntent().getExtras()!!.getString(ROAD_NAME),
+                            landmark = getIntent().getExtras()!!.getString(LANDMARK),
+                            pincode = getIntent().getExtras()!!.getString(PINCODE),
+                            payment_status = "paid",
+                            payment_method = "payfort",
+                            operatorId = getIntent().getExtras()!!.getString(OPERATOR_ID)
+
+                        )).observe(this@PayFortActivity,
+                            Observer {
+                                if (it?.status.equals(SUCCESS)) {
+                                    printToast(applicationContext, "payment successfully")
+
+                                   supportFragmentManager.beginTransaction()
+                                        .replace(R.id.nav_host_fragment, OrderList()).commit()
+                                }
+
+                                else
+                                {
+                                    if (it?.message.equals("Invalid access token")) {
+                                        startActivity(Intent(this@PayFortActivity, LoginActivity::class.java))
+                                        this@PayFortActivity.finish()
+                                    } else {
+                                        printToast(this@PayFortActivity, it?.message!!)
+                                    }
+                                    printToast(applicationContext, it?.message.toString())
+                                }
+
+                            })
                         Log.d(TAG, "onSuccess")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())

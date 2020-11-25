@@ -11,6 +11,10 @@ data class Model (
     @field:JsonField(name = arrayOf("data"))
     val data: Data? = null,
 
+    @field:SerializedName("user_status")
+    @field:JsonField(name = arrayOf("user_status"))
+    val userstatus: String? = null,
+
     @field:SerializedName("message")
     @field:JsonField(name = arrayOf("message"))
     val message: String? = null,

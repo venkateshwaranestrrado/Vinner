@@ -8,6 +8,18 @@ object Preferences {
 
     const val PREFERENCE_NAME = "DATA"
     const val TOKEN = "id"
+    var REGION_CODE="code"
+    var REGION_NAME="name"
+    var CATEGORY_ID="cat_id"
+    var OPERATOR_ID="operator_id"
+    var NAME="NAME"
+    var PROFILEIMAGE="IMAGE"
+    var PRODUCTNAME="NAME"
+    var CARTCOUNT=""
+    var ADDRESS_ID=""
+    var ORDER_ID=""
+
+
 
     fun clearOne(context: Context?, FileName: String, KeyName: String) {
         val settings = context?.getSharedPreferences(FileName, Context.MODE_PRIVATE)
@@ -36,8 +48,8 @@ object Preferences {
         return preferencesData?.getString(KeyName, "")
     }
 
-    fun put(context: FragmentActivity?, key: String, value: String) {
-        val sharedPreferences = context?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+    fun put(activity: FragmentActivity?, key: String, value: String) {
+        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val spe = sharedPreferences?.edit()
         spe?.putString(key, value)
         spe?.apply()
@@ -49,4 +61,7 @@ object Preferences {
         spe?.putString(key, value)
         spe?.apply()
     }
+
+
+
 }

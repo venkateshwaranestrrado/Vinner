@@ -31,8 +31,8 @@ class ReviewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = dataList?.get(position)!!.user
-        holder.title.text = dataList?.get(position)!!.user
-        holder.review.text = dataList?.get(position)!!.user
+        holder.title.text = dataList?.get(position)!!.reviewTitle
+        holder.review.text = dataList?.get(position)!!.review
         holder.ratingBar.rating = dataList?.get(position)!!.rating!!.toFloat()
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
 //        Glide.with(activity)

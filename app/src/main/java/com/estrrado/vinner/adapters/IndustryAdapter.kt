@@ -15,6 +15,8 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.data.CategoryItem
 import com.estrrado.vinner.data.models.Category
 import com.estrrado.vinner.data.models.response.Datum
+import com.estrrado.vinner.helper.Constants.BRAND_ID
+
 import kotlinx.android.synthetic.main.toolbar.*
 
 class IndustryAdapter(
@@ -22,7 +24,7 @@ class IndustryAdapter(
     private var industryList: List<Datum>?
 ) :
     RecyclerView.Adapter<IndustryAdapter.ViewHolder>() {
-
+    var brandId: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -44,7 +46,10 @@ class IndustryAdapter(
                 .thumbnail(0.1f)
                 .into(holder.image)
         holder.mView!!.setOnClickListener {
-            // Navigation.findNavController(it).navigate(R.id.action_homeFragment_to_productFragment, bundleOf(BRAND_ID to dataList!![position]!!.brandId))
+            brandId= industryList!!.get(position).getIndustryId()!!
+
+            val bundle = bundleOf(BRAND_ID to brandId)
+             Navigation.findNavController(it).navigate(R.id.action_navigation_browse_to_industrycategory,bundle)
         }
     }
 

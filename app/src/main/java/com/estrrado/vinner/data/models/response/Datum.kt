@@ -13,6 +13,10 @@ class Datum {
     @Expose
     var productTitle: String? = null
 
+    @SerializedName("current_stock")
+    @Expose
+    var current_stock: String? = null
+
     @SerializedName("qty")
     @Expose
     var qty: String? = null
