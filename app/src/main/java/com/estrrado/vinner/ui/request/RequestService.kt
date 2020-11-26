@@ -22,6 +22,7 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation
+import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.Validation.validate
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.HomeFragment
@@ -79,7 +80,7 @@ class RequestService : Fragment() {
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun initControl() {
 
-        etDate.setOnClickListener (object : View.OnClickListener {
+        etDate.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
                 val c = Calendar.getInstance()
@@ -335,9 +336,9 @@ class RequestService : Fragment() {
                         ServiceType = typeid.get(position).toString()
                         if (ServiceType == "3") {
                             ettype_detail.visibility = View.VISIBLE
-                        }else
+                        } else
 
-                        ettype_detail.visibility = View.GONE
+                            ettype_detail.visibility = View.GONE
                     }
 
                     override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -355,109 +356,95 @@ class RequestService : Fragment() {
 
         btnSubmit.setOnClickListener {
 
-            progressservice.visibility = View.VISIBLE
-
             if (Helper.isNetworkAvailable(requireContext())) {
-                progressservice.visibility = View.GONE
 
                 if (etphonenumber.validate()
                 ) {
                     if (etemail.validate()
                     ) {
-                if (validate(
-                        arrayOf(
-                            etName,
-                            etAddress,
-                            spCity,
-                            etName,
-                            etRequestDemo
-                        )
-                    )
-                ){
-                        vModel!!.getreqservice(
-                            RequestModel(
-                                accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                                service_category = Servicecateg,
-                                service_type = ServiceType,
-                                name = etName.text.toString(),
-                                address = etAddress.text.toString(),
-                                city = spCity.text.toString(),
-                                country = countryId,
-                                type_detail = ettype_detail.text.toString(),
-                                email = etemail.text.toString(),
-                                mobile = etphonenumber.text.toString(),
-                                date = Date,
-                                time = Time,
-                                remark = etRequestDemo.text.toString()
+                        if (validate(
+                                arrayOf(
+                                    etName,
+                                    etAddress,
+                                    spCity,
+                                    etName,
+                                    etRequestDemo,
+                                    etDate,
+                                    etTime
+                                )
                             )
-                        ).observe(requireActivity(),
-                            Observer {
-                                if (it!!.status == "success") {
-
+                        ) {
+                            progressservice.visibility = View.VISIBLE
+                            vModel!!.getreqservice(
+                                RequestModel(
+                                    accessToken = Preferences.get(activity, ACCESS_TOKEN),
+                                    service_category = Servicecateg,
+                                    service_type = ServiceType,
+                                    name = etName.text.toString(),
+                                    address = etAddress.text.toString(),
+                                    city = spCity.text.toString(),
+                                    country = countryId,
+                                    type_detail = ettype_detail.text.toString(),
+                                    email = etemail.text.toString(),
+                                    mobile = etphonenumber.text.toString(),
+                                    date = Date,
+                                    time = Time,
+                                    remark = etRequestDemo.text.toString()
+                                )
+                            ).observe(requireActivity(),
+                                Observer {
                                     progressservice.visibility = View.GONE
-                                    Validation.printToast(
+                                    printToast(
                                         requireActivity(),
-                                        "Service request sent successfully"
+                                        it!!.message!!
                                     )
-                                    requireActivity().supportFragmentManager.beginTransaction()
-                                        .replace(R.id.nav_host_fragment, HomeFragment()).commit()
-                                }
-                            })
-                    }
-                        else {
-                    progressservice.visibility = View.GONE
-                    Validation.printToast(requireContext()!!, "Enter Mandatory Fields")
+                                    if (it!!.status == "success") {
 
-
+                                        requireActivity().supportFragmentManager.beginTransaction()
+                                            .replace(R.id.nav_host_fragment, HomeFragment())
+                                            .commit()
+                                    }
+                                })
                         }
+                    } else {
+                        printToast(requireContext()!!, "Invalid Email Address")
                     }
-                    else {
-                        progressservice.visibility = View.GONE
-                        Validation.printToast(requireContext()!!, "Invalid Email Address")
-                    }
+                } else {
+                    printToast(requireContext()!!, "Invalid Phone number")
                 }
-
-
-                        else{
-                    progressservice.visibility = View.GONE
-                    Validation.printToast(requireContext()!!, "Invalid Phone number")
-
-                        }
-                    }
-                        else{
-                            progressservice.visibility = View.GONE
-                            Validation.printToast(requireContext()!!, "No network Available")
-                        }
-
-                }
-
-
-btnCancel.setOnClickListener {
-    requireActivity().supportFragmentManager.beginTransaction()
-        .replace(R.id.nav_host_fragment, HomeFragment()).commit()
-}
-    }
-}
-
-
-    private fun validate(elements: Array<EditText>): Boolean {
-        val boolean: ArrayList<Boolean> = ArrayList()
-        for (i in 0 until elements.size) {
-            boolean.add(hasText(elements[i]))
-        }
-        return !boolean.contains(false)
-    }
-
-    private fun hasText(editText: EditText?): Boolean {
-        if (editText != null) {
-            val text = editText.text.toString().trim { it <= ' ' }
-            editText.error = null
-            if (text.isEmpty()) {
-                editText.error = "Mandatory Field"
-                return false
+            } else {
+                printToast(requireContext()!!, "No network Available")
             }
-        } else {
+
+        }
+
+
+        btnCancel.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, HomeFragment()).commit()
+        }
+    }
+}
+
+
+private fun validate(elements: Array<EditText>): Boolean {
+    val boolean: ArrayList<Boolean> = ArrayList()
+    for (i in 0 until elements.size) {
+        boolean.add(hasText(elements[i]))
+    }
+    return !boolean.contains(false)
+}
+
+private fun hasText(editText: EditText?): Boolean {
+    if (editText != null) {
+        val text = editText.text.toString().trim { it <= ' ' }
+        editText.error = null
+        if (text.isEmpty()) {
+            editText.error = "Mandatory Field"
             return false
         }
-        return true
+    } else {
+        return false
     }
+    return true
+}

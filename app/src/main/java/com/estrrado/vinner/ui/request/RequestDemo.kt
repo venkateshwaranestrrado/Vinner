@@ -21,6 +21,7 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation
+import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.Validation.validate
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.HomeFragment
@@ -39,9 +40,11 @@ import kotlin.collections.ArrayList
 class RequestDemo : Fragment() {
     var vModel: HomeVM? = null
     var DemoId: Int? = null
+
     companion object {
         fun newInstance() = RequestDemo()
     }
+
     var countryId: String? = null
     var Date: String? = null
     var Time: String? = null
@@ -66,14 +69,17 @@ class RequestDemo : Fragment() {
             this,
             MainViewModel(
                 HomeVM(
-                    VinnerRespository.getInstance(activity, ApiClient.apiServices!!)))).get(HomeVM::class.java)
-                    initControl()
-                    getdata()
+                    VinnerRespository.getInstance(activity, ApiClient.apiServices!!)
+                )
+            )
+        ).get(HomeVM::class.java)
+        initControl()
+        getdata()
     }
 
-    private fun initControl(){
+    private fun initControl() {
 
-        etdemoDate.setOnClickListener (object : View.OnClickListener {
+        etdemoDate.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
                 val c = Calendar.getInstance()
@@ -107,7 +113,7 @@ class RequestDemo : Fragment() {
             }
         })
 
-        etdemoTime.setOnClickListener (object : View.OnClickListener {
+        etdemoTime.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
 
                 val cal = Calendar.getInstance()
@@ -130,7 +136,8 @@ class RequestDemo : Fragment() {
         })
 
         vModel!!.getcountries(
-            RequestModel()).observe(requireActivity(), androidx.lifecycle.Observer  {
+            RequestModel()
+        ).observe(requireActivity(), androidx.lifecycle.Observer {
 
             if (it!!.status == "success") {
                 progressdemo.visibility = View.GONE
@@ -182,7 +189,7 @@ class RequestDemo : Fragment() {
             RequestModel(accessToken = Preferences.get(activity, ACCESS_TOKEN))
 
         ).observe(requireActivity(),
-            androidx.lifecycle.Observer{
+            androidx.lifecycle.Observer {
                 if (it!!.status == "success") {
                     progressdemo.visibility = View.GONE
                     var demodata = it.data
@@ -213,7 +220,8 @@ class RequestDemo : Fragment() {
                 )
                 Selectproduct.prompt = "Demo Product"
                 Selectproduct.adapter = productadapter
-                Selectproduct.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+                Selectproduct.setOnItemSelectedListener(object :
+                    AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(
                         parent: AdapterView<*>,
                         view: View,
@@ -230,26 +238,25 @@ class RequestDemo : Fragment() {
 
             })
 
-}
+    }
+
     private fun getdata() {
         btndemoSubmit.setOnClickListener {
-            progressdemo.visibility = View.VISIBLE
             if (Helper.isNetworkAvailable(requireContext())) {
-                progressdemo.visibility = View.GONE
-
-                    if (etdemophonenumber.validate()
+                if (etdemophonenumber.validate() && etdemoDate.validate() && etdemoTime.validate()
+                ) {
+                    if (etdemoemail.validate()
                     ) {
-                        if (etdemoemail.validate()
-                        ) {
-                            if (validate(
-                                    arrayOf(
-                                        etdemoName,
-                                        etdemoAddress,
-                                        spdemoCity,
-                                        etdemoRequestDemo
-                                    )
+                        if (validate(
+                                arrayOf(
+                                    etdemoName,
+                                    etdemoAddress,
+                                    spdemoCity,
+                                    etdemoRequestDemo
                                 )
-                            ) {
+                            )
+                        ) {
+                            progressdemo.visibility = View.VISIBLE
                             vModel!!.getreqdemo(
                                 RequestModel(
                                     accessToken = Preferences.get(activity, ACCESS_TOKEN),
@@ -266,46 +273,27 @@ class RequestDemo : Fragment() {
                                 )
                             ).observe(requireActivity(),
                                 androidx.lifecycle.Observer {
+                                    printToast(requireContext(), it!!.message!!)
                                     if (it!!.status == "success") {
-                                        progressdemo.visibility = View.GONE
-                                        Validation.printToast(
-                                            requireActivity(),
-                                            "Demo request sent successfully"
-                                        )
                                         requireActivity().supportFragmentManager.beginTransaction()
                                             .replace(R.id.nav_host_fragment, HomeFragment())
                                             .commit()
                                     }
+                                    progressdemo.visibility = View.GONE
                                 })
-                        }else {
-                                progressdemo.visibility = View.GONE
-                                Validation.printToast(requireContext(), "Enter Mandatory Fields")
+                        } else {
+                            printToast(requireContext(), "Enter Mandatory Fields")
 
                         }
-                    }
-                    else {
-
-                            progressdemo.visibility = View.GONE
-                            Validation.printToast(requireContext()!!, "Invalid Email Address")
+                    } else {
+                        printToast(requireContext()!!, "Invalid Email Address")
                     }
                 }
-
-            else {
-
-
-                        progressdemo.visibility = View.GONE
-                        Validation.printToast(requireContext()!!, "Invalid Phone number")
-
-
-
-                }
+            } else {
+                printToast(requireContext()!!, "No network Available")
             }
-                        else{
-                            progressdemo.visibility=View.GONE
-                            Validation.printToast(requireContext()!!,"No network Available")
-                        }
 
-                    }
+        }
 
 
 

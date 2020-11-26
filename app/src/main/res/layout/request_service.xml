@@ -191,7 +191,6 @@
                     android:hint="Date"
                     android:onClick="onClick"
                     android:clickable="true"
-
                     android:editable="false"
                     android:longClickable="false"
                     android:focusable="false"
