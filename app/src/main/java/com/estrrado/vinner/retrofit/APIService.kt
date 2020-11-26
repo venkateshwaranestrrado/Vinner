@@ -145,19 +145,25 @@ interface APIService {
         @Field("zipcode") zipcode: String?,
         @Field("road_name") road_name: String?,
         @Field("landmark") landmark: String?,
-        @Field("default") default: Int?
+        @Field("default") default: Int?,
+        @Field("country_code") country_code: String?,
+        @Field("city") city: String?,
+        @Field("name") name: String?
     ): Observable<DataListModel>
 
     @FormUrlEncoded
     @POST("address")
-    fun getaddress(
+    fun addAddress(
         @Field("access_token") accessToken: String?,
         @Field("address_type") address_type: String?,
         @Field("house_flat") house_flat: String?,
         @Field("zipcode") zipcode: String?,
         @Field("road_name") road_name: String?,
         @Field("landmark") landmark: String?,
-        @Field("default") default: Int?
+        @Field("default") default: Int?,
+        @Field("country_code") country_code: String?,
+        @Field("city") city: String?,
+        @Field("name") name: String?
     ): Observable<DataListModel>
 
     @FormUrlEncoded

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#fff"
     android:layout_height="match_parent"
+    android:background="#fff"
     tools:context=".ui.more.AddAddress">
 
     <include
@@ -91,6 +90,30 @@
             android:layout_height="0dp">
 
             <EditText
+                android:id="@+id/edt_name"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="Name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
                 android:id="@+id/addrsstype"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
@@ -101,18 +124,18 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
-                android:textSize="14sp"
-                android:inputType="text"
-                android:singleLine="true"
-                android:imeOptions="actionNext"
                 android:hint="Address Type"
-                android:paddingLeft="8dp"
+                android:imeOptions="actionNext"
+                android:inputType="text"
                 android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/edt_name" />
 
             <EditText
                 android:id="@+id/tvaddress"
@@ -126,15 +149,15 @@
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
                 android:hint="House/Flat/Block No"
-                android:paddingLeft="8dp"
-                android:inputType="text"
-                android:singleLine="true"
                 android:imeOptions="actionNext"
-                android:textSize="14sp"
-
+                android:inputType="text"
                 android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/addrsstype" />
@@ -151,13 +174,13 @@
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
                 android:hint="Zipcode"
-                android:paddingLeft="8dp"
                 android:imeOptions="actionNext"
                 android:inputType="number"
+                android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:textSize="14sp"
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvaddress" />
@@ -171,17 +194,17 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:imeOptions="actionNext"
-
-                android:inputType="text"
-                android:singleLine="true"
                 android:background="@drawable/new_blue_background"
+
                 android:gravity="center|left"
                 android:hint="Road Name"
+                android:imeOptions="actionNext"
+                android:inputType="text"
                 android:paddingLeft="8dp"
-                android:textSize="14sp"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_zipcode" />
@@ -199,37 +222,79 @@
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
                 android:hint="Landmark"
-
-                android:textSize="14sp"
-                android:paddingLeft="8dp"
                 android:imeOptions="actionDone"
                 android:inputType="text"
-                android:singleLine="true"
                 android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_roadname" />
+
+            <TextView
+                android:id="@+id/txt_country"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="Country"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
+
+            <EditText
+                android:id="@+id/edt_city"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="City"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_country" />
 
             <CheckBox
                 android:id="@+id/check_default"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
-
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:paddingLeft="@dimen/_14sdp"
                 android:text="Default"
-
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
-
-
-
+                app:layout_constraintTop_toBottomOf="@+id/edt_city" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -250,6 +315,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
+
     <include
         android:id="@+id/progressaddress"
         layout="@layout/item_progress_sheet"

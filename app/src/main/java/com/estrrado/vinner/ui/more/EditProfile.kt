@@ -37,7 +37,7 @@ import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.android.synthetic.main.edit_profile.*
-import kotlinx.android.synthetic.main.fragment_address_add.*
+import kotlinx.android.synthetic.main.fragment_address_update.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.moree_fragment.*
 import kotlinx.android.synthetic.main.toolbar.*

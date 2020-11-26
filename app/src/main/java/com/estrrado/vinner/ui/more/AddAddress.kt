@@ -28,7 +28,7 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.Address_list
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import kotlinx.android.synthetic.main.fragment_address_add.*
+import kotlinx.android.synthetic.main.fragment_address_update.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 import java.io.IOException
 import java.util.*
@@ -59,7 +59,7 @@ class AddAddress : Fragment(),LocationListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_address_add, container, false)
+        return inflater.inflate(R.layout.fragment_address_update, container, false)
     }
 
 
@@ -78,7 +78,7 @@ class AddAddress : Fragment(),LocationListener {
            SaveBtn.setOnClickListener {
                progressaddress.visibility=View.VISIBLE
                if (Helper.isNetworkAvailable(requireContext())){
-                   vModel!!.getaddress(RequestModel
+                   vModel!!.addAddress(RequestModel
                 (accessToken = Preferences.get(activity, ACCESS_TOKEN),
                 address_type = addrsstype.text.toString(),
                 house_flat = tvaddress.text.toString(),

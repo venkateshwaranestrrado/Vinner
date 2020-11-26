@@ -3,7 +3,7 @@ package com.estrrado.vinner.data.models.response
 import com.bluelinelabs.logansquare.annotation.JsonField
 import com.google.gson.annotations.SerializedName
 
-class AddressList (
+class AddressList(
     @field:SerializedName("adrs_id")
     @field:JsonField(name = arrayOf("adrs_id"))
     val adrs_id: String? = null,
@@ -18,7 +18,7 @@ class AddressList (
 
     @field:SerializedName("zip")
     @field:JsonField(name = arrayOf("zip"))
-    val zip: String? = null ,
+    val zip: String? = null,
 
     @field:SerializedName("road_name")
     @field:JsonField(name = arrayOf("road_name"))
@@ -30,8 +30,19 @@ class AddressList (
 
     @field:SerializedName("default")
     @field:JsonField(name = arrayOf("default"))
-    val default: String? = null  ,
+    val default: String? = null,
 
+    @field:SerializedName("city")
+    @field:JsonField(name = arrayOf("city"))
+    val city: String? = null,
+
+    @field:SerializedName("name")
+    @field:JsonField(name = arrayOf("name"))
+    val name: String? = null,
+
+    @field:SerializedName("country")
+    @field:JsonField(name = arrayOf("country"))
+    val country: String? = null,
 
 
     @field:SerializedName("current_stock")
@@ -56,11 +67,11 @@ class AddressList (
 
     @field:SerializedName("unit")
     @field:JsonField(name = arrayOf("unit"))
-    val unit: String? = null ,
+    val unit: String? = null,
 
     @field:SerializedName("price")
     @field:JsonField(name = arrayOf("price"))
-    val price : String? = null,
+    val price: String? = null,
 
     @field:SerializedName("currency")
     @field:JsonField(name = arrayOf("currency"))
@@ -68,7 +79,7 @@ class AddressList (
 
     @field:SerializedName("product_image")
     @field:JsonField(name = arrayOf("product_image"))
-    val product_image: String? = null ,
+    val product_image: String? = null,
 
     @field:SerializedName("rating")
     @field:JsonField(name = arrayOf("rating"))
@@ -77,9 +88,6 @@ class AddressList (
     @field:SerializedName("category")
     @field:JsonField(name = arrayOf("category"))
     val category: String? = null,
-
-
-
 
 
     @field:SerializedName("sale_id")
@@ -108,7 +116,7 @@ class AddressList (
 
     @field:SerializedName("country_code")
     @field:JsonField(name = arrayOf("country_code"))
-    val country_code: String? = null ,
+    val country_code: String? = null,
 
     @field:SerializedName("service_category_id")
     @field:JsonField(name = arrayOf("service_category_id"))
@@ -125,9 +133,6 @@ class AddressList (
     @field:SerializedName("service_type")
     @field:JsonField(name = arrayOf("service_type"))
     val service_type: String? = null
-
-
-
 
 
 )

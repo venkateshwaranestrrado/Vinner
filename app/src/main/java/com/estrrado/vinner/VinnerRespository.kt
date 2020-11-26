@@ -21,7 +21,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         @Volatile
         private var instance: VinnerRespository? = null
 
-        @JvmStatic fun getInstance(context: Context?, apiService: APIService?) = instance
+        @JvmStatic
+        fun getInstance(context: Context?, apiService: APIService?) = instance
             ?: synchronized(this) {
                 instance
                     ?: VinnerRespository(context, apiService).also {
@@ -124,196 +125,206 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     @SuppressLint("CheckResult")
     fun getProductList(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
-            apiService?.getProductList(
-                input.accessToken,
-                input.limit,
-                input.offset,
-                input.countryCode
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.getProductList(
+            input.accessToken,
+            input.limit,
+            input.offset,
+            input.countryCode
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun getCartPage(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.cartPage(
-                input.accessToken
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    Toast.makeText(context,it.message.toString(),Toast.LENGTH_SHORT).show()
-                    it.printStackTrace()
+        apiService?.cartPage(
+            input.accessToken
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                Toast.makeText(context, it.message.toString(), Toast.LENGTH_SHORT).show()
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun addCart(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.addCart(
-                input.accessToken,
-                input.countryCode,
-                input.productId
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.addCart(
+            input.accessToken,
+            input.countryCode,
+            input.productId
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun updateCart(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.updateCart(
-                input.accessToken,
-                input.cartId,
-                input.productId,
-                input.productQty
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.updateCart(
+            input.accessToken,
+            input.cartId,
+            input.productId,
+            input.productQty
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun deleteCart(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.deleteCart(
-                input.accessToken,
-                input.cartId,
-                input.productId
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.deleteCart(
+            input.accessToken,
+            input.cartId,
+            input.productId
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun emptyCart(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.emptyCart(
-                input.accessToken,
-                input.cartId
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.emptyCart(
+            input.accessToken,
+            input.cartId
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun shippingOperators(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
-            apiService?.shippingOperators(
-                input.accessToken
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.shippingOperators(
+            input.accessToken
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun deliveryFee(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.deliveryFee(
-                input.accessToken,
-                input.operatorId
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.deliveryFee(
+            input.accessToken,
+            input.operatorId
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun signout(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
-            apiService?.signout(
-                input.accessToken
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.signout(
+            input.accessToken
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun getCategory(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
-            apiService?.getCategory(
-                input.accessToken
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.getCategory(
+            input.accessToken
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
 
     @SuppressLint("CheckResult")
     fun getIndustries(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
-            apiService?.getIndustry(
-                input.accessToken
-            )!!.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                        data.value = it
-                }, {
-                    it.printStackTrace()
+        apiService?.getIndustry(
+            input.accessToken
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
 
-                })
+            })
         return data
     }
+
     @SuppressLint("CheckResult")
-    fun getAddress(input: RequestModel): MutableLiveData<DataListModel?> {
+    fun addAddress(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
-        apiService?.getaddress(
-            input.accessToken,input.address_type,input.house_flat,input.zipcode,input.road_name,input.landmark,input.default
+        apiService?.addAddress(
+            input.accessToken,
+            input.address_type,
+            input.house_flat,
+            input.zipcode,
+            input.road_name,
+            input.landmark,
+            input.default,
+            input.countryCode,
+            input.city,
+            input.name
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -329,7 +340,17 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun geteditAddress(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
         apiService?.addressedit(
-            input.accessToken,input.address_type,input.address_id,input.house_flat,input.zipcode,input.road_name,input.landmark,input.default
+            input.accessToken,
+            input.address_type,
+            input.address_id,
+            input.house_flat,
+            input.zipcode,
+            input.road_name,
+            input.landmark,
+            input.default,
+            input.countryCode,
+            input.city,
+            input.name
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -372,12 +393,13 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             })
         return data
     }
+
     @SuppressLint("CheckResult")
     fun UpdateProfile(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.updateprofile(
-            input.accessToken,input.name,input.address1,input.address2,input.post,input.state,
-            input.mobile,input.email,input.district,
+            input.accessToken, input.name, input.address1, input.address2, input.post, input.state,
+            input.mobile, input.email, input.district,
             input.profile_pic
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -394,7 +416,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun Category(input: RequestModel): MutableLiveData<AddressModel?> {
         val data = MutableLiveData<AddressModel?>()
         apiService?.category(
-            input.accessToken,input.countryCode,input.category_id
+            input.accessToken, input.countryCode, input.category_id
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -405,11 +427,12 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             })
         return data
     }
+
     @SuppressLint("CheckResult")
     fun BrowseIndustry(input: RequestModel): MutableLiveData<AddressModel?> {
         val data = MutableLiveData<AddressModel?>()
         apiService?.browseindustry(
-            input.accessToken,input.countryCode,input.industry_id
+            input.accessToken, input.countryCode, input.industry_id
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -425,7 +448,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun Search(input: RequestModel): MutableLiveData<AddressModel?> {
         val data = MutableLiveData<AddressModel?>()
         apiService?.search(
-            input.accessToken,input.countryCode,input.search
+            input.accessToken, input.countryCode, input.search
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -441,7 +464,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun Addressdlte(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.addressdelete(
-            input.accessToken,input.address_id
+            input.accessToken, input.address_id
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -457,7 +480,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun OrderList(input: RequestModel): MutableLiveData<AddressModel?> {
         val data = MutableLiveData<AddressModel?>()
         apiService?.orderlist(
-            input.accessToken,input.search_date,input.search_orderId
+            input.accessToken, input.search_date, input.search_orderId
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -468,11 +491,20 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             })
         return data
     }
+
     @SuppressLint("CheckResult")
     fun Payment(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.payment(
-            input.accessToken,input.address_type,input.housename,input.road_name,input.landmark,input.pincode,input.payment_status,input.payment_method,input.operatorId
+            input.accessToken,
+            input.address_type,
+            input.housename,
+            input.road_name,
+            input.landmark,
+            input.pincode,
+            input.payment_status,
+            input.payment_method,
+            input.operatorId
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -488,8 +520,19 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun ReqService(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.reqService(
-            input.accessToken,input.service_category,input.service_type,input.type_detail,input.name,input.address,
-            input.city,input.country,input.email,input.mobile,input.date,input.time,input.remark
+            input.accessToken,
+            input.service_category,
+            input.service_type,
+            input.type_detail,
+            input.name,
+            input.address,
+            input.city,
+            input.country,
+            input.email,
+            input.mobile,
+            input.date,
+            input.time,
+            input.remark
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -506,8 +549,16 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         val data = MutableLiveData<Model?>()
         apiService?.reqDemo(
             input.accessToken,
-            input.address,input.name,
-            input.city,input.country,input.mobile,input.email,input.date,input.time,input.product_id,input.remarks
+            input.address,
+            input.name,
+            input.city,
+            input.country,
+            input.mobile,
+            input.email,
+            input.date,
+            input.time,
+            input.product_id,
+            input.remarks
 
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -522,7 +573,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
 
     @SuppressLint("CheckResult")
     fun Countries(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel ?>()
+        val data = MutableLiveData<AddressModel?>()
         apiService?.countries()!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -536,7 +587,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
 
     @SuppressLint("CheckResult")
     fun Demo(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel ?>()
+        val data = MutableLiveData<AddressModel?>()
         apiService?.demoproduct(input.accessToken)!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -550,7 +601,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
 
     @SuppressLint("CheckResult")
     fun Servcecateg(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel ?>()
+        val data = MutableLiveData<AddressModel?>()
         apiService?.service_category(input.accessToken)!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -564,7 +615,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
 
     @SuppressLint("CheckResult")
     fun ServceType(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel ?>()
+        val data = MutableLiveData<AddressModel?>()
         apiService?.servicetype(input.accessToken)!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -579,8 +630,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
 
     @SuppressLint("CheckResult")
     fun Oderdtl(input: RequestModel): MutableLiveData<Model?> {
-        val data = MutableLiveData<Model ?>()
-        apiService?.orderdetail(input.accessToken,input.order_id)!!.subscribeOn(Schedulers.io())
+        val data = MutableLiveData<Model?>()
+        apiService?.orderdetail(input.accessToken, input.order_id)!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 data.value = it
@@ -590,10 +641,17 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             })
         return data
     }
+
     @SuppressLint("CheckResult")
     fun addreview(input: RequestModel): MutableLiveData<Model?> {
-        val data = MutableLiveData<Model ?>()
-        apiService?.saveReview(input.accessToken,input.productId,input.rating,input.title,input.review)!!.subscribeOn(Schedulers.io())
+        val data = MutableLiveData<Model?>()
+        apiService?.saveReview(
+            input.accessToken,
+            input.productId,
+            input.rating,
+            input.title,
+            input.review
+        )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 data.value = it
