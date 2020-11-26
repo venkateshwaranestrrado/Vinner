@@ -1,6 +1,5 @@
 package com.estrrado.vinner.ui.request
 
-import android.R.attr.button
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -21,7 +20,6 @@ import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.Validation.validate
 import com.estrrado.vinner.retrofit.ApiClient
@@ -33,7 +31,6 @@ import kotlinx.android.synthetic.main.request_service.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 import java.text.SimpleDateFormat
 import java.util.*
-
 import kotlin.collections.ArrayList
 
 
@@ -309,8 +306,6 @@ class RequestService : Fragment() {
                     )
                     servicetype.prompt = "Sevice Type"
                     servicetype.adapter = typeadapter
-
-
                 }
 
                 var typedata = it.data
@@ -337,7 +332,6 @@ class RequestService : Fragment() {
                         if (ServiceType == "3") {
                             ettype_detail.visibility = View.VISIBLE
                         } else
-
                             ettype_detail.visibility = View.GONE
                     }
 
@@ -374,6 +368,9 @@ class RequestService : Fragment() {
                                 )
                             )
                         ) {
+                            if (ServiceType == "3")
+                                if (!ettype_detail.validate())
+                                    return@setOnClickListener
                             progressservice.visibility = View.VISIBLE
                             vModel!!.getreqservice(
                                 RequestModel(
