@@ -181,7 +181,7 @@ class Address_list : Fragment() {
                 val item = dataItem!![holder.adapterPosition] as AddressList
                 adrsId = dataItem!!.get(position).adrs_id
                 holder.name?.text = dataItem?.get(position)!!.name
-                holder.address1?.text = dataItem?.get(position)!!.address_type + " " + dataItem!!.get(
+                holder.address1?.text = dataItem!!.get(
                     position
                 ).house_flat
                 holder.txtRoadName?.text = dataItem?.get(position)!!.road_name
