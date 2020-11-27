@@ -19,9 +19,11 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 
 import com.estrrado.vinner.retrofit.ApiClient
@@ -29,16 +31,19 @@ import com.estrrado.vinner.ui.Address_list
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_address_update.*
+import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 import java.io.IOException
 import java.util.*
 
-class AddAddress : Fragment(),LocationListener {
+class AddAddress : Fragment(), LocationListener {
     var vModel: HomeVM? = null
-    private lateinit var location:Location
+    private lateinit var location: Location
+
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vModel = ViewModelProvider(
@@ -66,57 +71,78 @@ class AddAddress : Fragment(),LocationListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initControll()
-        pageTitle.text="Add Address"
+        pageTitle.text = "Add Address"
     }
-      private fun initControll(){
 
-          addresslyt.setOnClickListener {
+    private fun initControll() {
+
+        addresslyt.setOnClickListener {
 //              var loc = getlocation()
 //              onLocationChanged1(loc)
-              getlocation()
-          }
-           SaveBtn.setOnClickListener {
-               progressaddress.visibility=View.VISIBLE
-               if (Helper.isNetworkAvailable(requireContext())){
-                   vModel!!.addAddress(RequestModel
-                (accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                address_type = addrsstype.text.toString(),
-                house_flat = tvaddress.text.toString(),
-                zipcode = tv_zipcode.text.toString(),
-                road_name = tv_roadname.text.toString(),
-                landmark = tv_landmark.text.toString(),
-                default = if (check_default.isChecked) {
-                    1
-                } else {
-                    0
-                })).observe(requireActivity(),
-                Observer {
-                    if (it!!.status=="success"){
-                        progressaddress.visibility=View.GONE
-                        Toast.makeText(context,"Address updated successfully", Toast.LENGTH_SHORT).show()
-                        requireActivity().supportFragmentManager.beginTransaction().
-                        replace(R.id.nav_host_fragment, Address_list()).commit()
-                    }
-
-                    else
-                    {
-                        if (it.message.equals("Invalid access token")) {
-                            startActivity(Intent(activity, LoginActivity::class.java))
-                            requireActivity().finish()
-                        } else {
-                            printToast(requireContext(), it.message!!)
-                        }
-                        printToast(this.requireContext(), it.message.toString())
-                    }
-                }) }
-        else
-        {
-            Toast.makeText(context,"No Network Available",Toast.LENGTH_SHORT).show()
-            progressaddress.visibility=View.GONE
+            getlocation()
         }
+        SaveBtn.setOnClickListener {
 
+            if (Validation.hasText(edt_name, Constants.REQUIRED) && Validation.hasText(
+                    addrsstype,
+                    Constants.REQUIRED
+                ) && Validation.hasText(
+                    tvaddress,
+                    Constants.REQUIRED
+                ) &&
+                Validation.hasText(tv_zipcode, Constants.REQUIRED) && Validation.hasText(
+                    tv_roadname,
+                    Constants.REQUIRED
+                ) && Validation.hasText(tv_landmark, Constants.REQUIRED) && Validation.hasText(
+                    txt_country,
+                    Constants.REQUIRED
+                ) && Validation.hasText(edt_city, Constants.REQUIRED)
+            ) {
+
+                if (Helper.isNetworkAvailable(requireContext())) {
+                    progressaddress.visibility = View.VISIBLE
+                    vModel!!.addAddress(
+                        RequestModel
+                            (
+                            accessToken = Preferences.get(activity, ACCESS_TOKEN),
+                            address_type = addrsstype.text.toString(),
+                            house_flat = tvaddress.text.toString(),
+                            zipcode = tv_zipcode.text.toString(),
+                            road_name = tv_roadname.text.toString(),
+                            landmark = tv_landmark.text.toString(),
+                            name = edt_name.text.toString(),
+                            city = edt_city.text.toString(),
+                            country = txt_country.text.toString(),
+                            default = if (check_default.isChecked) {
+                                1
+                            } else {
+                                0
+                            }
+                        )
+                    ).observe(requireActivity(),
+                        Observer {
+                            progressaddress.visibility = View.GONE
+                            printToast(this.requireContext(), it!!.message.toString())
+                            if (it!!.status == "success") {
+                                requireActivity().supportFragmentManager.beginTransaction()
+                                    .replace(R.id.nav_host_fragment, Address_list()).commit()
+                            } else {
+                                if (it.message.equals("Invalid access token")) {
+                                    startActivity(Intent(activity, LoginActivity::class.java))
+                                    requireActivity().finish()
+                                }
+
+                            }
+                        })
+
+                } else {
+                    Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+                    progressaddress.visibility = View.GONE
+                }
+            }
+
+        }
     }
-}
 
     override fun onLocationChanged(location: Location) {
 
@@ -134,7 +160,7 @@ class AddAddress : Fragment(),LocationListener {
 
     }
 
-//    fun getlocation(){
+    //    fun getlocation(){
 //        var locationManager = context?.getSystemService(LOCATION_SERVICE) as LocationManager?
 //        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
 //            != PackageManager.PERMISSION_GRANTED) {
@@ -156,29 +182,34 @@ class AddAddress : Fragment(),LocationListener {
 //        }
 //    }
     fun onLocationChanged1(location: Location) {
-    val geocoder: Geocoder
-    val addresses: List<Address>?
-    geocoder = Geocoder(requireContext(), Locale.getDefault())
-    val latitude = location.latitude
-    val longitude = location.longitude
-    try {
-        addresses = geocoder.getFromLocation(latitude, longitude, 1)
-        if (addresses != null && addresses.size > 0) {
-            val address: String = addresses[0].getAddressLine(0)
-            val city: String = addresses[0].getLocality()
-            val state: String = addresses[0].getAdminArea()
-            val country: String = addresses[0].getCountryName()
-            val postalCode: String = addresses[0].getPostalCode()
-            val knownName: String = addresses[0].featureName
-            val sublocality: String = addresses[0].subLocality
-            tv_zipcode.setText(postalCode)
-            tv_roadname.setText(sublocality + "," + city + "," +state+ "," + country)
+        val geocoder: Geocoder
+        val addresses: List<Address>?
+        geocoder = Geocoder(requireContext(), Locale.getDefault())
+        val latitude = location.latitude
+        val longitude = location.longitude
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (addresses != null && addresses.size > 0) {
+                val address: String = addresses[0].getAddressLine(0)
+                val city: String = addresses[0].getLocality()
+                val state: String = addresses[0].getAdminArea()
+                val country: String = addresses[0].getCountryName()
+                val postalCode: String = addresses[0].getPostalCode()
+                val knownName: String = addresses[0].featureName
+                val sublocality: String = addresses[0].subLocality
+                tv_zipcode.setText(postalCode)
+                tv_roadname.setText(sublocality + "," + city + "," + state + "," + country)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-    } catch (e: IOException) {
-        e.printStackTrace()
     }
-    }
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
             when (grantResults[0]) {
@@ -190,7 +221,8 @@ class AddAddress : Fragment(),LocationListener {
             }
         }
     }
-//    fun getlocation():Location{
+
+    //    fun getlocation():Location{
 //
 //        var locationManager =
 //            context?.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -267,7 +299,7 @@ class AddAddress : Fragment(),LocationListener {
 //        }
 //        return location
 //    }
-    fun getlocation(){
+    fun getlocation() {
 
         var locationManager =
             context?.getSystemService(LOCATION_SERVICE) as LocationManager
@@ -279,14 +311,18 @@ class AddAddress : Fragment(),LocationListener {
 
         if (isGPSEnabled) {
 
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
                 ActivityCompat.requestPermissions(
                     this.requireActivity(),
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     PERMISSION_REQUEST_ACCESS_FINE_LOCATION
                 )
-return
+                return
 
                 locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER,
@@ -311,8 +347,12 @@ return
         var isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
         if (isNetworkEnabled) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+                != PackageManager.PERMISSION_GRANTED
+            ) {
                 ActivityCompat.requestPermissions(
                     this.requireActivity(),
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
