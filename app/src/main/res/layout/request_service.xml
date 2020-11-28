@@ -76,7 +76,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
                 android:background="#E3F3FF"
-                android:hint="Typedetail"
+                android:hint="Type Detail"
                 android:visibility="gone"
                 android:singleLine="true"
                 android:imeOptions="actionNext"

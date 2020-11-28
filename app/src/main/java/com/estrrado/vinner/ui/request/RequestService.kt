@@ -119,15 +119,15 @@ class RequestService : Fragment() {
                     TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
                         cal.set(Calendar.HOUR_OF_DAY, hour)
                         cal.set(Calendar.MINUTE, minute)
-                        etTime.setText(SimpleDateFormat("HH:mm").format(cal.time))
-                        Time = SimpleDateFormat("HH:mm").format(cal.time)
+                        etTime.setText(SimpleDateFormat("hh:mm a").format(cal.time))
+                        Time = SimpleDateFormat("hh:mm a").format(cal.time)
                     }
                 TimePickerDialog(
                     requireContext(),
                     timeSetListener,
                     cal.get(Calendar.HOUR_OF_DAY),
                     cal.get(Calendar.MINUTE),
-                    true
+                    false
                 )
                     .show()
             }
