@@ -1,11 +1,12 @@
 package com.estrrado.vinner.ui
 
-import android.R.attr.key
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -35,13 +36,15 @@ import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_address_list.*
 import kotlinx.android.synthetic.main.toolbar_back.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class Address_list : Fragment() {
 
     var vModel: HomeVM? = null
     var address: String? = null
-    private val Addressadapter: Adapter? = null
+    private var addressAdapter: AddresslistAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,7 +79,34 @@ class Address_list : Fragment() {
         ).get(HomeVM::class.java)
         initControll()
         getData()
+        initialiseSearch()
         pageTitle.text = "Address List"
+    }
+
+    private fun initialiseSearch() {
+        edt_search.setOnTouchListener(View.OnTouchListener { v, event ->
+            val DRAWABLE_LEFT = 0
+            val DRAWABLE_TOP = 1
+            val DRAWABLE_RIGHT = 2
+            val DRAWABLE_BOTTOM = 3
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= edt_search.getRight() - edt_search.getCompoundDrawables()
+                        .get(DRAWABLE_RIGHT).getBounds().width()
+                ) {
+                    addressAdapter?.filter?.filter(edt_search.text.toString())
+                    return@OnTouchListener true
+                }
+            }
+            false
+        })
+
+        edt_search.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                addressAdapter?.filter?.filter(edt_search.text.toString())
+                return@OnEditorActionListener true
+            }
+            false
+        })
     }
 
     private fun initControll() {
@@ -96,12 +126,13 @@ class Address_list : Fragment() {
                 RequestModel
                     (accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN))
             ).observe(requireActivity(), Observer {
-                recy_address_list.adapter = Addresslist(
+                addressAdapter = AddresslistAdapter(
                     it!!.data,
                     vModel!!,
                     Helper,
                     requireActivity()
                 )
+                recy_address_list.adapter = addressAdapter
                 recy_address_list.layoutManager = LinearLayoutManager(requireContext())
                 address = it.data!!.get(0).adrs_id
                 Preferences.put(activity, Preferences.ADDRESS_ID, address!!)
@@ -112,13 +143,18 @@ class Address_list : Fragment() {
         }
     }
 
-    class Addresslist(
+    class AddresslistAdapter(
         var dataItem: ArrayList<AddressList>?,
         val vModel: HomeVM,
         val param: Helper,
         private var activity: FragmentActivity
-    ) : RecyclerView.Adapter<Addresslist.ViewHolder>() {
+    ) : RecyclerView.Adapter<AddresslistAdapter.ViewHolder>(), Filterable {
 
+        var addressFilterList: List<AddressList?>? = ArrayList<AddressList?>()
+
+        init {
+            addressFilterList = this!!.dataItem!!
+        }
 
         var adrsId: String? = null
         var AddressType: String? = null
@@ -148,6 +184,64 @@ class Address_list : Fragment() {
             val buttondlte = itemView.findViewById<Button?>(R.id.btn_delete)
         }
 
+        override fun getFilter(): Filter {
+            return object : Filter() {
+                override fun performFiltering(constraint: CharSequence?): FilterResults {
+                    val charSearch = constraint.toString()
+                    if (charSearch.isEmpty()) {
+                        if (dataItem != null) {
+                            addressFilterList = dataItem
+                        }
+                    } else {
+                        val resultList = ArrayList<AddressList?>()
+                        for (i in 0 until dataItem!!.size) {
+                            if (dataItem!!.get(i)!!.name!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.address_type!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.city!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.country!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.zip!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.landmark!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.house_flat!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.road_name!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT)) || dataItem!!.get(
+                                    i
+                                )!!.house_flat!!.toLowerCase(Locale.ROOT)
+                                    .contains(charSearch.toLowerCase(Locale.ROOT))
+                            ) {
+                                resultList.add(dataItem!!.get(i)!!)
+                            }
+                        }
+                        addressFilterList = resultList
+                    }
+                    val filterResults = FilterResults()
+                    filterResults.values = addressFilterList
+                    return filterResults
+                }
+
+                override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                    addressFilterList = results?.values as List<AddressList?>
+                    notifyDataSetChanged()
+                    if (addressFilterList!!.size <= 0)
+                        printToast(activity, activity!!.getString(R.string.no_address_found))
+                }
+
+            }
+        }
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             return ViewHolder(
                 LayoutInflater.from(parent.context).inflate(
@@ -161,38 +255,38 @@ class Address_list : Fragment() {
 
         //            }
         override fun getItemCount(): Int {
-            return dataItem?.size ?: 0
+            return addressFilterList?.size ?: 0
         }
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-            if (dataItem != null) {
-                AddressType = dataItem!!.get(position).address_type
-                Housename = dataItem!!.get(position).house_flat
-                Roadname = dataItem!!.get(position).road_name
-                Pincode = dataItem!!.get(position).zip
-                Landmark = dataItem!!.get(position).landmark
-                isDefault = dataItem!!.get(position).default
-                country = dataItem!!.get(position).country
-                city = dataItem!!.get(position).city
-                name = dataItem!!.get(position).name
+            if (addressFilterList != null) {
+                AddressType = addressFilterList!!.get(position)!!.address_type
+                Housename = addressFilterList!!.get(position)!!.house_flat
+                Roadname = addressFilterList!!.get(position)!!.road_name
+                Pincode = addressFilterList!!.get(position)!!.zip
+                Landmark = addressFilterList!!.get(position)!!.landmark
+                isDefault = addressFilterList!!.get(position)!!.default
+                country = addressFilterList!!.get(position)!!.country
+                city = addressFilterList!!.get(position)!!.city
+                name = addressFilterList!!.get(position)!!.name
 
-                val item = dataItem!![holder.adapterPosition] as AddressList
-                adrsId = dataItem!!.get(position).adrs_id
-                holder.name?.text = dataItem?.get(position)!!.name
-                holder.address1?.text = dataItem!!.get(
+                val item = addressFilterList!![holder.adapterPosition] as AddressList
+                adrsId = addressFilterList!!.get(position)!!.adrs_id
+                holder.name?.text = addressFilterList?.get(position)!!.name
+                holder.address1?.text = addressFilterList!!.get(
                     position
-                ).house_flat
-                holder.txtRoadName?.text = dataItem?.get(position)!!.road_name
-                holder.txtZip?.text = dataItem?.get(position)!!.zip
-                holder.txtCity?.text = dataItem?.get(position)!!.city
-                holder.txtCountry?.text = dataItem?.get(position)!!.country
-                holder.txtLandMark?.text = dataItem?.get(position)!!.landmark
-                holder.txtAddressType?.text = dataItem?.get(position)!!.address_type
-//                holder.number?.text = dataItem?.get(position)!!.p
+                )!!.house_flat
+                holder.txtRoadName?.text = addressFilterList?.get(position)!!.road_name
+                holder.txtZip?.text = addressFilterList?.get(position)!!.zip
+                holder.txtCity?.text = addressFilterList?.get(position)!!.city
+                holder.txtCountry?.text = addressFilterList?.get(position)!!.country
+                holder.txtLandMark?.text = addressFilterList?.get(position)!!.landmark
+                holder.txtAddressType?.text = addressFilterList?.get(position)!!.address_type
+//                holder.number?.text = categoriesFilterList?.get(position)!!.p
 
-                if (dataItem!!.get(position).default == "1") {
+                if (addressFilterList!!.get(position)!!.default == "1") {
                     holder.starimage!!.visibility = View.VISIBLE
                 } else {
                     holder.starimage!!.visibility = View.INVISIBLE
@@ -220,7 +314,12 @@ class Address_list : Fragment() {
                 holder.buttondlte!!.setOnClickListener {
                     activity.progressaddresslist.visibility = View.VISIBLE
                     deleteItem(item, vModel, param)
-                    Addresslist(dataItem!!, vModel, param, activity).notifyDataSetChanged()
+                    AddresslistAdapter(
+                        (addressFilterList as ArrayList<AddressList>?)!!,
+                        vModel,
+                        param,
+                        activity
+                    ).notifyDataSetChanged()
                     activity.recy_address_list.invalidate()
                 }
 
