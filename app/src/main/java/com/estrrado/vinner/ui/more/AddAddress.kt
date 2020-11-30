@@ -49,6 +49,7 @@ class AddAddress : Fragment(), LocationListener {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     var countryCode: String? = null
+    var addressType = Constants.HOME
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
@@ -83,7 +84,14 @@ class AddAddress : Fragment(), LocationListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initControll()
-        pageTitle.text = "Add Address"
+        if (arguments?.getBoolean(Constants.IS_EDIT, false) != null && arguments?.getBoolean(
+                Constants.IS_EDIT,
+                false
+            )!!
+        ) {
+            initialiseEdit()
+        } else
+            pageTitle.text = "Add Address"
         locationRequest = LocationRequest().apply {
             // Sets the desired interval for active location updates. This interval is inexact. You
             // may not receive updates at all if no location sources are available, or you may
@@ -146,6 +154,29 @@ class AddAddress : Fragment(), LocationListener {
         )
     }
 
+    private fun initialiseEdit() {
+        pageTitle.text = "Edit Address"
+        edt_search.visibility = View.GONE
+        addresslyt.visibility = View.GONE
+
+        edt_name.setText(arguments?.getString(Constants.NAME, "").toString())
+        tvaddress.setText(arguments?.getString(Constants.HOUSENAME, "").toString())
+        tv_zipcode.setText(arguments?.getString(Constants.PINCODE, "").toString())
+        tv_roadname.setText(arguments?.getString(Constants.ROAD_NAME, "").toString())
+        tv_landmark.setText(arguments?.getString(Constants.LANDMARK, "").toString())
+        edt_city.setText(arguments?.getString(Constants.CITY, "").toString())
+        addressType = arguments?.getString(Constants.ADDDRESS_TYPE, "").toString()
+        if (addressType.contains(Constants.WORK)) {
+            rg_region.check(R.id.rb_work)
+        }
+        if (arguments?.getString(Constants.IS_DEFAULT, "")!!.equals("1")) {
+            check_default.isChecked = true
+        }
+        Handler().postDelayed({
+            txt_country.setText(arguments?.getString(Constants.COUNTRY, "").toString())
+        }, 1500)
+    }
+
     private fun initControll() {
         initialiseRegion()
         addresslyt.setOnClickListener {
@@ -173,7 +204,6 @@ class AddAddress : Fragment(), LocationListener {
 
                 if (Helper.isNetworkAvailable(requireContext())) {
                     progressaddress.visibility = View.VISIBLE
-                    var addressType = Constants.HOME
                     if (rg_region.checkedRadioButtonId == R.id.rb_work)
                         addressType = Constants.WORK
                     vModel!!.addAddress(

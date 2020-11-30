@@ -20,10 +20,12 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Constants.ADDRESS_ID
 import com.estrrado.vinner.helper.Constants.CITY
 import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.IS_DEFAULT
+import com.estrrado.vinner.helper.Constants.IS_EDIT
 import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.PHONE
@@ -156,18 +158,6 @@ class Address_list : Fragment() {
             addressFilterList = this!!.dataItem!!
         }
 
-        var adrsId: String? = null
-        var AddressType: String? = null
-        var Housename: String? = null
-        var Pincode: String? = null
-        var Roadname: String? = null
-        var Landmark: String? = null
-        var isDefault: String? = null
-        var country: String? = null
-        var city: String? = null
-        var name: String? = null
-
-
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val name = itemView.findViewById<TextView?>(R.id.tv_name)
             val address1 = itemView.findViewById<TextView?>(R.id.tv_address1)
@@ -262,18 +252,7 @@ class Address_list : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
             if (addressFilterList != null) {
-                AddressType = addressFilterList!!.get(position)!!.address_type
-                Housename = addressFilterList!!.get(position)!!.house_flat
-                Roadname = addressFilterList!!.get(position)!!.road_name
-                Pincode = addressFilterList!!.get(position)!!.zip
-                Landmark = addressFilterList!!.get(position)!!.landmark
-                isDefault = addressFilterList!!.get(position)!!.default
-                country = addressFilterList!!.get(position)!!.country
-                city = addressFilterList!!.get(position)!!.city
-                name = addressFilterList!!.get(position)!!.name
-
                 val item = addressFilterList!![holder.adapterPosition] as AddressList
-                adrsId = addressFilterList!!.get(position)!!.adrs_id
                 holder.name?.text = addressFilterList?.get(position)!!.name
                 holder.address1?.text = addressFilterList!!.get(
                     position
@@ -285,7 +264,6 @@ class Address_list : Fragment() {
                 holder.txtLandMark?.text = addressFilterList?.get(position)!!.landmark
                 holder.txtAddressType?.text = addressFilterList?.get(position)!!.address_type
 //                holder.number?.text = categoriesFilterList?.get(position)!!.p
-
                 if (addressFilterList!!.get(position)!!.default == "1") {
                     holder.starimage!!.visibility = View.VISIBLE
                 } else {
@@ -293,18 +271,22 @@ class Address_list : Fragment() {
                 }
 
                 holder.buttonedit!!.setOnClickListener {
-                    val fragment = EditFragment()
+                    val fragment = AddAddress()
                     val bundle = Bundle()
-                    bundle.putString(Constants.ADDDRESS_TYPE, AddressType)
-                    bundle.putString(HOUSENAME, Housename)
-                    bundle.putString(ROAD_NAME, Roadname)
-                    bundle.putString(PINCODE, Pincode)
-                    bundle.putString(LANDMARK, Landmark)
-                    bundle.putString(NAME, name)
-                    bundle.putString(CITY, city)
-                    bundle.putString(COUNTRY, country)
-                    bundle.putString(PHONE, Landmark)
-                    bundle.putString(IS_DEFAULT, isDefault)
+                    bundle.putString(ADDRESS_ID, addressFilterList!!.get(position)!!.adrs_id)
+                    bundle.putString(
+                        Constants.ADDDRESS_TYPE,
+                        addressFilterList!!.get(position)!!.address_type
+                    )
+                    bundle.putString(HOUSENAME, addressFilterList!!.get(position)!!.house_flat)
+                    bundle.putString(ROAD_NAME, addressFilterList!!.get(position)!!.road_name)
+                    bundle.putString(PINCODE, addressFilterList!!.get(position)!!.zip)
+                    bundle.putString(LANDMARK, addressFilterList!!.get(position)!!.landmark)
+                    bundle.putString(NAME, addressFilterList!!.get(position)!!.name)
+                    bundle.putString(CITY, addressFilterList!!.get(position)!!.city)
+                    bundle.putString(COUNTRY, addressFilterList!!.get(position)!!.country)
+                    bundle.putString(IS_DEFAULT, addressFilterList!!.get(position)!!.default)
+                    bundle.putBoolean(IS_EDIT, true)
                     fragment.arguments = bundle
                     activity.supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_fragment, fragment)
