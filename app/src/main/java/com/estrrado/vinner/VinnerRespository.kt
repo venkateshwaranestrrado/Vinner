@@ -348,7 +348,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.road_name,
             input.landmark,
             input.default,
-            input.countryCode,
+            input.country,
             input.city,
             input.name
         )!!.subscribeOn(Schedulers.io())

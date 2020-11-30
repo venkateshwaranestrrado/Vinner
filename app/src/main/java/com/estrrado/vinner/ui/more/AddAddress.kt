@@ -48,7 +48,6 @@ class AddAddress : Fragment(), LocationListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
-    var countryCode: String? = null
     var addressType = Constants.HOME
 
     companion object {
@@ -201,44 +200,91 @@ class AddAddress : Fragment(), LocationListener {
                     Constants.REQUIRED
                 ) && Validation.hasText(edt_city, Constants.REQUIRED)
             ) {
-
                 if (Helper.isNetworkAvailable(requireContext())) {
                     progressaddress.visibility = View.VISIBLE
                     if (rg_region.checkedRadioButtonId == R.id.rb_work)
                         addressType = Constants.WORK
-                    vModel!!.addAddress(
-                        RequestModel
-                            (
-                            accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                            address_type = addressType,
-                            house_flat = tvaddress.text.toString(),
-                            zipcode = tv_zipcode.text.toString(),
-                            road_name = tv_roadname.text.toString(),
-                            landmark = tv_landmark.text.toString(),
-                            name = edt_name.text.toString(),
-                            city = edt_city.text.toString(),
-                            country = countryCode,
-                            default = if (check_default.isChecked) {
-                                1
-                            } else {
-                                0
-                            }
-                        )
-                    ).observe(requireActivity(),
-                        Observer {
-                            progressaddress.visibility = View.GONE
-                            printToast(this.requireContext(), it!!.message.toString())
-                            if (it!!.status == "success") {
-                                requireActivity().supportFragmentManager.beginTransaction()
-                                    .replace(R.id.nav_host_fragment, Address_list()).commit()
-                            } else {
-                                if (it.message.equals("Invalid access token")) {
-                                    startActivity(Intent(activity, LoginActivity::class.java))
-                                    requireActivity().finish()
-                                }
 
-                            }
-                        })
+                    if (arguments?.getBoolean(
+                            Constants.IS_EDIT,
+                            false
+                        ) != null && arguments?.getBoolean(
+                            Constants.IS_EDIT,
+                            false
+                        )!!
+                    ) {
+                        vModel!!.editAddress(
+                            RequestModel
+                                (
+                                accessToken = Preferences.get(activity, ACCESS_TOKEN),
+                                address_id = arguments?.getString(
+                                    Constants.ADDRESS_ID,
+                                    ""
+                                )!!,
+                                address_type = addressType,
+                                house_flat = tvaddress.text.toString(),
+                                zipcode = tv_zipcode.text.toString(),
+                                road_name = tv_roadname.text.toString(),
+                                landmark = tv_landmark.text.toString(),
+                                name = edt_name.text.toString(),
+                                city = edt_city.text.toString(),
+                                country = txt_country.text.toString(),
+                                default = if (check_default.isChecked) {
+                                    1
+                                } else {
+                                    0
+                                }
+                            )
+                        ).observe(requireActivity(),
+                            Observer {
+                                progressaddress.visibility = View.GONE
+                                printToast(this.requireContext(), it!!.message.toString())
+                                if (it!!.status == "success") {
+                                    requireActivity().supportFragmentManager.beginTransaction()
+                                        .replace(R.id.nav_host_fragment, Address_list()).commit()
+                                } else {
+                                    if (it.message.equals("Invalid access token")) {
+                                        startActivity(Intent(activity, LoginActivity::class.java))
+                                        requireActivity().finish()
+                                    }
+
+                                }
+                            })
+                    } else {
+                        vModel!!.addAddress(
+                            RequestModel
+                                (
+                                accessToken = Preferences.get(activity, ACCESS_TOKEN),
+                                address_type = addressType,
+                                house_flat = tvaddress.text.toString(),
+                                zipcode = tv_zipcode.text.toString(),
+                                road_name = tv_roadname.text.toString(),
+                                landmark = tv_landmark.text.toString(),
+                                name = edt_name.text.toString(),
+                                city = edt_city.text.toString(),
+                                country = txt_country.text.toString(),
+                                default = if (check_default.isChecked) {
+                                    1
+                                } else {
+                                    0
+                                }
+                            )
+                        ).observe(requireActivity(),
+                            Observer {
+                                progressaddress.visibility = View.GONE
+                                printToast(this.requireContext(), it!!.message.toString())
+                                if (it!!.status == "success") {
+                                    requireActivity().supportFragmentManager.beginTransaction()
+                                        .replace(R.id.nav_host_fragment, Address_list()).commit()
+                                } else {
+                                    if (it.message.equals("Invalid access token")) {
+                                        startActivity(Intent(activity, LoginActivity::class.java))
+                                        requireActivity().finish()
+                                    }
+
+                                }
+                            })
+                    }
 
                 } else {
                     Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
@@ -261,7 +307,6 @@ class AddAddress : Fragment(), LocationListener {
                 position: Int,
                 id: Long
             ) {
-                countryCode = regionList.get(position).name
                 txt_country.text = regionList.get(position).name
             }
 
@@ -403,7 +448,6 @@ class AddAddress : Fragment(), LocationListener {
             txt_country.setText(addresses[0].countryCode)
             tv_zipcode.setText(addresses[0].postalCode)
             tv_roadname.setText(addresses[0].featureName)
-            countryCode = addresses[0].countryCode
         } catch (e: IOException) {
             e.printStackTrace()
         }
