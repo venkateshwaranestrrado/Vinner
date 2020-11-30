@@ -28,11 +28,11 @@
                 android:id="@+id/edt_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:text="Add New Address"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -44,11 +44,11 @@
                 android:id="@+id/addresslyt"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/new_background_designs"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -105,30 +105,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/addresslyt" />
 
             <EditText
-                android:id="@+id/addrsstype"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/new_blue_background"
-                android:gravity="center|left"
-                android:hint="Address Type"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingLeft="8dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="#37000000"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/edt_name" />
-
-            <EditText
                 android:id="@+id/tvaddress"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
@@ -145,13 +121,12 @@
                 android:maxLines="1"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
-
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/addrsstype" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_name" />
 
             <EditText
                 android:id="@+id/tv_zipcode"
@@ -186,7 +161,6 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
-
                 android:gravity="center|left"
                 android:hint="Road Name"
                 android:imeOptions="actionNext"
@@ -250,6 +224,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
 
+            <Spinner
+                android:id="@+id/spnr_region"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="6dp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
+
             <EditText
                 android:id="@+id/edt_city"
                 android:layout_width="0dp"
@@ -274,6 +263,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_country" />
 
+            <RadioGroup
+                android:id="@+id/rg_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edt_city">
+
+                <RadioButton
+                    android:id="@+id/rb_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/title_home" />
+
+                <RadioButton
+                    android:id="@+id/rb_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:text="@string/work" />
+            </RadioGroup>
+
             <CheckBox
                 android:id="@+id/check_default"
                 android:layout_width="0dp"
@@ -286,7 +301,7 @@
                 android:textSize="@dimen/_14sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_city" />
+                app:layout_constraintTop_toBottomOf="@+id/rg_region" />
 
             <Button
                 android:id="@+id/SaveBtn"

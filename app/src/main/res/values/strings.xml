@@ -43,4 +43,5 @@
     <string name="magazine">Postage &amp; Packing    :</string>
     <string name="hint"><font size="10">Address Type</font></string>
     <string name="no_address_found">Noaddress found</string>
+    <string name="work">Work</string>
 </resources>

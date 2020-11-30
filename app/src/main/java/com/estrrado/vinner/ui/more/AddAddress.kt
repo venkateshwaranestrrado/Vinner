@@ -364,7 +364,7 @@ class AddAddress : Fragment(), LocationListener {
                 if (isGPSEnabled) {
                     getLocation()
                 }
-            }, 1000)
+            }, 1500)
         }
     }
 
