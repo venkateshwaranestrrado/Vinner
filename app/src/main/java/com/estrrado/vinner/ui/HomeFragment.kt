@@ -51,6 +51,7 @@ class HomeFragment : Fragment() {
     var mTimer = Timer()
     var timerLoad: Boolean = true
     var json_string:String?=null
+    var regionList: List<RegionSpinner>? = null
     override fun onResume() {
         super.onResume()
         initControl()
@@ -92,8 +93,8 @@ class HomeFragment : Fragment() {
         }
 
         spnr_region.visibility=View.VISIBLE
-        val regionList: List<RegionSpinner> = readFromAsset()
-        val regionAdapter = RegionAdapter(requireContext()!!, regionList)
+        regionList = readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region.adapter = regionAdapter
 //                        setLocation(spnr_region, this!!.requireContext()!!)
 
@@ -105,20 +106,11 @@ class HomeFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-//                val selectedItem = parent.getItemAtPosition(position).toString()
-                val gson = Gson()
-                val modelList: List<RegionSpinner> = gson.fromJson(
-                    json_string,
-                    Array<RegionSpinner>::class.java
-                ).toList()
-                var code = modelList.get(position).code
-                var name = modelList.get(position).name
+                val code = regionList!!.get(position).code
+                val name = regionList!!.get(position).name
                 Preferences.put(activity, Preferences.REGION_NAME, name!!)
                 Preferences.put(activity, Preferences.REGION_CODE, code!!)
                 initControl()
-//             requireFragmentManager().beginTransaction().detach(this@HomeFragment).attach(this@HomeFragment).commit();
-
-
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -246,19 +238,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
-    private fun readFromAsset(): List<RegionSpinner> {
-        val file_name = "login_region.json"
-        val bufferReader = requireActivity()!!.assets.open(file_name).bufferedReader()
-        json_string = bufferReader.use {
-            it.readText()
-        }
-        val gson = Gson()
-        val modelList: List<RegionSpinner> = gson.fromJson(
-            json_string,
-            Array<RegionSpinner>::class.java
-        ).toList()
-        return modelList
-    }
+
 }
 
 

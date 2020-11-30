@@ -13,9 +13,9 @@ object ApiClient {
 
     var apiData = WebConfig.TEST
     var LIVE_URL = apiData.getLiveUrl()
+    private var interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private var retrofit: Retrofit? = null
-    private var interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
 
     private val okHttpClient = OkHttpClient.Builder()
         .readTimeout(30, TimeUnit.SECONDS)

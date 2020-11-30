@@ -13,6 +13,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,12 +23,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
+import com.estrrado.vinner.adapters.RegionAdapter
+import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.helper.Constants
+import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
-import com.estrrado.vinner.helper.Helper
-import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.Address_list
@@ -48,6 +48,7 @@ class AddAddress : Fragment(), LocationListener {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
+    var countryCode: String? = null
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
@@ -146,16 +147,18 @@ class AddAddress : Fragment(), LocationListener {
     }
 
     private fun initControll() {
-
+        initialiseRegion()
         addresslyt.setOnClickListener {
             getLocation()
         }
+
+        txt_country.setOnClickListener {
+            spnr_region_address.performClick()
+        }
+
         SaveBtn.setOnClickListener {
 
             if (Validation.hasText(edt_name, Constants.REQUIRED) && Validation.hasText(
-                    addrsstype,
-                    Constants.REQUIRED
-                ) && Validation.hasText(
                     tvaddress,
                     Constants.REQUIRED
                 ) &&
@@ -170,18 +173,21 @@ class AddAddress : Fragment(), LocationListener {
 
                 if (Helper.isNetworkAvailable(requireContext())) {
                     progressaddress.visibility = View.VISIBLE
+                    var addressType = Constants.HOME
+                    if (rg_region.checkedRadioButtonId == R.id.rb_work)
+                        addressType = Constants.WORK
                     vModel!!.addAddress(
                         RequestModel
                             (
                             accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                            address_type = addrsstype.text.toString(),
+                            address_type = addressType,
                             house_flat = tvaddress.text.toString(),
                             zipcode = tv_zipcode.text.toString(),
                             road_name = tv_roadname.text.toString(),
                             landmark = tv_landmark.text.toString(),
                             name = edt_name.text.toString(),
                             city = edt_city.text.toString(),
-                            country = txt_country.text.toString(),
+                            country = countryCode,
                             default = if (check_default.isChecked) {
                                 1
                             } else {
@@ -211,6 +217,26 @@ class AddAddress : Fragment(), LocationListener {
             }
 
         }
+    }
+
+    private fun initialiseRegion() {
+        val regionList: List<RegionSpinner> = readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext()!!, regionList)
+        spnr_region_address.adapter = regionAdapter
+        spnr_region_address.setOnItemSelectedListener(object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                countryCode = regionList.get(position).name
+                txt_country.text = regionList.get(position).name
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        })
     }
 
     override fun onLocationChanged(location: Location) {
@@ -342,12 +368,12 @@ class AddAddress : Fragment(), LocationListener {
         val geocoder = Geocoder(context, Locale.getDefault())
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1)
-//            edt_name.setText(addresses[0].getAddressLine(0))
             edt_city.setText(addresses[0].locality)
             val state = addresses[0].adminArea
-            txt_country.setText(addresses[0].countryName)
+            txt_country.setText(addresses[0].countryCode)
             tv_zipcode.setText(addresses[0].postalCode)
             tv_roadname.setText(addresses[0].featureName)
+            countryCode = addresses[0].countryCode
         } catch (e: IOException) {
             e.printStackTrace()
         }

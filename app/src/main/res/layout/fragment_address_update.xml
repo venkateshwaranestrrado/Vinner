@@ -210,13 +210,12 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
-                android:hint="Country"
+                android:hint="Select Country"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLines="1"
                 android:paddingLeft="8dp"
                 android:singleLine="true"
-                android:text="SA"
                 android:textColor="@color/black"
                 android:textColorHint="#37000000"
                 android:textSize="14sp"
@@ -225,7 +224,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
 
             <Spinner
-                android:id="@+id/spnr_region"
+                android:id="@+id/spnr_region_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

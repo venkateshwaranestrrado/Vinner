@@ -77,7 +77,7 @@ class EditFragment : Fragment() {
 
     private fun initControll() {
 
-        addrsstype.setText(AddressType)
+//        addrsstype.setText(AddressType)
         tvaddress.setText(Housename)
         tv_zipcode.setText(Pincode)
         tv_roadname.setText(Roadname)
@@ -90,7 +90,7 @@ class EditFragment : Fragment() {
                     RequestModel
                         (
                         accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                        address_type = addrsstype.text.toString(),
+                        address_type = "addrsstype.text.toString()",
                         address_id = Preferences.get(activity, ADDRESS_ID),
                         house_flat = tvaddress.text.toString(),
                         zipcode = tv_zipcode.text.toString(),
