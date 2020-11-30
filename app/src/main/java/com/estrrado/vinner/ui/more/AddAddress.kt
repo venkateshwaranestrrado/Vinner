@@ -3,9 +3,13 @@ package com.estrrado.vinner.ui.more
 import android.Manifest
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.*
+import android.location.LocationListener
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,20 +29,25 @@ import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
-
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.Address_list
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.Task
 import kotlinx.android.synthetic.main.fragment_address_update.*
-import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class AddAddress : Fragment(), LocationListener {
     var vModel: HomeVM? = null
-    private lateinit var location: Location
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
@@ -57,6 +66,8 @@ class AddAddress : Fragment(), LocationListener {
                 )
             )
         ).get(HomeVM::class.java)
+        fusedLocationClient =
+            LocationServices.getFusedLocationProviderClient(this.requireActivity())
 
     }
 
@@ -72,14 +83,72 @@ class AddAddress : Fragment(), LocationListener {
         super.onActivityCreated(savedInstanceState)
         initControll()
         pageTitle.text = "Add Address"
+        locationRequest = LocationRequest().apply {
+            // Sets the desired interval for active location updates. This interval is inexact. You
+            // may not receive updates at all if no location sources are available, or you may
+            // receive them less frequently than requested. You may also receive updates more
+            // frequently than requested if other applications are requesting location at a more
+            // frequent interval.
+            //
+            // IMPORTANT NOTE: Apps running on Android 8.0 and higher devices (regardless of
+            // targetSdkVersion) may receive updates less frequently than this interval when the app
+            // is no longer in the foreground.
+            interval = TimeUnit.SECONDS.toMillis(60000)
+
+            // Sets the fastest rate for active location updates. This interval is exact, and your
+            // application will never receive updates more frequently than this value.
+            fastestInterval = TimeUnit.SECONDS.toMillis(5000)
+
+            // Sets the maximum time when batched location updates are delivered. Updates may be
+            // delivered sooner than this interval.
+//            maxWaitTime = TimeUnit.MINUTES.toMillis(2)
+
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            numUpdates = 1
+        }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                super.onLocationResult(locationResult)
+
+//                        if (locationResult?.lastLocation != null) {
+
+                // Normally, you want to save a new location to a database. We are simplifying
+                // things a bit and just saving it as a local variable, as we only need it again
+                // if a Notification is created (when user navigates away from app).
+//                            currentLocation = locationResult.lastLocation
+//                        }
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.myLooper()
+        )
     }
 
     private fun initControll() {
 
         addresslyt.setOnClickListener {
-//              var loc = getlocation()
-//              onLocationChanged1(loc)
-            getlocation()
+            getLocation()
         }
         SaveBtn.setOnClickListener {
 
@@ -160,51 +229,6 @@ class AddAddress : Fragment(), LocationListener {
 
     }
 
-    //    fun getlocation(){
-//        var locationManager = context?.getSystemService(LOCATION_SERVICE) as LocationManager?
-//        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//            != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(
-//                this.requireActivity(),
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                PERMISSION_REQUEST_ACCESS_FINE_LOCATION)
-//            return
-//        }
-//        locationManager?.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f,this);
-//        var criteria = Criteria();
-//        var bestProvider = locationManager?.getBestProvider(criteria, true);
-//        var location = locationManager?.getLastKnownLocation(bestProvider);
-//        if (location == null) {
-//            Toast.makeText(requireContext(), "GPS signal not found", Toast.LENGTH_SHORT).show();
-//        }
-//        if (location != null) {
-//            onLocationChanged1(location);
-//        }
-//    }
-    fun onLocationChanged1(location: Location) {
-        val geocoder: Geocoder
-        val addresses: List<Address>?
-        geocoder = Geocoder(requireContext(), Locale.getDefault())
-        val latitude = location.latitude
-        val longitude = location.longitude
-        try {
-            addresses = geocoder.getFromLocation(latitude, longitude, 1)
-            if (addresses != null && addresses.size > 0) {
-                val address: String = addresses[0].getAddressLine(0)
-                val city: String = addresses[0].getLocality()
-                val state: String = addresses[0].getAdminArea()
-                val country: String = addresses[0].getCountryName()
-                val postalCode: String = addresses[0].getPostalCode()
-                val knownName: String = addresses[0].featureName
-                val sublocality: String = addresses[0].subLocality
-                tv_zipcode.setText(postalCode)
-                tv_roadname.setText(sublocality + "," + city + "," + state + "," + country)
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -214,7 +238,29 @@ class AddAddress : Fragment(), LocationListener {
         if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
             when (grantResults[0]) {
                 PackageManager.PERMISSION_GRANTED -> {
-                    getlocation()
+                    if (ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                            requireContext(),
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return
+                    }
+                    fusedLocationClient.requestLocationUpdates(
+                        locationRequest,
+                        locationCallback,
+                        Looper.myLooper()
+                    )
+                    getLocation()
                 }
                 PackageManager.PERMISSION_DENIED -> {
                 }//Tell to user the need of grant permission
@@ -222,92 +268,12 @@ class AddAddress : Fragment(), LocationListener {
         }
     }
 
-    //    fun getlocation():Location{
-//
-//        var locationManager =
-//            context?.getSystemService(LOCATION_SERVICE) as LocationManager
-//
-//// getting GPS status
-//
-//// getting GPS status
-//        var isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-//
-//        if (isGPSEnabled) {
-//
-//            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(
-//                    this.requireActivity(),
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-//                )
-//
-//
-//                locationManager.requestLocationUpdates(
-//                    LocationManager.GPS_PROVIDER,
-//                    0L,
-//                    0f,
-//                    this,
-//                    null
-//                )
-//                if (locationManager != null) {
-//                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-//                    if (location != null) {
-//                        //latitude = location.getLatitude()
-//                        //longitude = location.getLongitude()
-//                        return location
-//                    }
-//                }
-//            }
-//        }
-//// getting network status
-//// getting network status
-//        var isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-//
-//        if (isNetworkEnabled) {
-//            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(
-//                    this.requireActivity(),
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-//                )
-//
-//            }
-//            locationManager.requestLocationUpdates(
-//                LocationManager.NETWORK_PROVIDER,
-//                0L,
-//                0f,
-//                this,
-//                null
-//            )
-//            //Log.v("Network", "Network is enabled")
-//            if (locationManager != null) {
-//                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-//                if (location != null) {
-////                latitude = location.getLatitude()
-////                longitude = location.getLongitude()
-//                    return location
-//                    //Log.v("LocationTracker", "Location : " + latitude.toString() + ", " + longitude)
-//                } else {
-//                    //Log.v("LocationTracker", "Location is null")
-//                }
-//            } else {
-//                // Log.v("LocationTracker", "Location manager is null")
-//            }
-//
-//        }
-//        return location
-//    }
-    fun getlocation() {
+    fun getLocation() {
 
-        var locationManager =
+        val locationManager =
             context?.getSystemService(LOCATION_SERVICE) as LocationManager
 
-// getting GPS status
-
-// getting GPS status
-        var isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
         if (isGPSEnabled) {
 
@@ -317,76 +283,91 @@ class AddAddress : Fragment(), LocationListener {
                 )
                 != PackageManager.PERMISSION_GRANTED
             ) {
-                ActivityCompat.requestPermissions(
-                    this.requireActivity(),
+                requestPermissions(
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                     PERMISSION_REQUEST_ACCESS_FINE_LOCATION
                 )
                 return
-
-                locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    0L,
-                    0f,
-                    this,
-                    null
-                )
-                if (locationManager != null) {
-                    location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                    if (location != null) {
-                        //latitude = location.getLatitude()
-                        //longitude = location.getLongitude()
-//                        return location
-                        onLocationChanged1(location)
-                    }
-                }
-            }
-        }
-// getting network status
-// getting network status
-        var isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
-
-        if (isNetworkEnabled) {
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                )
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this.requireActivity(),
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    PERMISSION_REQUEST_ACCESS_FINE_LOCATION
-                )
-                return
-
-            }
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                0L,
-                0f,
-                this,
-                null
-            )
-            //Log.v("Network", "Network is enabled")
-            if (locationManager != null) {
-                location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                if (location != null) {
-
-                    onLocationChanged1(location)
-//                latitude = location.getLatitude()
-//                longitude = location.getLongitude()
-//                    return location
-                    //Log.v("LocationTracker", "Location : " + latitude.toString() + ", " + longitude)
-                } else {
-                    //Log.v("LocationTracker", "Location is null")
-                }
             } else {
-                // Log.v("LocationTracker", "Location manager is null")
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        if (location != null) {
+                            getAddress(location.latitude, location.longitude)
+                        } else printToast(requireContext(), "Location not available")
+                    }
+                fusedLocationClient.lastLocation
             }
+        } else isGPSEnabled()
+    }
+
+    fun isGPSEnabled() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+
+        val result: Task<LocationSettingsResponse> =
+            LocationServices.getSettingsClient(requireActivity())
+                .checkLocationSettings(builder.build())
+
+        result.addOnCompleteListener { task ->
 
         }
-//        return location
+
+        result.addOnSuccessListener { response ->
+            val states = response.locationSettingsStates
+            if (states.isLocationPresent) {
+                getLocation()
+            }
+        }
+        result.addOnFailureListener { e ->
+            if (e is ResolvableApiException) {
+                try {
+                    startIntentSenderForResult(
+                        e.getResolution().getIntentSender(),
+                        LocationRequest.PRIORITY_HIGH_ACCURACY,
+                        null,
+                        0,
+                        0,
+                        0,
+                        null
+                    );
+                } catch (sendEx: IntentSender.SendIntentException) {
+                }
+            }
+        }
     }
+
+    private fun getAddress(latitude: Double, longitude: Double) {
+        val addresses: List<Address>
+        val geocoder = Geocoder(context, Locale.getDefault())
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1)
+//            edt_name.setText(addresses[0].getAddressLine(0))
+            edt_city.setText(addresses[0].locality)
+            val state = addresses[0].adminArea
+            txt_country.setText(addresses[0].countryName)
+            tv_zipcode.setText(addresses[0].postalCode)
+            tv_roadname.setText(addresses[0].featureName)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LocationRequest.PRIORITY_HIGH_ACCURACY) {
+            val locationManager =
+                context?.getSystemService(LOCATION_SERVICE) as LocationManager
+            Handler().postDelayed({
+                val isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+                if (isGPSEnabled) {
+                    getLocation()
+                }
+            }, 1000)
+        }
+    }
+
+
 }
 
