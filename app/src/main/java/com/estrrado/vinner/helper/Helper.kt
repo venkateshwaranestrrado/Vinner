@@ -13,6 +13,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
@@ -25,8 +26,11 @@ import androidx.fragment.app.FragmentActivity
 
 
 import com.estrrado.vinner.R
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.data.models.Region
 import com.estrrado.vinner.helper.Constants.regions
+import kotlinx.android.synthetic.main.dialog_signout.*
+import kotlinx.android.synthetic.main.moree_fragment.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.io.ByteArrayOutputStream
 
@@ -34,16 +38,18 @@ import java.io.ByteArrayOutputStream
 object Helper {
 
     private var dialog: Dialog? = null
-//
-fun isNetworkAvailable(context: Context):Boolean {
-    val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    return if (connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected) {
-        // CheckInternet().execute().get()true
-        true
-    } else {
-        false
+
+    //
+    fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return if (connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected) {
+            // CheckInternet().execute().get()true
+            true
+        } else {
+            false
+        }
     }
-}
 
     fun convertBitmap(bitmap: Bitmap): String {
         var baos = ByteArrayOutputStream()
@@ -64,6 +70,7 @@ fun isNetworkAvailable(context: Context):Boolean {
         }
         return temp
     }
+
     fun getImageUri(inContext: FragmentActivity?, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -71,6 +78,7 @@ fun isNetworkAvailable(context: Context):Boolean {
             MediaStore.Images.Media.insertImage(inContext?.contentResolver, inImage, "ping", null)
         return Uri.parse(path)
     }
+
     fun printAny(request: Any?) {
 //        if (BaseApp.appInstance?.getAppEnvironment() == PayEnvironment.STAGING) {
 //            try {
@@ -80,6 +88,7 @@ fun isNetworkAvailable(context: Context):Boolean {
 //            }
 //        }
     }
+
     fun checkIfPermissionsGranted(context: FragmentActivity?, array: Array<String>): Boolean {
         if (context != null && !context.isFinishing) {
             val valid = arrayOfNulls<Boolean>(array.size)
@@ -94,6 +103,7 @@ fun isNetworkAvailable(context: Context):Boolean {
             return false
         }
     }
+
     fun getRealPathFromURI(activity: FragmentActivity?, uri: Uri): String {
         /*val cursor = activity?.contentResolver?.query(uri, null, null, null, null) as Cursor
         cursor.moveToFirst()
@@ -108,6 +118,7 @@ fun isNetworkAvailable(context: Context):Boolean {
         }
         return ksnvn
     }
+
     fun showSettingspermissionDialog(
         activity: FragmentActivity?, extra: String?, title: String?, content: String?
     ) {
@@ -123,20 +134,21 @@ fun isNetworkAvailable(context: Context):Boolean {
                 })
             }.show()
     }
+
     fun printT(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-   /* fun showLoading(context: FragmentActivity?) {
-        if (dialog != null && dialog!!.isShowing) {
-            dialog!!.dismiss()
-        }
-        dialog = Dialog(context!!, R.style.DialogTheme)
-        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog!!.setCancelable(false)
-        dialog!!.setContentView(R.layout.popup_loading)
-        dialog!!.show()
-    }*/
+    /* fun showLoading(context: FragmentActivity?) {
+         if (dialog != null && dialog!!.isShowing) {
+             dialog!!.dismiss()
+         }
+         dialog = Dialog(context!!, R.style.DialogTheme)
+         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+         dialog!!.setCancelable(false)
+         dialog!!.setContentView(R.layout.popup_loading)
+         dialog!!.show()
+     }*/
 
     /*fun getRealPath(selectedImage: Uri, activity: FragmentActivity): String {
 
@@ -150,34 +162,35 @@ fun isNetworkAvailable(context: Context):Boolean {
         return null
     }*/
 
-   /* fun hideLoading() {
-        if (dialog?.isShowing!!) {
-            dialog!!.dismiss()
-        }
-    }*/
+    /* fun hideLoading() {
+         if (dialog?.isShowing!!) {
+             dialog!!.dismiss()
+         }
+     }*/
 
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "ping", null)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "ping", null)
         return Uri.parse(path)
     }
 
     fun isUserIsLogined(activity: FragmentActivity): Boolean {
-       /* if (AppPreference?.getInstance().readBoolean(IS_LOGGED)) {
-            return true
-        }
+        /* if (AppPreference?.getInstance().readBoolean(IS_LOGGED)) {
+             return true
+         }
 
-        var intent = Intent(activity, LaunchActivity::class.java)
-        intent.putExtra(DATA, LOGIN_PAGE)
-        activity.startActivity(intent)
-*/
+         var intent = Intent(activity, LaunchActivity::class.java)
+         intent.putExtra(DATA, LOGIN_PAGE)
+         activity.startActivity(intent)
+ */
         return false
     }
 
-    fun setLocation(spinner:Spinner, context: Context) {
-        val region:ArrayList<String> = ArrayList<String>()
-        for(i in 0 until regions!!.size){
+    fun setLocation(spinner: Spinner, context: Context) {
+        val region: ArrayList<String> = ArrayList<String>()
+        for (i in 0 until regions!!.size) {
             region.add(regions.get(i).countryName!!)
         }
 
@@ -205,6 +218,30 @@ fun isNetworkAvailable(context: Context):Boolean {
     fun hideKeyboard(context: Context, view: View) {
         val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun showAlert(msg: String, from: Int, alertCallback: AlertCallback, context: Context) {
+        val mbuilder = AlertDialog.Builder(context)
+        val dialogview =
+            LayoutInflater.from(context).inflate(R.layout.dialog_signout, null, false);
+        mbuilder.setView(dialogview)
+        val malertDialog = mbuilder.show()
+        malertDialog.txt_msg.setText(msg)
+        malertDialog?.window?.setBackgroundDrawableResource(R.color.transparent)
+        malertDialog?.yes?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                alertCallback.alertSelected(true)
+                malertDialog.cancel()
+            }
+
+        })
+        malertDialog?.no?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                alertCallback.alertSelected(false)
+                malertDialog.cancel()
+            }
+
+        })
     }
 
 }
