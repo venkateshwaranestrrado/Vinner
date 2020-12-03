@@ -37,6 +37,7 @@ import com.estrrado.vinner.helper.Constants.regions
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Helper.showAlert
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Preferences.COUNTRY_POSITION
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.readFromAsset
@@ -55,11 +56,8 @@ class HomeFragment : Fragment(), AlertCallback {
     var mTimer = Timer()
     var timerLoad: Boolean = true
     var spnrSelected: Int = 0
+    var spnrPosition: Int = 0
     var regionList: List<RegionSpinner>? = null
-    override fun onResume() {
-        super.onResume()
-        initControl()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,6 +98,8 @@ class HomeFragment : Fragment(), AlertCallback {
         regionList = readFromAsset(requireActivity())
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region.adapter = regionAdapter
+        if (!Preferences.get(activity, COUNTRY_POSITION).equals(""))
+            spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
 //                        setLocation(spnr_region, this!!.requireContext()!!)
 
         spnr_region.setOnItemSelectedListener(object :
@@ -110,10 +110,7 @@ class HomeFragment : Fragment(), AlertCallback {
                 position: Int,
                 id: Long
             ) {
-                val code = regionList!!.get(position).code
-                val name = regionList!!.get(position).name
-                Preferences.put(activity, Preferences.REGION_NAME, name!!)
-                Preferences.put(activity, Preferences.REGION_CODE, code!!)
+                spnrPosition = position
                 if (spnrSelected != 0)
                     showAlert(
                         "If you change Region, Your cart items will be removed.",
@@ -121,16 +118,26 @@ class HomeFragment : Fragment(), AlertCallback {
                         alertCallback = this@HomeFragment,
                         context = requireContext()
                     )
+                else {
+                    setCountry()
+                    initControl()
+                }
                 spnrSelected = spnrSelected + 1
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })
-        initControl()
-        progresshome.visibility = View.VISIBLE
         tv_prod_see_all.setOnClickListener {
             view?.findNavController()?.navigate(R.id.action_navigation_home_to_productListFragment)
         }
+    }
+
+    private fun setCountry() {
+        val code = regionList!!.get(spnrPosition).code
+        val name = regionList!!.get(spnrPosition).name
+        Preferences.put(activity, REGION_NAME, name!!)
+        Preferences.put(activity, COUNTRY_POSITION, spnrPosition.toString())
+        Preferences.put(activity, Preferences.REGION_CODE, code!!)
     }
 
 
@@ -152,9 +159,10 @@ class HomeFragment : Fragment(), AlertCallback {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
             requestModel.countryCode = Preferences.get(activity, REGION_NAME)
-
+            progresshome.visibility = View.VISIBLE
             vModel!!.home(requestModel).observe(requireActivity(),
                 Observer {
+                    progresshome.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
 
                         if (it!!.data!!.cartid != null)
@@ -255,6 +263,7 @@ class HomeFragment : Fragment(), AlertCallback {
 
     override fun alertSelected(isSelected: Boolean) {
         if (isSelected) {
+            setCountry()
             if (Helper.isNetworkAvailable(requireContext())) {
                 if (Preferences.get(activity, CART_ID).equals("0")) {
                     initControl()
@@ -276,6 +285,10 @@ class HomeFragment : Fragment(), AlertCallback {
                 progresshome.visibility = View.GONE
                 Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
             }
+        } else {
+            spnrSelected = 0
+            if (!Preferences.get(activity, COUNTRY_POSITION).equals(""))
+                spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
         }
     }
 

@@ -10,6 +10,7 @@ object Preferences {
     const val TOKEN = "id"
     var REGION_CODE="code"
     var REGION_NAME="name"
+    var COUNTRY_POSITION="country_position"
     var CATEGORY_ID="cat_id"
     var OPERATOR_ID="operator_id"
     var NAME="NAME"

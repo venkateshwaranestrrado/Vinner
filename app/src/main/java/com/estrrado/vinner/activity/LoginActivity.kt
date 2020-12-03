@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 class LoginActivity : AppCompatActivity(), OnClickListener {
 
     var authenticateVM: AuthVM? = null
- var json_string:String?=null
+    var json_string: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login)
@@ -52,13 +52,15 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
             ) {
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 val gson = Gson()
-                val modelList: List<RegionSpinner> = gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
+                val modelList: List<RegionSpinner> =
+                    gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
                 var code = modelList.get(position).code
-                var name= modelList.get(position).name
+                var name = modelList.get(position).name
                 Preferences.put(this@LoginActivity, REGION_NAME, name)
                 Preferences.put(this@LoginActivity, REGION_CODE, code)
-
+                Preferences.put(this@LoginActivity, Preferences.COUNTRY_POSITION, position.toString())
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })
 //        tvnewuser.setOnClickListener(this)
@@ -87,13 +89,13 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
 //            }
 
             R.id.tvSubmit -> {
-                progress.visibility=View.VISIBLE
-              var Regioncode=Preferences.get(this, REGION_CODE)
-                if ((phone.validate()) ) {
+                progress.visibility = View.VISIBLE
+                var Regioncode = Preferences.get(this, REGION_CODE)
+                if ((phone.validate())) {
 
                     if (Helper.isNetworkAvailable(this)) {
                         var phoneNum = phone.text.toString()
-                        phoneNum= phoneNum
+                        phoneNum = phoneNum
                         authenticateVM!!.login(
                             Input(
                                 "", "",
@@ -103,10 +105,10 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                         ).observe(this,
                             Observer {
 
-                              printToast(this, it?.message.toString())
+                                printToast(this, it?.message.toString())
                                 if (it?.status.equals(SUCCESS)) {
 
-                                    progress.visibility=View.GONE
+                                    progress.visibility = View.GONE
                                     Preferences.put(this, MOBILE, phoneNum)
                                     startActivity(Intent(this, OtpActivity::class.java))
                                     finish()
@@ -115,11 +117,9 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
 //                                Toast.makeText(this,"Invalid  Credential ",Toast.LENGTH_SHORT).show()
 
                             })
-                    }
-                    else
-                    {
-                        progress.visibility=View.GONE
-                        Toast.makeText(this,"No Network Available",Toast.LENGTH_SHORT).show()
+                    } else {
+                        progress.visibility = View.GONE
+                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show()
                     }
                 }
 //                else
@@ -133,11 +133,12 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
     private fun readFromAsset(): List<RegionSpinner> {
         val file_name = "login_region.json"
         val bufferReader = application.assets.open(file_name).bufferedReader()
-       json_string = bufferReader.use {
+        json_string = bufferReader.use {
             it.readText()
         }
         val gson = Gson()
-        val modelList: List<RegionSpinner> = gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
+        val modelList: List<RegionSpinner> =
+            gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
         return modelList
     }
 }
