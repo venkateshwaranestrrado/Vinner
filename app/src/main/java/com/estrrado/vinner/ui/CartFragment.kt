@@ -11,7 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -22,14 +21,11 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CartAdapter
-import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.Cart
 import com.estrrado.vinner.data.models.CartItem
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Datum
-import com.estrrado.vinner.retrofit.ApiClient
-import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
@@ -41,12 +37,14 @@ import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.logo
+import com.estrrado.vinner.helper.Helper
+import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.more.AddAddress
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
@@ -98,13 +96,12 @@ class CartFragment : Fragment(), CartadapterCallBack {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         textView5.text = "Cart"
-//        (activity as VinnerActivity).refreshBadgeView()
-//        (activity as VinnerActivity).close()
         progresscart.visibility = View.VISIBLE
         Glide.with(requireContext())
             .load(logo)
             .thumbnail(0.1f)
             .into(img_logo)
+        getCheckoutAddress()
         initControl()
         getCart()
         getOperators()
@@ -416,6 +413,44 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 })
         } else {
             progresscart.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun getCheckoutAddress() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, REGION_NAME)
+            vModel!!.getCheckoutAddressList(requestModel).observe(this,
+                Observer {
+                    if (it?.status.equals(SUCCESS)) {
+                        var checkoutAddressList = it!!.data
+                        if (checkoutAddressList != null && checkoutAddressList.size > 0) {
+                            cardview_deliveryaddress.visibility = View.VISIBLE
+                            layout_add_address.visibility = View.GONE
+                            var adress = ""
+                            for (i in 0 until checkoutAddressList!!.size) {
+                                if (i == 0 || checkoutAddressList!!.get(i)!!.default == "1")
+                                    adress = checkoutAddressList.get(i).name + ", " +
+                                            checkoutAddressList.get(i).road_name + ", " +
+                                            checkoutAddressList.get(i).city + " " +
+                                            checkoutAddressList.get(i).zip + ", " +
+                                            checkoutAddressList.get(i).country + ", "
+
+                            }
+                            txt_address.text = adress
+                        } else {
+                            cardview_deliveryaddress.visibility = View.GONE
+                            layout_add_address.visibility = View.VISIBLE
+                        }
+                    } else {
+                        cardview_deliveryaddress.visibility = View.GONE
+                        layout_add_address.visibility = View.VISIBLE
+                    }
+                })
+        } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
     }

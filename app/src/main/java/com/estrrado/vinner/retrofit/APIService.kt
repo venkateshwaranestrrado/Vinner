@@ -167,6 +167,13 @@ interface APIService {
     ): Observable<DataListModel>
 
     @FormUrlEncoded
+    @POST("checkout_address_list")
+    fun checkoutAddressList(
+        @Field("access_token") accessToken: String?,
+        @Field("country_code") countryCode: String?
+    ): Observable<AddressModel>
+
+    @FormUrlEncoded
     @POST("address_list")
     fun addressList(
         @Field("access_token") accessToken: String?

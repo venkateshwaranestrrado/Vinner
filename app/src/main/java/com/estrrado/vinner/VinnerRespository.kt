@@ -379,6 +379,23 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
+    fun checkoutAddressList(input: RequestModel): MutableLiveData<AddressModel?> {
+        val data = MutableLiveData<AddressModel?>()
+        apiService?.checkoutAddressList(
+            input.accessToken,
+            input.countryCode
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
+
+            })
+        return data
+    }
+
+    @SuppressLint("CheckResult")
     fun Profile(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.profile(

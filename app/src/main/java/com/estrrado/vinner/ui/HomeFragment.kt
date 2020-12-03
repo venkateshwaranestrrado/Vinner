@@ -112,9 +112,9 @@ class HomeFragment : Fragment(), AlertCallback {
                 Preferences.put(activity, Preferences.REGION_NAME, name!!)
                 Preferences.put(activity, Preferences.REGION_CODE, code!!)
                 initControl()
-                showAlert("If you change Region, Your cart items will be removed.", 1, alertCallback = this@HomeFragment,
-                    context = requireContext()
-                )
+//                showAlert("If you change Region, Your cart items will be removed.", 1, alertCallback = this@HomeFragment,
+//                    context = requireContext()
+//                )
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}

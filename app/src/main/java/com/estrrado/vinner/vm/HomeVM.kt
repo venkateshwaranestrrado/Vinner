@@ -21,6 +21,7 @@ class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun addAddress(input: RequestModel) = respo.addAddress(input)
     fun editAddress(input: RequestModel) = respo.geteditAddress(input)
     fun getaddresslist(input: RequestModel) = respo.AddressList(input)
+    fun getCheckoutAddressList(input: RequestModel) = respo.checkoutAddressList(input)
     fun getProfile(input: RequestModel) = respo.Profile(input)
     fun getUpdatedProfile(input: RequestModel) = respo.UpdateProfile(input)
     fun getCategorylist(input: RequestModel) = respo.Category(input)
