@@ -47,9 +47,13 @@ class Data {
 //    @Expose
 //    private var mobile: String? = null
 
-    @SerializedName("error")
+    @SerializedName("cartcount")
     @Expose
-    private var error: String? = null
+    var cartcount: String? = null
+
+    @SerializedName("cartid")
+    @Expose
+    public var cartid: String? = null
 
     @SerializedName("redirect")
     @Expose

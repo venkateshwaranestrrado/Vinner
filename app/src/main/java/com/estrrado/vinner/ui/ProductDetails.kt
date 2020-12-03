@@ -55,7 +55,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
     private var param2: String? = null
     var vModel: HomeVM? = null
     var productId: String = ""
-    var json_string:String?=null
+    var json_string: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -87,7 +87,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 )
             )
         ).get(HomeVM::class.java)
-        progressproductdetail.visibility=View.VISIBLE
+        progressproductdetail.visibility = View.VISIBLE
 //        Glide.with(this!!.requireActivity()!!)
 //            .load(logo)
 //            .thumbnail(0.1f)
@@ -120,7 +120,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-            requestModel.countryCode=Preferences.get(activity, Preferences.REGION_NAME)
+            requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
 //            requestModel.productId = productId
             requestModel.productId = productId
             vModel!!.productDetail(requestModel).observe(requireActivity(),
@@ -130,10 +130,12 @@ class ProductDetails : Fragment(), View.OnClickListener {
                         setProductDetail(it!!.data!!)
 
 
-                        if(it!!.data!!.getProduct()!!.return_policy!=""){
+                        if (it!!.data!!.getProduct()!!.return_policy != "") {
                             button3.setOnClickListener(object : View.OnClickListener {
                                 override fun onClick(view: View) {
-                                    val alertDialog: android.app.AlertDialog? = android.app.AlertDialog.Builder(activity).create() //Read Update
+                                    val alertDialog: android.app.AlertDialog? =
+                                        android.app.AlertDialog.Builder(activity)
+                                            .create() //Read Update
                                     alertDialog!!.setTitle("Return Policy")
                                     alertDialog.setMessage(it.data!!.getProduct()!!.return_policy)
                                     alertDialog.setButton("Cancel",
@@ -143,17 +145,18 @@ class ProductDetails : Fragment(), View.OnClickListener {
                                     alertDialog.show() //<-- See This!
                                 }
                             })
-                        }
-                        else
-                            printToast(requireContext(),"No Return Policy Available for this product")
+                        } else
+                            printToast(
+                                requireContext(),
+                                "No Return Policy Available for this product"
+                            )
                     } else
                         printToast(this!!.requireContext()!!, it?.message.toString())
 
                 })
-        }
-        else{
+        } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
-            progressproductdetail.visibility=View.GONE
+            progressproductdetail.visibility = View.GONE
         }
     }
 
@@ -162,7 +165,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-            requestModel.countryCode=Preferences.get(activity, Preferences.REGION_NAME)
+            requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
             requestModel.productId = productId
 
             vModel!!.addCart(requestModel).observe(this,
@@ -181,8 +184,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
                         printToast(this!!.requireContext()!!, it?.message.toString())
                     }
                 })
-        }
-        else{
+        } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
     }
@@ -196,9 +198,9 @@ class ProductDetails : Fragment(), View.OnClickListener {
         if (product != null) {
             progressproductdetail.visibility = View.GONE
 
-            if ((product.price=="null")||(product.price=="")||(product.price=="0")){
-                addcart.visibility=View.GONE
-                buy.visibility=View.GONE
+            if ((product.price == "null") || (product.price == "") || (product.price == "0")) {
+                addcart.visibility = View.GONE
+                buy.visibility = View.GONE
                 Validation.printToast(requireContext(), "THE PRODUCT IS UNAVAILABLE IN THIS REGION")
             }
             if (product.productImage != null)
@@ -265,6 +267,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
         }
 
     }
+
     private fun readFromAsset(): List<RegionSpinner> {
         val file_name = "login_region.json"
         val bufferReader = requireActivity()!!.assets.open(file_name).bufferedReader()

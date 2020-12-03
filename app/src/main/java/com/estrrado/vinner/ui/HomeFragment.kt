@@ -43,8 +43,10 @@ import com.estrrado.vinner.helper.readFromAsset
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.view_notification_bage.*
 import java.util.*
 
 
@@ -52,6 +54,7 @@ class HomeFragment : Fragment(), AlertCallback {
     var vModel: HomeVM? = null
     var mTimer = Timer()
     var timerLoad: Boolean = true
+    var spnrSelected: Int = 0
     var regionList: List<RegionSpinner>? = null
     override fun onResume() {
         super.onResume()
@@ -111,10 +114,14 @@ class HomeFragment : Fragment(), AlertCallback {
                 val name = regionList!!.get(position).name
                 Preferences.put(activity, Preferences.REGION_NAME, name!!)
                 Preferences.put(activity, Preferences.REGION_CODE, code!!)
-                initControl()
-//                showAlert("If you change Region, Your cart items will be removed.", 1, alertCallback = this@HomeFragment,
-//                    context = requireContext()
-//                )
+                if (spnrSelected != 0)
+                    showAlert(
+                        "If you change Region, Your cart items will be removed.",
+                        1,
+                        alertCallback = this@HomeFragment,
+                        context = requireContext()
+                    )
+                spnrSelected = spnrSelected + 1
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -150,9 +157,13 @@ class HomeFragment : Fragment(), AlertCallback {
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
 
+                        if (it!!.data!!.cartid != null)
+                            Preferences.put(activity, CART_ID, it.data!!.cartid.toString())
+                        else
+                            Preferences.put(activity, CART_ID, "0")
+                        (activity as VinnerActivity).refreshBadgeView(it.data!!.cartcount)
                         progresshome.visibility = View.GONE
                         regions = it!!.data!!.regions!!
-
                         setBannerImgs(it!!.data!!.bannerSlider)
                         setProducts(it.data!!.featured)
                         setCategories(it.data!!.categories)
@@ -244,43 +255,27 @@ class HomeFragment : Fragment(), AlertCallback {
 
     override fun alertSelected(isSelected: Boolean) {
         if (isSelected) {
-//            if (Helper.isNetworkAvailable(requireContext())) {
-//                val requestModel = RequestModel()
-//                requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-//                requestModel.cartId = Preferences.get(activity, CART_ID)
-//
-//                vModel!!.home(requestModel).observe(requireActivity(),
-//                    Observer {
-//                        if (it?.status.equals(SUCCESS)) {
-//
-//                            progresshome.visibility = View.GONE
-//                            regions = it!!.data!!.regions!!
-//
-//                            setBannerImgs(it!!.data!!.bannerSlider)
-//                            setProducts(it.data!!.featured)
-//                            setCategories(it.data!!.categories)
-//                            logo = it!!.data?.logo!!
-//                            Glide.with(this!!.requireActivity()!!)
-//                                .load(logo)
-//                                .thumbnail(0.1f)
-//                                .into(img_logo)
-//                        } else {
-//                            if (it?.message.equals("Invalid access token")) {
-//                                progresshome.visibility = View.GONE
-//                                startActivity(Intent(activity, LoginActivity::class.java))
-//                                requireActivity().finish()
-//                            } else {
-//                                printToast(requireContext(), it?.message!!)
-//                            }
-//                            printToast(this!!.requireContext()!!, it?.message.toString())
-//                        }
-//                    }
-//
-//                )
-//            } else {
-//                progresshome.visibility = View.GONE
-//                Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
-//            }
+            if (Helper.isNetworkAvailable(requireContext())) {
+                if (Preferences.get(activity, CART_ID).equals("0")) {
+                    initControl()
+                    return
+                }
+                val requestModel = RequestModel()
+                requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+                requestModel.cartId = Preferences.get(activity, CART_ID)
+                progresshome.visibility = View.VISIBLE
+                vModel!!.emptyCart(requestModel).observe(requireActivity(),
+                    Observer {
+                        progresshome.visibility = View.GONE
+                        printToast(requireContext(), it?.message!!)
+                        initControl()
+                    }
+
+                )
+            } else {
+                progresshome.visibility = View.GONE
+                Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

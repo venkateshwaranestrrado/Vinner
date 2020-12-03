@@ -263,14 +263,10 @@ class CartFragment : Fragment(), CartadapterCallBack {
             vModel!!.getCartPage(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-
-
-//                                    requireActivity().notificationsBadgeTextView.setText(it!!.data!!.getItemsTotal())
                         if ((it!!.data!!.getItemsTotal() == null) || (it.data!!.getItemsTotal() == "0")) {
                             empty.visibility = View.VISIBLE
-                            (activity as VinnerActivity).refreshBadgeView()
                         }
-
+                        (activity as VinnerActivity).refreshBadgeView(it.data!!.getItemsTotal())
                         if (it.data!!.getAddress() != null) {
                             cardview_deliveryaddress.visibility = View.VISIBLE
 
@@ -309,12 +305,11 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             productList.adapter = cartAdapter
                             itemCount.text = cartItems!!.size.toString() + " Items"
                             cartFound = true
-                            requireActivity().notificationsBadgeTextView.setText(it.data.getItemsTotal())
+                            (activity as VinnerActivity).refreshBadgeView(it.data.getItemsTotal())
                         } else {
                             empty.visibility = View.VISIBLE
                             cart.visibility = View.GONE
                             cartFound = false
-//                        requireActivity().notificationsBadgeTextView.visibility==View.GONE
                             printToast(requireContext(), "Not Found")
                         }
 
@@ -363,10 +358,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             vModel!!.updateCart(requestModel).observe(this,
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-
                         progresscart.visibility = View.GONE
-//                  requireActivity().notificationsBadgeTextView.setText(it!!.data!!.getItemsTotal())
-
                         cartItems!!.get(position)!!.productTotal = it!!.data!!.getProductTotal()
                         cartItems!!.get(position)!!.productQuantity = it.data!!.getProductQty()
                         cartAdapter!!.notifyDataSetChanged()
@@ -404,11 +396,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         cartAdapter!!.notifyDataSetChanged()
                         getCart()
                         itemCount.text = cartItems!!.size.toString() + " Items"
-                        if (cartItems != null) {
-                            requireActivity().notificationsBadgeTextView.setText(it!!.data!!.getItemsTotal())
-                        }
-
-
+                        (activity as VinnerActivity).refreshBadgeView(it!!.data!!.getItemsTotal())
                     }
                 })
         } else {
