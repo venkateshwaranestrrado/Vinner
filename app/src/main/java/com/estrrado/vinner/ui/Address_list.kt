@@ -12,13 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
-import com.estrrado.vinner.helper.*
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDRESS_ID
 import com.estrrado.vinner.helper.Constants.CITY
@@ -28,9 +29,10 @@ import com.estrrado.vinner.helper.Constants.IS_DEFAULT
 import com.estrrado.vinner.helper.Constants.IS_EDIT
 import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
-import com.estrrado.vinner.helper.Constants.PHONE
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
+import com.estrrado.vinner.helper.Helper
+import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.more.AddAddress
@@ -80,7 +82,10 @@ class Address_list : Fragment() {
             )
         ).get(HomeVM::class.java)
         initControll()
-        getData()
+        val i = arguments?.getInt(Constants.FROM)
+        if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(Constants.FROM) != 1)
+            getData()
+        else getCheckoutAddress()
         initialiseSearch()
         pageTitle.text = "Address List"
     }
@@ -115,6 +120,9 @@ class Address_list : Fragment() {
         const_add_new_address.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, AddAddress()).commit()
+
+            requireView().findNavController()
+                .navigate(R.id.action_address_list_to_addAddress)
         }
 
 
@@ -122,7 +130,7 @@ class Address_list : Fragment() {
 
     private fun getData() {
         if (com.estrrado.vinner.helper.Helper.isNetworkAvailable(requireContext())) {
-//            progressaddresslist.visibility = View.VISIBLE
+            progressaddresslist.visibility = View.VISIBLE
 
             vModel!!.getaddresslist(
                 RequestModel
@@ -330,6 +338,52 @@ class Address_list : Fragment() {
                 })
             }
 
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun getCheckoutAddress() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
+            progressaddresslist.visibility = View.VISIBLE
+            vModel!!.getCheckoutAddressList(requestModel).observe(this,
+                Observer {
+                    progressaddresslist.visibility = View.GONE
+                    if (it?.status.equals(Constants.SUCCESS)) {
+//                        var checkoutAddressList = it!!.data
+//                        if (checkoutAddressList != null && checkoutAddressList.size > 0) {
+//                            cardview_deliveryaddress.visibility = View.VISIBLE
+//                            layout_add_address.visibility = View.GONE
+//                            var adress = ""
+//                            for (i in 0 until checkoutAddressList!!.size) {
+//                                if (i == 0 || checkoutAddressList!!.get(i)!!.default == "1")
+//                                    adress = checkoutAddressList.get(i).name + ", " +
+//                                            checkoutAddressList.get(i).road_name + ", " +
+//                                            checkoutAddressList.get(i).city + " " +
+//                                            checkoutAddressList.get(i).zip + ", " +
+//                                            checkoutAddressList.get(i).country + ", "
+//
+//                            }
+//                            txt_address.text = adress
+//                        } else {
+//                            cardview_deliveryaddress.visibility = View.GONE
+//                            layout_add_address.visibility = View.VISIBLE
+//                        }
+
+                        recy_address_list.adapter = addressAdapter
+                        recy_address_list.layoutManager = LinearLayoutManager(requireContext())
+                        address = it!!.data!!.get(0).adrs_id
+                        Preferences.put(activity, Preferences.ADDRESS_ID, address!!)
+                    } else {
+                        printToast(requireContext(), it!!.message!!)
+//                        cardview_deliveryaddress.visibility = View.GONE
+//                        layout_add_address.visibility = View.VISIBLE
+                    }
+                })
+        } else {
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
     }
 

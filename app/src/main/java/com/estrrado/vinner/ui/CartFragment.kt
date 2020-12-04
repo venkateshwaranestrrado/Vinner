@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -21,11 +22,13 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CartAdapter
+import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.Cart
 import com.estrrado.vinner.data.models.CartItem
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Datum
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
@@ -42,14 +45,12 @@ import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
-import com.estrrado.vinner.ui.more.AddAddress
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.view_notification_bage.*
 
 class CartFragment : Fragment(), CartadapterCallBack {
 
@@ -67,6 +68,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var pincode: String? = null
     var addressType: String? = null
     private var cartFound: Boolean = false
+    var regionList: List<RegionSpinner>? = null
 
     var json_string: String? = null
     override fun onCreateView(
@@ -101,7 +103,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             .load(logo)
             .thumbnail(0.1f)
             .into(img_logo)
-        getCheckoutAddress()
+//        getCheckoutAddress()
         initControl()
         getCart()
         getOperators()
@@ -179,7 +181,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         checkout.setEnabled(true);
                     } else {
                         txt_delivery_fee.text = "0"
-                        printToast(requireContext(), "No Shipping is available in this area")
+                        printToast(requireContext(), it!!.message!!)
                         txt_sub_total.text = "0"
                         totalAmount.text = "0"
 
@@ -237,16 +239,29 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
         val aa = ArrayAdapter(requireContext(), R.layout.spinner_item, dOperator.toTypedArray())
         spinner_operators.adapter = aa
+        if (dOperator != null && dOperator.size > 0) {
+            spinner_operators.visibility = View.VISIBLE
+            textView8.visibility = View.GONE
+        }
     }
 
     private fun initControl() {
-
+        spnr_region.visibility = View.VISIBLE
+        spnr_region.isEnabled = false
+        regionList = com.estrrado.vinner.helper.readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
+        spnr_region.adapter = regionAdapter
+        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
+            spnr_region.setSelection(Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt())
         cont_shop.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, HomeFragment()).commit()
         }
 
-
+        layout_add_address.setOnClickListener {
+            val bundle = bundleOf(Constants.FROM to 1)
+            Navigation.findNavController(it).navigate(R.id.action_navigation_cart_to_address_list, bundle)
+        }
 
         productList.layoutManager = LinearLayoutManager(activity as VinnerActivity)
         // productList.isNestedScrollingEnabled = false
@@ -271,8 +286,8 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             cardview_deliveryaddress.visibility = View.VISIBLE
 
                             img_edit_address.setOnClickListener {
-                                requireActivity().supportFragmentManager.beginTransaction()
-                                    .replace(R.id.nav_host_fragment, Address_list()).commit()
+                                val bundle = bundleOf(Constants.FROM to 1)
+                                Navigation.findNavController(it).navigate(R.id.action_navigation_cart_to_address_list, bundle)
                             }
                             txt_address.text =
                                 it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
@@ -291,10 +306,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
                         } else {
                             layout_add_address.visibility = View.VISIBLE
-                            layout_add_address.setOnClickListener {
-                                requireActivity().supportFragmentManager.beginTransaction()
-                                    .replace(R.id.nav_host_fragment, AddAddress()).commit()
-                            }
                         }
                         progresscart.visibility = View.GONE
                         cartItems = it.data.getCartItems()
@@ -401,44 +412,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 })
         } else {
             progresscart.visibility = View.GONE
-            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
-    fun getCheckoutAddress() {
-        if (Helper.isNetworkAvailable(requireContext())) {
-            val requestModel = RequestModel()
-            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-            requestModel.countryCode = Preferences.get(activity, REGION_NAME)
-            vModel!!.getCheckoutAddressList(requestModel).observe(this,
-                Observer {
-                    if (it?.status.equals(SUCCESS)) {
-                        var checkoutAddressList = it!!.data
-                        if (checkoutAddressList != null && checkoutAddressList.size > 0) {
-                            cardview_deliveryaddress.visibility = View.VISIBLE
-                            layout_add_address.visibility = View.GONE
-                            var adress = ""
-                            for (i in 0 until checkoutAddressList!!.size) {
-                                if (i == 0 || checkoutAddressList!!.get(i)!!.default == "1")
-                                    adress = checkoutAddressList.get(i).name + ", " +
-                                            checkoutAddressList.get(i).road_name + ", " +
-                                            checkoutAddressList.get(i).city + " " +
-                                            checkoutAddressList.get(i).zip + ", " +
-                                            checkoutAddressList.get(i).country + ", "
-
-                            }
-                            txt_address.text = adress
-                        } else {
-                            cardview_deliveryaddress.visibility = View.GONE
-                            layout_add_address.visibility = View.VISIBLE
-                        }
-                    } else {
-                        cardview_deliveryaddress.visibility = View.GONE
-                        layout_add_address.visibility = View.VISIBLE
-                    }
-                })
-        } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
     }

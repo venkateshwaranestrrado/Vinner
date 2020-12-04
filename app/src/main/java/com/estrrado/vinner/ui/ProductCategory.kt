@@ -54,7 +54,7 @@ class ProductCategory : Fragment() {
     private var vModel: HomeVM? = null
     var productId: String = ""
     var categoryId: String = ""
-    var categoryName:String=""
+    var categoryName: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -84,41 +84,40 @@ class ProductCategory : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-progresscategorylist.visibility=View.VISIBLE
+        progresscategorylist.visibility = View.VISIBLE
         initcontroll()
         categoryId = arguments?.getString(PRODUCT_ID)!!
-        categoryName=arguments?.getString(PRODUCT_NAME)!!
-        pageTitle.text=categoryName
+        categoryName = arguments?.getString(PRODUCT_NAME)!!
+        pageTitle.text = categoryName
     }
 
-    private fun initcontroll(){
+    private fun initcontroll() {
         categoryId = arguments?.getString(PRODUCT_ID)!!
-        categoryName=arguments?.getString(PRODUCT_NAME)!!
+        categoryName = arguments?.getString(PRODUCT_NAME)!!
         val requestModel = RequestModel()
         requestModel.accessToken = get(activity, ACCESS_TOKEN)
-        requestModel.countryCode=get(activity, REGION_NAME)
-        requestModel.category_id=categoryId
+        requestModel.countryCode = get(activity, REGION_NAME)
+        requestModel.category_id = categoryId
         vModel!!.getCategorylist(requestModel)
             .observe(requireActivity(),
-            Observer {
-                if(it!!.data!!.size>0) {
-                    progresscategorylist.visibility = View.GONE
+                Observer {
+                    if (it!!.data!!.size > 0) {
+                        progresscategorylist.visibility = View.GONE
 
-                    recy_categry_lst.adapter = CategryList(requireActivity(), it!!.data,view)
-                    recy_categry_lst.layoutManager = (GridLayoutManager(activity, 2))
+                        recy_categry_lst.adapter = CategryList(requireActivity(), it!!.data, view)
+                        recy_categry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
-                }
-                else{
-                    progresscategorylist.visibility = View.GONE
-                    emptylist.visibility=View.VISIBLE
-                }
+                    } else {
+                        progresscategorylist.visibility = View.GONE
+                        emptylist.visibility = View.VISIBLE
+                    }
 
-            })
+                })
 
-            }
+    }
 
 
-        }
+}
 
 
 

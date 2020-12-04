@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
+import com.estrrado.vinner.adapters.RegionAdapter
+import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
@@ -50,6 +52,7 @@ class CheckoutFragment : Fragment() {
     var landmark: String? = null
     var pincode: String? = null
     var addressType: String? = null
+    var regionList: List<RegionSpinner>? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,12 +73,12 @@ class CheckoutFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_checkout, container, false)
         operatorId = arguments?.getString(OPERATOR_ID)!!
-        address=arguments?.getString(ADDRESS)
-        housename=arguments?.getString(HOUSENAME)
-        Roadname=arguments?.getString(ROAD_NAME)
-        pincode=arguments?.getString(PINCODE)
-        addressType=arguments?.getString(ADDDRESS_TYPE)
-        landmark=arguments?.getString(LANDMARK)
+        address = arguments?.getString(ADDRESS)
+        housename = arguments?.getString(HOUSENAME)
+        Roadname = arguments?.getString(ROAD_NAME)
+        pincode = arguments?.getString(PINCODE)
+        addressType = arguments?.getString(ADDDRESS_TYPE)
+        landmark = arguments?.getString(LANDMARK)
         return root
 
 
@@ -84,11 +87,19 @@ class CheckoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       pageTitle.text = "Checkout"
-        progresscheckout.visibility=View.VISIBLE
+        pageTitle.text = "Checkout"
+        progresscheckout.visibility = View.VISIBLE
         getDeleveryFee()
         txt_address.setText(address)
-
+//        spnr_region.visibility = View.VISIBLE
+//        spnr_region.isEnabled = false
+//        regionList = readFromAsset(requireActivity())
+//        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
+//        spnr_region.adapter = regionAdapter
+//        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
+//            spnr_region.setSelection(
+//                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
+//            )
 //        card_payfort.setOnClickListener {
 //            val bundle = Bundle()
 //            bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
@@ -117,13 +128,13 @@ class CheckoutFragment : Fragment() {
                     pincode = arguments?.getString(PINCODE),
                     payment_status = "pending",
                     payment_method = "cod",
-                    operatorId =  operatorId
+                    operatorId = operatorId
 
                 )
             ).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-                        progresscheckout.visibility=View.GONE
+                        progresscheckout.visibility = View.GONE
                         printToast(requireContext(), "payment successfull")
                         val fragmenttransaction: FragmentTransaction =
                             requireActivity().supportFragmentManager.beginTransaction()
@@ -163,15 +174,14 @@ class CheckoutFragment : Fragment() {
             Observer {
                 if (it?.status.equals(SUCCESS)) {
 
-                    progresscheckout.visibility=View.GONE
+                    progresscheckout.visibility = View.GONE
                     txt_delivery_fee.text =
                         it!!.data!!.getDeliveryFee() + " " + it.data!!.getCurrency()
                     price.text = it!!.data!!.getPrice() + " " + it.data!!.getCurrency()
                     txt_sub_total.text = it.data!!.getSubTotal() + " " + it.data!!.getCurrency()
                     totalAmount.text = it.data!!.getTotalAmount() + " " + it.data!!.getCurrency()
                     totalPayable = it.data!!.getTotalAmount()
-                }        else
-                {
+                } else {
                     if (it?.message.equals("Invalid access token")) {
                         startActivity(Intent(activity, LoginActivity::class.java))
                         requireActivity().finish()
@@ -182,8 +192,6 @@ class CheckoutFragment : Fragment() {
                 }
             })
     }
-
-
 
 
 }

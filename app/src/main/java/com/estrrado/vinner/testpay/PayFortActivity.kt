@@ -1,20 +1,16 @@
 package com.estrrado.vinner.testpay
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
-import com.estrrado.vinner.adapters.ProductsAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.CART_ID
@@ -25,20 +21,20 @@ import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
+import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.OrderList
-import com.estrrado.vinner.ui.more.AddAddress
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.payfort.fort.android.sdk.base.FortSdk
 import com.payfort.fort.android.sdk.base.callbacks.FortCallBackManager
 import com.payfort.sdk.android.dependancies.base.FortInterfaces
 import com.payfort.sdk.android.dependancies.models.FortRequest
-import kotlinx.android.synthetic.main.fragment_product_list.*
 import webconnect.com.webconnect.WebConnect
 import webconnect.com.webconnect.listener.OnWebCallback
 import java.security.MessageDigest
+
 /**
  * this activity is PayFort Demo
  * you need to download FORTSDK and add dependencies

@@ -3,6 +3,7 @@ package com.estrrado.vinner.helper
 import com.estrrado.vinner.data.models.Region
 
 object Constants {
+    const val FROM  = "FROM"
     const val HOME = "Home"
     const val WORK = "work"
     const val LOGIN_PAGE = "LoginPage"

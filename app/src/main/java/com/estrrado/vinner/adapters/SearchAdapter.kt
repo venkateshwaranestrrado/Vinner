@@ -1,7 +1,6 @@
 package com.estrrado.vinner.adapters
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,10 +17,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
-import com.estrrado.vinner.ui.ProductDetails
-import com.estrrado.vinner.ui.more.AddAddress
-import kotlinx.android.synthetic.main.item_home_product.*
-
 import kotlinx.android.synthetic.main.item_search_product.*
 
 

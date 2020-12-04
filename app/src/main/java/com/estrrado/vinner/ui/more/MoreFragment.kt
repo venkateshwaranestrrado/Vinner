@@ -200,7 +200,7 @@ tvProfileName.text=Preferences.get(activity, Preferences.NAME)
 
             }
             R.id.deliveryaddressfragment -> {
-                Navigation.findNavController(v).navigate(R.id.addAddress)
+                Navigation.findNavController(v).navigate(R.id.address_list)
 
             }
 

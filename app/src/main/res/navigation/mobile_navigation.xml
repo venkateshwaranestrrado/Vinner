@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
@@ -22,28 +21,27 @@
     <dialog
         android:id="@+id/navigation_dashboard"
         android:name="com.estrrado.vinner.ui.BottomsheetFragment"
-        android:label="bottom_dummy"
-        tools:layout="@layout/fragment_bottomsheet">
+        android:label="bottom_dummy">
         <action
             android:id="@+id/action_navigation_dashboard_to_request_demo"
             app:destination="@id/checkoutFragment" />
 
     </dialog>
 
-<!--    <fragment-->
-<!--        android:id="@+id/navigation_dashboard"-->
-<!--        android:name="com.estrrado.vinner.ui.request.RequestFragment" />-->
+    <!--    <fragment-->
+    <!--        android:id="@+id/navigation_dashboard"-->
+    <!--        android:name="com.estrrado.vinner.ui.request.RequestFragment" />-->
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.estrrado.vinner.ui.CartFragment" >
+        android:name="com.estrrado.vinner.ui.CartFragment">
         <action
             android:id="@+id/action_navigation_notifications_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_browse"
-        android:name="com.estrrado.vinner.ui.browse.BrowseFragment" >
+        android:name="com.estrrado.vinner.ui.browse.BrowseFragment">
         <action
             android:id="@+id/action_navigation_browse_to_productCategory"
             app:destination="@id/productCategory" />
@@ -54,7 +52,7 @@
     <fragment
         android:id="@+id/navigation_more"
         android:name="com.estrrado.vinner.ui.more.MoreFragment"
-        android:label="More" >
+        android:label="More">
         <action
             android:id="@+id/action_navigation_more_to_addAddress"
             app:destination="@id/addAddress" />
@@ -68,7 +66,7 @@
         android:name="com.estrrado.vinner.ui.ProductDetails" />
     <fragment
         android:id="@+id/navigation_cart"
-        android:name="com.estrrado.vinner.ui.CartFragment" >
+        android:name="com.estrrado.vinner.ui.CartFragment">
         <action
             android:id="@+id/action_navigation_cart_to_checkoutFragment"
             app:destination="@id/checkoutFragment" />
@@ -83,7 +81,7 @@
 
     <fragment
         android:id="@+id/navigation_service"
-        android:name="com.estrrado.vinner.ui.request.RequestService" >
+        android:name="com.estrrado.vinner.ui.request.RequestService">
         <action
             android:id="@+id/action_navigation_service_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -100,8 +98,7 @@
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.estrrado.vinner.ui.ProductListFragment"
-        android:label="fragment_product_list"
-        tools:layout="@layout/fragment_product_list" >
+        android:label="fragment_product_list">
         <action
             android:id="@+id/action_productListFragment_to_navigation_product"
             app:destination="@id/navigation_product" />
@@ -116,14 +113,13 @@
         android:label="CheckoutFragment" />
     <fragment
         android:id="@+id/addAddress"
-        android:name="com.estrrado.vinner.ui.Address_list" >
+        android:name="com.estrrado.vinner.ui.more.AddAddress">
 
     </fragment>
     <fragment
         android:id="@+id/address_list"
         android:name="com.estrrado.vinner.ui.Address_list"
-        android:label="fragment_address_list2"
-        tools:layout="@layout/fragment_address_list" >
+        android:label="fragment_address_list2">
         <action
             android:id="@+id/action_address_list_to_addAddress"
             app:destination="@id/addAddress" />
@@ -131,8 +127,7 @@
     <fragment
         android:id="@+id/productCategory"
         android:name="com.estrrado.vinner.ui.ProductCategory"
-        android:label="fragment_product_category"
-        tools:layout="@layout/fragment_product_category" >
+        android:label="fragment_product_category">
         <action
             android:id="@+id/action_productCategory_to_navigation_product"
             app:destination="@id/navigation_product" />
@@ -140,7 +135,7 @@
     <fragment
         android:id="@+id/industrycategory"
         android:name="com.estrrado.vinner.ui.Industrycategory"
-        android:label="Industrycategory" >
+        android:label="Industrycategory">
         <action
             android:id="@+id/action_industrycategory_to_navigation_product"
             app:destination="@id/navigation_product" />
@@ -152,9 +147,7 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.estrrado.vinner.ui.SearchFragment"
-        android:label="fragment_search"
-
-        tools:layout="@layout/fragment_search" >
+        android:label="fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_navigation_product"
             app:destination="@id/navigation_product" />
