@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -31,6 +32,7 @@ import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
+import com.estrrado.vinner.helper.Constants.addressSelected
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
@@ -49,6 +51,7 @@ class Address_list : Fragment() {
     var vModel: HomeVM? = null
     var address: String? = null
     private var addressAdapter: AddresslistAdapter? = null
+    var from: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -82,7 +85,7 @@ class Address_list : Fragment() {
             )
         ).get(HomeVM::class.java)
         initControll()
-        val i = arguments?.getInt(Constants.FROM)
+        from = arguments?.getInt(Constants.FROM)
         if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(Constants.FROM) != 1)
             getData()
         else getCheckoutAddress()
@@ -140,6 +143,7 @@ class Address_list : Fragment() {
                     it!!.data,
                     vModel!!,
                     Helper,
+                    from,
                     requireActivity()
                 )
                 recy_address_list.adapter = addressAdapter
@@ -157,6 +161,7 @@ class Address_list : Fragment() {
         var dataItem: ArrayList<AddressList>?,
         val vModel: HomeVM,
         val param: Helper,
+        val from: Int?,
         private var activity: FragmentActivity
     ) : RecyclerView.Adapter<AddresslistAdapter.ViewHolder>(), Filterable {
 
@@ -177,6 +182,7 @@ class Address_list : Fragment() {
             val txtLandMark = itemView.findViewById<TextView?>(R.id.tv_landmark)
             val txtAddressType = itemView.findViewById<TextView?>(R.id.tv_address_type)
             val txtZip = itemView.findViewById<TextView?>(R.id.tv_zipcode)
+            val constContainer = itemView.findViewById<ConstraintLayout?>(R.id.const_container)
 
             val buttonedit = itemView.findViewById<Button?>(R.id.btn_edit)
             val buttondlte = itemView.findViewById<Button?>(R.id.btn_delete)
@@ -308,9 +314,18 @@ class Address_list : Fragment() {
                         (addressFilterList as ArrayList<AddressList>?)!!,
                         vModel,
                         param,
+                        from,
                         activity
                     ).notifyDataSetChanged()
                     activity.recy_address_list.invalidate()
+                }
+
+                holder.constContainer!!.setOnClickListener {
+                    vModel.getAddress.value = item
+                    if (from != null && from == 1) {
+                        addressSelected = item
+                        activity.onBackPressed()
+                    }
                 }
 
 
@@ -352,6 +367,13 @@ class Address_list : Fragment() {
                 Observer {
                     progressaddresslist.visibility = View.GONE
                     if (it?.status.equals(Constants.SUCCESS)) {
+                        addressAdapter = AddresslistAdapter(
+                            it!!.data,
+                            vModel!!,
+                            Helper,
+                            from,
+                            requireActivity()
+                        )
 //                        var checkoutAddressList = it!!.data
 //                        if (checkoutAddressList != null && checkoutAddressList.size > 0) {
 //                            cardview_deliveryaddress.visibility = View.VISIBLE
@@ -374,8 +396,8 @@ class Address_list : Fragment() {
 
                         recy_address_list.adapter = addressAdapter
                         recy_address_list.layoutManager = LinearLayoutManager(requireContext())
-                        address = it!!.data!!.get(0).adrs_id
-                        Preferences.put(activity, Preferences.ADDRESS_ID, address!!)
+//                        address = it!!.data!!.get(0).adrs_id
+//                        Preferences.put(activity, Preferences.ADDRESS_ID, address!!)
                     } else {
                         printToast(requireContext(), it!!.message!!)
 //                        cardview_deliveryaddress.visibility = View.GONE

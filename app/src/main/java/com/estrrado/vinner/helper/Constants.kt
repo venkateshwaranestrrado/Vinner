@@ -1,6 +1,7 @@
 package com.estrrado.vinner.helper
 
 import com.estrrado.vinner.data.models.Region
+import com.estrrado.vinner.data.models.response.AddressList
 
 object Constants {
     const val FROM  = "FROM"
@@ -38,4 +39,5 @@ object Constants {
     const val ADDRESS_ID = "ADDRESS_ID"
     const val PRODUCT_NAME = "Product NAME"
     const val shareLink = "https://vinshopify.com/share"
+    var addressSelected: AddressList? = null
 }

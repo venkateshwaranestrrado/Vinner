@@ -1,8 +1,10 @@
 package com.estrrado.vinner.vm
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.data.models.response.AddressList
 
 class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun getProductList(input: RequestModel) = respo.getProductList(input)
@@ -38,4 +40,8 @@ class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun getsearch(input: RequestModel) = respo.Search(input)
     fun getorderdetail(input: RequestModel) = respo.Oderdtl(input)
     fun getreviewadd(input: RequestModel) = respo.addreview(input)
+
+    val getAddress: MutableLiveData<AddressList> by lazy {
+        MutableLiveData<AddressList>()
+    }
 }

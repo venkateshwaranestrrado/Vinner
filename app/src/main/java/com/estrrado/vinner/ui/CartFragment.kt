@@ -39,6 +39,7 @@ import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
+import com.estrrado.vinner.helper.Constants.addressSelected
 import com.estrrado.vinner.helper.Constants.logo
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
@@ -252,7 +253,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region.adapter = regionAdapter
         if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
-            spnr_region.setSelection(Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt())
+            spnr_region.setSelection(
+                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
+            )
         cont_shop.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, HomeFragment()).commit()
@@ -260,7 +263,8 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
         layout_add_address.setOnClickListener {
             val bundle = bundleOf(Constants.FROM to 1)
-            Navigation.findNavController(it).navigate(R.id.action_navigation_cart_to_address_list, bundle)
+            Navigation.findNavController(it)
+                .navigate(R.id.action_navigation_cart_to_address_list, bundle)
         }
 
         productList.layoutManager = LinearLayoutManager(activity as VinnerActivity)
@@ -287,22 +291,25 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
                             img_edit_address.setOnClickListener {
                                 val bundle = bundleOf(Constants.FROM to 1)
-                                Navigation.findNavController(it).navigate(R.id.action_navigation_cart_to_address_list, bundle)
+                                Navigation.findNavController(it)
+                                    .navigate(R.id.action_navigation_cart_to_address_list, bundle)
                             }
-                            txt_address.text =
-                                it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
-                                        ", " + it.data.getAddress()!!.zip
 
-                            address =
-                                it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
-                                        ", " + it.data.getAddress()!!.zip
+                            if (addressSelected != null) {
+                                setAddressSelected()
+                            } else {
 
-                            housename = it.data.getAddress()!!.houseFlat
-                            Roadname = it.data.getAddress()!!.roadName
-                            pincode = it.data.getAddress()!!.zip
-                            addressType = it.data.getAddress()!!.addressType
-                            landmark = it.data.getAddress()!!.landmark
+                                address =
+                                    it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
+                                            ", " + it.data.getAddress()!!.zip
+                                txt_address.text = address
 
+                                housename = it.data.getAddress()!!.houseFlat
+                                Roadname = it.data.getAddress()!!.roadName
+                                pincode = it.data.getAddress()!!.zip
+                                addressType = it.data.getAddress()!!.addressType
+                                landmark = it.data.getAddress()!!.landmark
+                            }
 
                         } else {
                             layout_add_address.visibility = View.VISIBLE
@@ -426,6 +433,22 @@ class CartFragment : Fragment(), CartadapterCallBack {
         val modelList: List<RegionSpinner> =
             gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
         return modelList
+    }
+
+    private fun setAddressSelected() {
+//        vModel!!.getAddress.observe(this, Observer { addressSelected ->
+        address =
+            addressSelected!!.house_flat + ", " + addressSelected!!.road_name +
+                    ", " + addressSelected!!.zip
+        txt_address.text = address
+
+        housename = addressSelected!!.house_flat
+        Roadname = addressSelected!!.road_name
+        pincode = addressSelected!!.zip
+        addressType = addressSelected!!.address_type
+        landmark = addressSelected!!.landmark
+        addressSelected = null
+//        })
     }
 }
 
