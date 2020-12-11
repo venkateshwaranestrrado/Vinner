@@ -106,7 +106,14 @@
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.estrrado.vinner.ui.CheckoutFragment"
-        android:label="CheckoutFragment" />
+        android:label="CheckoutFragment" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_order_list"
+            app:destination="@id/orderList"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/navigation_cart"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/requestdemo"
         android:name="com.estrrado.vinner.ui.request.RequestDemo"

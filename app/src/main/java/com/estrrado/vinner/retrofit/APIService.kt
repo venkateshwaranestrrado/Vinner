@@ -295,7 +295,10 @@ interface APIService {
         @Field("pincode") pincode: String?,
         @Field("payment_status") payment_status: String?,
         @Field("payment_method") payment_method: String?,
-        @Field("operator_id") operator_id: String?
+        @Field("operator_id") operator_id: String?,
+        @Field("country_name") country_name: String?,
+        @Field("city") city: String?,
+        @Field("name") name: String?
     ): Observable<Model>
 
     @FormUrlEncoded

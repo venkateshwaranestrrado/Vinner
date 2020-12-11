@@ -292,6 +292,11 @@ class HomeFragment : Fragment(), AlertCallback {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        spnrSelected = 0
+    }
+
 }
 
 

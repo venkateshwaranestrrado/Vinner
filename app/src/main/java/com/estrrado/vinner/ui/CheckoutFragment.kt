@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
@@ -22,8 +23,11 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
 import com.estrrado.vinner.helper.Constants.CART_ID
+import com.estrrado.vinner.helper.Constants.CITY
+import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.LANDMARK
+import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
@@ -80,8 +84,6 @@ class CheckoutFragment : Fragment() {
         addressType = arguments?.getString(ADDDRESS_TYPE)
         landmark = arguments?.getString(LANDMARK)
         return root
-
-
     }
 
 
@@ -91,15 +93,16 @@ class CheckoutFragment : Fragment() {
         progresscheckout.visibility = View.VISIBLE
         getDeleveryFee()
         txt_address.setText(address)
-//        spnr_region.visibility = View.VISIBLE
-//        spnr_region.isEnabled = false
-//        regionList = readFromAsset(requireActivity())
-//        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
-//        spnr_region.adapter = regionAdapter
-//        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
-//            spnr_region.setSelection(
-//                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
-//            )
+
+        spnr_region_back.visibility = View.VISIBLE
+        spnr_region_back.isEnabled = false
+        regionList = readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
+        spnr_region_back.adapter = regionAdapter
+        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
+            spnr_region_back.setSelection(
+                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
+            )
 //        card_payfort.setOnClickListener {
 //            val bundle = Bundle()
 //            bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
@@ -128,23 +131,18 @@ class CheckoutFragment : Fragment() {
                     pincode = arguments?.getString(PINCODE),
                     payment_status = "pending",
                     payment_method = "cod",
-                    operatorId = operatorId
-
+                    operatorId = operatorId,
+                    country = arguments?.getString(COUNTRY),
+                    city = arguments?.getString(CITY),
+                    name = arguments?.getString(NAME)
                 )
             ).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         progresscheckout.visibility = View.GONE
                         printToast(requireContext(), "payment successfull")
-                        val fragmenttransaction: FragmentTransaction =
-                            requireActivity().supportFragmentManager.beginTransaction()
-                        val OrderList = OrderList()
-                        fragmenttransaction.replace(
-                            R.id.nav_host_fragment,
-                            OrderList
-                        ).addToBackStack("OrderList")
-                        fragmenttransaction.commit()
-
+                        view.findNavController()
+                            .navigate(R.id.action_checkoutFragment_to_order_list)
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(

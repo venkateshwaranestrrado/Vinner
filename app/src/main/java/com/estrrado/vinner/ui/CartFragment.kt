@@ -33,8 +33,11 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
 import com.estrrado.vinner.helper.Constants.CART_ID
+import com.estrrado.vinner.helper.Constants.CITY
+import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.LANDMARK
+import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
@@ -65,6 +68,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var address: String? = null
     var housename: String? = null
     var Roadname: String? = null
+    var countryName: String? = null
+    var city: String? = null
+    var name: String? = null
     var landmark: String? = null
     var pincode: String? = null
     var addressType: String? = null
@@ -139,8 +145,10 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             HOUSENAME to housename,
                             LANDMARK to landmark,
                             ADDDRESS_TYPE to addressType,
-                            ROAD_NAME to Roadname
-
+                            ROAD_NAME to Roadname,
+                            COUNTRY to countryName,
+                            CITY to city,
+                            NAME to name
                         )
 //                val bundle = bundleOf(OPERATOR_ID to "1", CART_ID to cartId)
                         view.findNavController()
@@ -309,6 +317,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                 pincode = it.data.getAddress()!!.zip
                                 addressType = it.data.getAddress()!!.addressType
                                 landmark = it.data.getAddress()!!.landmark
+                                countryName = it.data.getAddress()!!.country
+                                city = it.data.getAddress()!!.city
+                                name = it.data.getAddress()!!.name
                             }
 
                         } else {
@@ -447,6 +458,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
         pincode = addressSelected!!.zip
         addressType = addressSelected!!.address_type
         landmark = addressSelected!!.landmark
+        countryName = addressSelected!!.country
+        city = addressSelected!!.city
+        name = addressSelected!!.name
         addressSelected = null
 //        })
     }
