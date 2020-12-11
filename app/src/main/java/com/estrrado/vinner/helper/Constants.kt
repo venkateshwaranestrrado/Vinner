@@ -38,6 +38,8 @@ object Constants {
     const val HOUSENAME = "HOUSENAME"
     const val ADDRESS_ID = "ADDRESS_ID"
     const val PRODUCT_NAME = "Product NAME"
+    const val STATUS = "Status"
     const val shareLink = "https://vinshopify.com/share"
     var addressSelected: AddressList? = null
+    val reqCode: Int = 1
 }

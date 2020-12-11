@@ -98,8 +98,10 @@ class HomeFragment : Fragment(), AlertCallback {
         regionList = readFromAsset(requireActivity())
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region.adapter = regionAdapter
-        if (!Preferences.get(activity, COUNTRY_POSITION).equals(""))
+        if (!Preferences.get(activity, COUNTRY_POSITION).equals("")) {
+            spnrSelected = 0
             spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
+        }
 //                        setLocation(spnr_region, this!!.requireContext()!!)
 
         spnr_region.setOnItemSelectedListener(object :

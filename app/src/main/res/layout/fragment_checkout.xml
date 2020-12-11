@@ -80,11 +80,11 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_card"
         style="@style/RootView"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         app:cardCornerRadius="4dp"
+        android:visibility="gone"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toTopOf="@+id/itemCount"
         app:layout_constraintEnd_toEndOf="parent"
@@ -184,7 +184,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
         app:cardCornerRadius="4dp"
-        android:visibility="gone"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toTopOf="@+id/itemCount"
         app:layout_constraintEnd_toEndOf="parent"
@@ -201,7 +200,7 @@
                 android:id="@+id/img_paypal"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:src="@drawable/ic_paypals"
+                android:src="@drawable/payfort_logo"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
 

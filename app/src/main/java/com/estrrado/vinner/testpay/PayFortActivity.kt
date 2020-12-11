@@ -1,5 +1,6 @@
 package com.estrrado.vinner.testpay
 
+import android.R.id.message
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,17 +15,21 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.CART_ID
+import com.estrrado.vinner.helper.Constants.CITY
+import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.LANDMARK
+import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
+import com.estrrado.vinner.helper.Constants.STATUS
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
+import com.estrrado.vinner.helper.Constants.reqCode
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
-import com.estrrado.vinner.ui.OrderList
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.payfort.fort.android.sdk.base.FortSdk
@@ -34,6 +39,7 @@ import com.payfort.sdk.android.dependancies.models.FortRequest
 import webconnect.com.webconnect.WebConnect
 import webconnect.com.webconnect.listener.OnWebCallback
 import java.security.MessageDigest
+
 
 /**
  * this activity is PayFort Demo
@@ -74,7 +80,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
         initFortCallback()
 
-            getToknSdk()
+        getToknSdk()
 //        }
     }
 
@@ -119,15 +125,15 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          *
          * */
         WebConnect.with(this, "paymentApi")
-                .post()
-                /**
-                 * put url depending on the Environment you targeting
-                 * */
-                .baseUrl("https://sbpaymentservices.payfort.com/FortAPI/")
-                .bodyParam(param)
-                .taskId(11)
-                .callback(WebCallback(this, this), ResponsePay::class.java, ErrorModel::class.java)
-                .connect()
+            .post()
+            /**
+             * put url depending on the Environment you targeting
+             * */
+            .baseUrl("https://sbpaymentservices.payfort.com/FortAPI/")
+            .bodyParam(param)
+            .taskId(11)
+            .callback(WebCallback(this, this), ResponsePay::class.java, ErrorModel::class.java)
+            .connect()
 
     }
 
@@ -158,7 +164,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          * here we let user to entered as our test requirement.
          * */
 //        val x = editOne.text.toString()
-        hash.put("merchant_reference", ts+getIntent().getExtras()!!.getString(CART_ID)!!)
+        hash.put("merchant_reference", ts + getIntent().getExtras()!!.getString(CART_ID)!!)
         /**
          * you can also add any option key-value pairs
          * */
@@ -173,7 +179,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         model.requestMap = hash.toMap()
 
 
-
         /**
          * start SDK
          *
@@ -181,61 +186,81 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          * then will  receive the result in callbacks bellow
          * */
         FortSdk
-                .getInstance()
-                .registerCallback(this, model,
-                        FortSdk.ENVIRONMENT.TEST, 5,
-                        fortCallback, true, object : FortInterfaces.OnTnxProcessed {
-                    override fun onSuccess(p0: MutableMap<String, Any>?, p1: MutableMap<String, Any>?) {
+            .getInstance()
+            .registerCallback(this, model,
+                FortSdk.ENVIRONMENT.TEST, 5,
+                fortCallback, true, object : FortInterfaces.OnTnxProcessed {
+                    override fun onSuccess(
+                        p0: MutableMap<String, Any>?,
+                        p1: MutableMap<String, Any>?
+                    ) {
 
 
-                        vModel!!.PaymentStatus(RequestModel(
-                            accessToken = Preferences.get(this@PayFortActivity, ACCESS_TOKEN),
-                            address_type = getIntent().getExtras()!!.getString(ADDDRESS_TYPE),
-                            housename = getIntent().getExtras()!!.getString(HOUSENAME),
-                            road_name = getIntent().getExtras()!!.getString(ROAD_NAME),
-                            landmark = getIntent().getExtras()!!.getString(LANDMARK),
-                            pincode = getIntent().getExtras()!!.getString(PINCODE),
-                            payment_status = "paid",
-                            payment_method = "payfort",
-                            operatorId = getIntent().getExtras()!!.getString(OPERATOR_ID)
+                        vModel!!.PaymentStatus(
+                            RequestModel(
+                                accessToken = Preferences.get(this@PayFortActivity, ACCESS_TOKEN),
+                                address_type = getIntent().getExtras()!!.getString(ADDDRESS_TYPE),
+                                housename = getIntent().getExtras()!!.getString(HOUSENAME),
+                                road_name = getIntent().getExtras()!!.getString(ROAD_NAME),
+                                landmark = getIntent().getExtras()!!.getString(LANDMARK),
+                                pincode = getIntent().getExtras()!!.getString(PINCODE),
+                                payment_status = "paid",
+                                payment_method = "payfort",
+                                operatorId = getIntent().getExtras()!!.getString(OPERATOR_ID),
+                                country = getIntent().getExtras()!!.getString(COUNTRY),
+                                city = getIntent().getExtras()!!.getString(CITY),
+                                name = getIntent().getExtras()!!.getString(NAME)
 
-                        )).observe(this@PayFortActivity,
+                            )
+                        ).observe(this@PayFortActivity,
                             Observer {
+                                printToast(applicationContext, it!!.message.toString())
                                 if (it?.status.equals(SUCCESS)) {
-                                    printToast(applicationContext, "payment successfully")
-
-                                   supportFragmentManager.beginTransaction()
-                                        .replace(R.id.nav_host_fragment, OrderList()).commit()
-                                }
-
-                                else
-                                {
+                                    val intent = Intent()
+                                    intent.putExtra(STATUS, SUCCESS)
+                                    setResult(reqCode, intent)
+                                    finish()
+                                } else {
                                     if (it?.message.equals("Invalid access token")) {
-                                        startActivity(Intent(this@PayFortActivity, LoginActivity::class.java))
+                                        startActivity(
+                                            Intent(
+                                                this@PayFortActivity,
+                                                LoginActivity::class.java
+                                            )
+                                        )
                                         this@PayFortActivity.finish()
                                     } else {
                                         printToast(this@PayFortActivity, it?.message!!)
                                     }
                                     printToast(applicationContext, it?.message.toString())
                                 }
-
+                                finish()
                             })
                         Log.d(TAG, "onSuccess")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
-                        finish()
                     }
 
-                    override fun onFailure(p0: MutableMap<String, Any>?, p1: MutableMap<String, Any>?) {
+                    override fun onFailure(
+                        p0: MutableMap<String, Any>?,
+                        p1: MutableMap<String, Any>?
+                    ) {
                         Log.d(TAG, "onFailure")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
-                        Toast.makeText(this@PayFortActivity, "Error: ${p1?.get("response_message")}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@PayFortActivity,
+                            "Error: ${p1?.get("response_message")}",
+                            Toast.LENGTH_LONG
+                        ).show()
                         finish()
 
                     }
 
-                    override fun onCancel(p0: MutableMap<String, Any>?, p1: MutableMap<String, Any>?) {
+                    override fun onCancel(
+                        p0: MutableMap<String, Any>?,
+                        p1: MutableMap<String, Any>?
+                    ) {
                         Log.d(TAG, "onCancel")
                         Log.d(TAG, p0.toString())
                         Log.d(TAG, p1.toString())
@@ -262,7 +287,8 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
         if (`object` is ResponsePay) {
             if (`object`.sdk_token.isEmpty()) {
-                Toast.makeText(this, "Error: ${`object`.response_message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Error: ${`object`.response_message}", Toast.LENGTH_LONG)
+                    .show()
             } else {
                 startPayFortSdk(`object`.sdk_token)
             }

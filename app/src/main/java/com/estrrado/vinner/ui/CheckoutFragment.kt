@@ -1,13 +1,11 @@
 package com.estrrado.vinner.ui
 
 import android.content.Intent
-import android.content.Intent.getIntent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -17,8 +15,6 @@ import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.retrofit.ApiClient
-import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
@@ -31,9 +27,14 @@ import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
+import com.estrrado.vinner.helper.Constants.STATUS
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
+import com.estrrado.vinner.helper.Constants.reqCode
+import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.readFromAsset
+import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.testpay.PayFortActivity
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -42,7 +43,6 @@ import kotlinx.android.synthetic.main.fragment_cart.totalAmount
 import kotlinx.android.synthetic.main.fragment_cart.txt_delivery_fee
 import kotlinx.android.synthetic.main.fragment_cart.txt_sub_total
 import kotlinx.android.synthetic.main.fragment_checkout.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
 class CheckoutFragment : Fragment() {
@@ -103,21 +103,24 @@ class CheckoutFragment : Fragment() {
             spnr_region_back.setSelection(
                 Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
             )
-//        card_payfort.setOnClickListener {
-//            val bundle = Bundle()
-//            bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
-//            bundle.putString(TOTAL_PAYABLE, totalPayable)
-//            bundle.putString(OPERATOR_ID, operatorId)
-//            bundle.putString(ADDRESS, address)
-//            bundle.putString(HOUSENAME, housename)
-//            bundle.putString(ROAD_NAME, Roadname)
-//            bundle.putString(PINCODE, pincode)
-//            bundle.putString(ADDDRESS_TYPE, addressType)
-//            bundle.putString(LANDMARK, landmark)
-//            val intent = Intent(activity, PayFortActivity::class.java)
-//            intent.putExtras(bundle)
-//            startActivity(intent)
-//        }
+        card_payfort.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
+            bundle.putString(TOTAL_PAYABLE, totalPayable)
+            bundle.putString(OPERATOR_ID, operatorId)
+            bundle.putString(ADDRESS, address)
+            bundle.putString(HOUSENAME, housename)
+            bundle.putString(ROAD_NAME, Roadname)
+            bundle.putString(PINCODE, pincode)
+            bundle.putString(ADDDRESS_TYPE, addressType)
+            bundle.putString(LANDMARK, landmark)
+            bundle.putString(CITY, arguments?.getString(CITY))
+            bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
+            bundle.putString(NAME, arguments?.getString(NAME))
+            val intent = Intent(activity, PayFortActivity::class.java)
+            intent.putExtras(bundle)
+            startActivityForResult(intent, reqCode)
+        }
 
         cod.setOnClickListener {
 
@@ -191,5 +194,12 @@ class CheckoutFragment : Fragment() {
             })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val message = data!!.getStringExtra(STATUS)
+        if (message.equals(SUCCESS))
+            requireView().findNavController()
+                .navigate(R.id.action_checkoutFragment_to_order_list)
+    }
 
 }
