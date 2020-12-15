@@ -28,6 +28,7 @@ import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Constants.NOT_SERVING_IN_THIS_REGION
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.Address_list
@@ -49,6 +50,7 @@ class AddAddress : Fragment(), LocationListener {
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     var addressType = Constants.HOME
+    var regionList: List<RegionSpinner>? = null
 
     companion object {
         private const val PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 100
@@ -192,6 +194,7 @@ class AddAddress : Fragment(), LocationListener {
                     tvaddress,
                     Constants.REQUIRED
                 ) &&
+                validateRegion(txt_country.text.toString()) &&
                 Validation.hasText(tv_zipcode, Constants.REQUIRED) && Validation.hasText(
                     tv_roadname,
                     Constants.REQUIRED
@@ -296,8 +299,8 @@ class AddAddress : Fragment(), LocationListener {
     }
 
     private fun initialiseRegion() {
-        val regionList: List<RegionSpinner> = readFromAsset(requireActivity())
-        val regionAdapter = RegionAdapter(requireContext()!!, regionList)
+        regionList = readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region_address.adapter = regionAdapter
         spnr_region_address.setOnItemSelectedListener(object :
             AdapterView.OnItemSelectedListener {
@@ -307,7 +310,7 @@ class AddAddress : Fragment(), LocationListener {
                 position: Int,
                 id: Long
             ) {
-                txt_country.text = regionList.get(position).name
+                txt_country.text = regionList!!.get(position).name
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -448,6 +451,7 @@ class AddAddress : Fragment(), LocationListener {
             txt_country.setText(addresses[0].countryCode)
             tv_zipcode.setText(addresses[0].postalCode)
             tv_roadname.setText(addresses[0].featureName)
+            validateRegion(addresses[0].countryCode)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -468,6 +472,15 @@ class AddAddress : Fragment(), LocationListener {
         }
     }
 
+    fun validateRegion(region: String): Boolean {
+        for (i in 0 until regionList!!.size) {
+            if (regionList!!.get(i).name.equals(region)) {
+                return true
+            }
+        }
+        printToast(requireContext(), NOT_SERVING_IN_THIS_REGION)
+        return false
+    }
 
 }
 

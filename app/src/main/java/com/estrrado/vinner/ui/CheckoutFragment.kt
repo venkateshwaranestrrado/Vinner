@@ -123,7 +123,7 @@ class CheckoutFragment : Fragment() {
         }
 
         cod.setOnClickListener {
-
+            progresscheckout.visibility = View.VISIBLE
             vModel!!.PaymentStatus(
                 RequestModel(
                     accessToken = Preferences.get(activity, ACCESS_TOKEN),
@@ -141,8 +141,8 @@ class CheckoutFragment : Fragment() {
                 )
             ).observe(requireActivity(),
                 Observer {
+                    progresscheckout.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
-                        progresscheckout.visibility = View.GONE
                         printToast(requireContext(), "payment successfull")
                         view.findNavController()
                             .navigate(R.id.action_checkoutFragment_to_order_list)
@@ -170,12 +170,11 @@ class CheckoutFragment : Fragment() {
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
         requestModel.operatorId = operatorId
-
+        progresscheckout.visibility = View.VISIBLE
         vModel!!.deliveryFee(requestModel).observe(requireActivity(),
             Observer {
+                progresscheckout.visibility = View.GONE
                 if (it?.status.equals(SUCCESS)) {
-
-                    progresscheckout.visibility = View.GONE
                     txt_delivery_fee.text =
                         it!!.data!!.getDeliveryFee() + " " + it.data!!.getCurrency()
                     price.text = it!!.data!!.getPrice() + " " + it.data!!.getCurrency()
@@ -196,10 +195,12 @@ class CheckoutFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val message = data!!.getStringExtra(STATUS)
-        if (message.equals(SUCCESS))
-            requireView().findNavController()
-                .navigate(R.id.action_checkoutFragment_to_order_list)
+        if (data != null && data.getStringArrayExtra(STATUS) != null) {
+            val message = data.getStringExtra(STATUS)
+            if (message.equals(SUCCESS))
+                requireView().findNavController()
+                    .navigate(R.id.action_checkoutFragment_to_order_list)
+        }
     }
 
 }
