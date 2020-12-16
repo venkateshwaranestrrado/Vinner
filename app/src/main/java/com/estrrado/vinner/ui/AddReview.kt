@@ -16,6 +16,8 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Validation
+import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -58,20 +60,20 @@ class AddReview : Fragment() {
                 )
             )
         ).get(HomeVM::class.java)
-        pageTitle.text="Add Review"
+        pageTitle.text = "Add Review"
         initControll()
 
     }
 
-    private fun initControll(){
+    private fun initControll() {
 
         ratingBar3.setOnRatingBarChangeListener(OnRatingBarChangeListener { ratingBar, rating, fromUser ->
             textView30.setText(rating.toString())
-            txtRatingValue=rating.toString()
+            txtRatingValue = rating.toString()
         })
-        productImage=arguments?.getString(Preferences.PROFILEIMAGE)
-        productName= arguments?.getString(Preferences.PRODUCTNAME)
-        productId= arguments?.getString(Constants.PRODUCT_ID)
+        productImage = arguments?.getString(Preferences.PROFILEIMAGE)
+        productName = arguments?.getString(Preferences.PRODUCTNAME)
+        productId = arguments?.getString(Constants.PRODUCT_ID)
 
         val radius = requireActivity().resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(requireActivity())
@@ -83,6 +85,7 @@ class AddReview : Fragment() {
 
 
         btn_submitt.setOnClickListener {
+            progress_review.visibility = View.VISIBLE
             vModel!!.getreviewadd(
                 RequestModel(
                     accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN),
@@ -92,15 +95,10 @@ class AddReview : Fragment() {
                     title = editTextTextPersonName3.text.toString()
                 )
             ).observe(requireActivity(), Observer {
-
+                progress_review.visibility = View.GONE
+                printToast(this.requireContext(), it?.message.toString())
                 if (it?.status.equals(Constants.SUCCESS)) {
-
-                    Toast.makeText(context,it!!.message.toString(), Toast.LENGTH_SHORT).show()
-                    requireActivity().getSupportFragmentManager().beginTransaction().replace(
-                        R.id.nav_host_fragment,
-                        HomeFragment()
-                    )
-                        .addToBackStack(null).commit()
+                    requireActivity().onBackPressed()
                 }
 
 
