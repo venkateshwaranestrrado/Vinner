@@ -55,7 +55,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_address1" />
 
         <TextView
-            android:id="@+id/tv_landmark"
+            android:id="@+id/tv_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -66,18 +66,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_road_name" />
 
         <TextView
-            android:id="@+id/tv_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
-
-        <TextView
-            android:id="@+id/tv_zipcode"
+            android:id="@+id/tv_landmark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -96,7 +85,18 @@
             android:layout_marginTop="8dp"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_zipcode" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
+
+        <TextView
+            android:id="@+id/tv_zipcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_country" />
 
         <TextView
             android:id="@+id/tv_address_type"
@@ -107,7 +107,7 @@
             android:layout_marginTop="8dp"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_country" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_zipcode" />
 
         <TextView
             android:id="@+id/tv_number"

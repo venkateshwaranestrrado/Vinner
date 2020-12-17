@@ -32,6 +32,7 @@ import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
+import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.addressSelected
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
@@ -139,18 +140,20 @@ class Address_list : Fragment() {
                 RequestModel
                     (accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN))
             ).observe(requireActivity(), Observer {
-                addressAdapter = AddresslistAdapter(
-                    it!!.data,
-                    vModel!!,
-                    Helper,
-                    from,
-                    requireActivity()
-                )
-                recy_address_list.adapter = addressAdapter
-                recy_address_list.layoutManager = LinearLayoutManager(requireContext())
-                address = it.data!!.get(0).adrs_id
-                Preferences.put(activity, Preferences.ADDRESS_ID, address!!)
                 progressaddresslist.visibility = View.GONE
+                if (it!!.status.equals(SUCCESS)) {
+                    addressAdapter = AddresslistAdapter(
+                        it.data,
+                        vModel!!,
+                        Helper,
+                        from,
+                        requireActivity()
+                    )
+                    recy_address_list.adapter = addressAdapter
+                    recy_address_list.layoutManager = LinearLayoutManager(requireContext())
+                    address = it.data!!.get(0).adrs_id
+                    Preferences.put(activity, Preferences.ADDRESS_ID, address!!)
+                } else printToast(requireContext(), it.message.toString())
             })
         } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
@@ -168,7 +171,7 @@ class Address_list : Fragment() {
         var addressFilterList: List<AddressList?>? = ArrayList<AddressList?>()
 
         init {
-            addressFilterList = this!!.dataItem!!
+            addressFilterList = this.dataItem!!
         }
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
