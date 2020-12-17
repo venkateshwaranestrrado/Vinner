@@ -431,6 +431,10 @@ class Data {
     @field:JsonField(name = arrayOf("post"))
     val post: String? = null
 
+    @field:SerializedName("city")
+    @field:JsonField(name = arrayOf("city"))
+    val city: String? = null
+
     @field:SerializedName("state")
     @field:JsonField(name = arrayOf("state"))
     val state: String? = null
@@ -438,6 +442,14 @@ class Data {
     @field:SerializedName("mobile")
     @field:JsonField(name = arrayOf("mobile"))
     val mobile: String? = null
+
+    @field:SerializedName("country_id")
+    @field:JsonField(name = arrayOf("country_id"))
+    val country_id: String? = null
+
+    @field:SerializedName("country_code")
+    @field:JsonField(name = arrayOf("country_code"))
+    val country_code: String? = null
 
 
     @field:SerializedName("email")

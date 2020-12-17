@@ -6,10 +6,9 @@ import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.DataListModel
 
 import io.reactivex.Observable
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 interface APIService {
 
@@ -21,7 +20,7 @@ interface APIService {
         @Field("mobile") mobile: String?,
         @Field("password") password: String?,
         @Field("confirm_password") confirm: String?,
-       @Field("c_code") c_code: String?
+        @Field("c_code") c_code: String?
 
     ): Observable<Model>
 
@@ -38,7 +37,9 @@ interface APIService {
     fun verifyOtp(
         @Field("mobile") mobile: String?,
         @Field("otp") otp: String?,
-        @Field("c_code") c_code: String?
+        @Field("c_code") c_code: String?,
+        @Field("device_token") devic_token: String?,
+        @Field("os") os: String?
 
     ): Observable<Model>
 
@@ -179,26 +180,26 @@ interface APIService {
         @Field("access_token") accessToken: String?
     ): Observable<AddressModel>
 
-    @FormUrlEncoded
-    @POST("updateprofile")
+    @Multipart
+    @POST("updateprofiledata")
     fun updateprofile(
-        @Field("access_token") accessToken: String?,
-        @Field("name") name: String?,
-        @Field("address1") address1: String?,
-        @Field("address2") address2: String?,
-        @Field("post") post: String?,
-        @Field("state") state: String?,
-        @Field("mobile") mobile: String?,
-        @Field("email") email: String?,
-        @Field("district") district: String?,
-        @Field("profile_pic") profile_pic: String?
+        @Part("access_token") accessToken: RequestBody?,
+        @Part("name") name: RequestBody?,
+        @Part("address1") address1: RequestBody?,
+        @Part("address2") address2: RequestBody?,
+        @Part("post") post: RequestBody?,
+        @Part("state") state: RequestBody?,
+        @Part("mobile") mobile: RequestBody?,
+        @Part("email") email: RequestBody?,
+        @Part("city") city: RequestBody?,
+        @Part profile_pic: MultipartBody.Part?
     ): Observable<Model>
 
     @FormUrlEncoded
     @POST("profile")
     fun profile(
         @Field("access_token") accessToken: String?
-        ): Observable<Model>
+    ): Observable<Model>
 
     @FormUrlEncoded
     @POST("browse_category")
@@ -279,7 +280,7 @@ interface APIService {
         @Field("product_id") productId: String?,
         @Field("rating") rating: String?,
         @Field("title") title: String?,
-  @Field("review") review: String?
+        @Field("review") review: String?
 
 
     ): Observable<Model>

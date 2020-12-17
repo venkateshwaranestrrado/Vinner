@@ -34,8 +34,7 @@
         app:fabCustomSize="32dp"
         app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/ProfileName"
-        app:layout_constraintEnd_toEndOf="@+id/edit"
-        app:layout_constraintStart_toStartOf="@+id/ivprofilephoto" />
+        app:layout_constraintEnd_toEndOf="@+id/ivprofilephoto" />
 
     <TextView
         android:id="@+id/ProfileName"
@@ -141,7 +140,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/area" />
 
             <EditText
-                android:id="@+id/state"
+                android:id="@+id/city"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -150,31 +149,13 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:textSize="@dimen/_12sdp"
-                android:hint="State"
+                android:hint="City"
                 android:textColor="@color/dark_blue"
                 android:inputType="text"
                 android:textColorHint="@color/dark_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/post" />
-
-            <EditText
-                android:id="@+id/mobile"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
-                android:hint="Mobile"
-                android:textColor="@color/dark_blue"
-                android:inputType="number"
-                android:textColorHint="@color/dark_blue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/state" />
 
             <EditText
                 android:id="@+id/email"
@@ -192,10 +173,10 @@
                 android:textColorHint="@color/dark_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mobile" />
+                app:layout_constraintTop_toBottomOf="@+id/city" />
 
             <EditText
-                android:id="@+id/district"
+                android:id="@+id/mobile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -203,31 +184,17 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
                 android:textSize="@dimen/_12sdp"
-                android:hint="District"
-                android:inputType="text"
+                android:hint="Mobile"
                 android:textColor="@color/dark_blue"
+                android:inputType="number"
                 android:textColorHint="@color/dark_blue"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
 
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <ImageView
-        android:id="@+id/edit"
-        android:layout_width="27dp"
-        android:layout_height="23dp"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        app:layout_constraintBottom_toBottomOf="@+id/ivprofilephoto"
-        app:layout_constraintStart_toEndOf="@+id/ivprofilephoto"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"

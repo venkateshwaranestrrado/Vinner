@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -13,9 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,26 +27,30 @@ import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Helper.checkIfPermissionsGranted
 import com.estrrado.vinner.helper.Helper.getImageUri
 import com.estrrado.vinner.helper.Helper.getRealPathFromURI
 import com.estrrado.vinner.helper.Helper.showSettingspermissionDialog
-import com.estrrado.vinner.helper.Preferences.NAME
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import com.google.android.material.textfield.TextInputEditText
+import gun0912.tedbottompicker.TedBottomPicker
 import kotlinx.android.synthetic.main.edit_profile.*
-import kotlinx.android.synthetic.main.fragment_address_update.*
-import kotlinx.android.synthetic.main.fragment_cart.*
-import kotlinx.android.synthetic.main.moree_fragment.*
 import kotlinx.android.synthetic.main.toolbar.*
+import okhttp3.MultipartBody
 import java.io.*
 
 class EditProfile : Fragment() {
     var vModel: HomeVM? = null
     private var editable = false
-    private var image: String? = null
+    private var imageUri: Uri? = null
+    val neededPermissions = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vModel = ViewModelProvider(
@@ -82,40 +86,20 @@ class EditProfile : Fragment() {
         initControll()
         getProfile()
         textView5.text = "Profile"
-        cam.setOnClickListener {
-            openCamera()
-        }
         ivprofilephoto.setOnClickListener {
-            OpenLibrary()
+            getImage()
         }
-
-        edit.setOnClickListener {
-            editable = !editable
-            setEditable(editable)
-        }
-        progressprofile.visibility = View.VISIBLE
-
-        // TODO: Use the ViewModel
     }
 
     private fun initControll() {
 
-        cam.setOnClickListener {
-            openCamera()
-        }
         ivprofilephoto.setOnClickListener {
-            OpenLibrary()
-        }
-
-        edit.setOnClickListener {
-            editable = !editable
-            setEditable(editable)
+            getImage()
         }
 
 
         btnSubmit.setOnClickListener(object : ClickListener() {
             override fun onOneClick(v: View) {
-                progressprofile.visibility = View.VISIBLE
                 if (Helper.isNetworkAvailable(activity!!)) {
                     if (validate(
                             arrayOf(
@@ -123,12 +107,18 @@ class EditProfile : Fragment() {
                                 housename,
                                 area,
                                 post,
-                                state,
+                                city,
                                 mobile,
-                                email, district
+                                email
                             )
                         )
-                    )
+                    ) {
+                        var multiImg: MultipartBody.Part? = null
+                        imageUri?.let { fileUri ->
+
+                            multiImg = getMultipartImage(fileUri, "profile_pic", activity)
+                        }
+                        progressprofile.visibility = View.VISIBLE
                         vModel?.getUpdatedProfile(
                             RequestModel(
                                 accessToken = Preferences.get(activity, ACCESS_TOKEN),
@@ -136,25 +126,20 @@ class EditProfile : Fragment() {
                                 address1 = housename.text.toString(),
                                 address2 = area.text.toString(),
                                 post = post.text.toString(),
-                                profile_pic = image,
-                                state = state.text.toString(),
+                                profile_pic = multiImg,
+                                state = city.text.toString(),
                                 mobile = mobile.text.toString(),
                                 email = email?.text.toString(),
-                                district = district?.text.toString()
+                                city = city?.text.toString()
                             )
                         )?.observe(viewLifecycleOwner, Observer {
-
-                            if (it != null) {
-                                Validation.printToast(requireContext(), "Successful")
+                            progressprofile.visibility = View.GONE
+                            Validation.printToast(requireContext(), it!!.message.toString())
+                            if (it.status.equals(SUCCESS)) {
                                 getProfile()
                             }
                         })
-
-                    progressprofile.visibility = View.GONE
-                    editable = false
-                    setEditable(editable)
-                } else {
-                    progressprofile.visibility = View.GONE
+                    }
                 }
 
             }
@@ -164,14 +149,13 @@ class EditProfile : Fragment() {
 
     private fun getProfile() {
         if (Helper.isNetworkAvailable(requireContext())) {
+            progressprofile.visibility = View.VISIBLE
             vModel!!.getProfile(
                 RequestModel(accessToken = Preferences.get(activity, ACCESS_TOKEN))
-
             ).observe(requireActivity(),
                 Observer {
+                    progressprofile.visibility = View.GONE
                     if (it!!.status == "success") {
-
-                        progressprofile.visibility = View.GONE
                         Glide.with(this)
                             .load(it.data!!.path)
                             .thumbnail(0.1f)
@@ -179,132 +163,17 @@ class EditProfile : Fragment() {
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(ivprofilephoto)
 
-
                         Helper.hideKeyboard(activity)
                         name.setText(it.data!!.name)
                         housename.setText(it.data.address1)
                         area.setText(it.data.address2)
                         post.setText(it.data.post)
-                        state.setText(it.data.state)
-                        mobile.setText(it.data.mobile+it.data.mobile)
+                        city.setText(it.data.city)
+                        mobile.setText(it.data.country_code + it.data.mobile)
                         email.setText(it.data.email)
-                        district.setText(it.data.district)
                         ProfileName.setText(it.data.name)
-
-
                     }
                 })
-        }
-    }
-
-
-    private fun setEditable(editable: Boolean) {
-        if (!editable) {
-            edit.setImageResource(android.R.drawable.ic_menu_edit)
-        } else {
-            edit.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
-        }
-
-        name.isClickable = editable
-        name.isEnabled = editable
-        name.isFocusableInTouchMode = editable
-        housename.isClickable = editable
-        housename.isEnabled = editable
-        housename.isFocusableInTouchMode = editable
-        area.isClickable = editable
-        area.isEnabled = editable
-        area.isFocusableInTouchMode = editable
-        post.isEnabled = editable
-        post.isClickable = editable
-        state.isClickable = editable
-        state.isEnabled = editable
-        state.isFocusableInTouchMode = editable
-        mobile.isEnabled = editable
-        mobile.isClickable = editable
-        mobile.isFocusableInTouchMode = editable
-        email.isEnabled = editable
-        email.isClickable = editable
-        email.isFocusableInTouchMode = editable
-        district.isEnabled = editable
-        district.isClickable = editable
-        district.isFocusableInTouchMode = editable
-
-
-    }
-
-    private fun openCamera() {
-        activity?.let {
-            if (checkIfPermissionsGranted(
-                    it,
-                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                )
-            ) {
-                startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0)
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        it,
-                        Manifest.permission.CAMERA
-                    ) && ActivityCompat.shouldShowRequestPermissionRationale(
-                        it,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                ) {
-                    showSettingspermissionDialog(
-                        activity,
-                        "",
-                        "Grant Permission",
-                        "You need permission to open camera"
-                    )
-                } else {
-                    ActivityCompat.requestPermissions(
-                        it,
-                        arrayOf(
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ),
-                        100
-                    )
-                }
-            }
-        }
-
-
-    }
-
-    private fun OpenLibrary() {
-        activity?.let {
-            if (checkIfPermissionsGranted(
-                    it, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                )
-            ) {
-                val intent = Intent()
-                intent.type = "image/*"
-                intent.action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(Intent.createChooser(intent, "Select File"), 1)
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(
-                        it, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                ) {
-                    showSettingspermissionDialog(
-                        activity, "", "Grant Permission", "You need permission open file storage"
-                    )
-                } else {
-                    ActivityCompat.requestPermissions(
-                        it, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 101
-                    )
-                }
-            }
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (resultCode) {
-            Activity.RESULT_OK -> when (requestCode) {
-                0 -> fromCamera(data)
-                1 -> fromLib(data)
-            }
-            Activity.RESULT_CANCELED -> Log.e("TAG", "Selecting picture cancelled")
         }
     }
 
@@ -314,70 +183,14 @@ class EditProfile : Fragment() {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            100 -> {
+            10003 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                    openCamera()
+                    getImage()
                 }
-            }
-            101 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    OpenLibrary()
-                }
-            }
-            else -> {
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
-
-    private fun fromCamera(data: Intent?) {
-        val thumbnail = data!!.extras!!.get("data") as Bitmap
-        val bytes = ByteArrayOutputStream()
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 50, bytes)
-        val destination = File(
-            Environment.getExternalStorageDirectory(),
-            System.currentTimeMillis().toString() + ".jpg"
-        )
-        val fo: FileOutputStream
-        try {
-            destination.createNewFile()
-            fo = FileOutputStream(destination)
-            fo.write(bytes.toByteArray())
-            fo.close()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        setImage(thumbnail)
-    }
-
-    private fun fromLib(data: Intent?) {
-//        val thumbnail = data!!.extras!!.get("data") as Bitmap
-        var bm: Bitmap? = null
-        if (data != null) {
-            try {
-                bm = MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, data.data)
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        setImage(bm)
-    }
-
-    private fun setImage(bm: Bitmap?) {
-        try {
-            bm?.let {
-                ivprofilephoto.setImageBitmap(bm)
-                Helper.printAny(getRealPathFromURI(activity, getImageUri(activity, bm)))
-                image = Helper.convertBitmap(bm)
-                Validation.printToast(requireContext(), image.toString())
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
 
     private fun validate(elements: Array<EditText>): Boolean {
         val boolean: ArrayList<Boolean> = ArrayList()
@@ -399,6 +212,37 @@ class EditProfile : Fragment() {
             return false
         }
         return true
+    }
+
+    private fun getImage() {
+
+        if (checkIfPermissionsGranted(
+                requireActivity(),
+                arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            )
+        ) {
+            TedBottomPicker.with(activity)
+                //.setPeekHeight(getResources().getDisplayMetrics().heightPixels/2)
+//                .setSelectedUri(selectedUri) //.showVideoMedia()
+                .setPeekHeight(1200)
+                .show({ uri ->
+                    if (uri != null) {
+                        val bitmap = BitmapFactory.decodeStream(
+                            requireContext().getContentResolver().openInputStream(uri)
+                        )
+                        ivprofilephoto.setImageBitmap(bitmap)
+                        imageUri = uri
+                    }
+                })
+
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), neededPermissions, 10003)
+        }
+
     }
 
 }

@@ -9,6 +9,7 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressModel
 import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.DataListModel
+import com.estrrado.vinner.helper.getMultipartString
 
 import com.estrrado.vinner.retrofit.APIService
 
@@ -75,7 +76,9 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         apiService!!.verifyOtp(
             input.phoneNumber,
             input.otp,
-            input.countryCode
+            input.countryCode,
+            input.deviceId,
+            input.os
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe({
@@ -415,8 +418,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun UpdateProfile(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.updateprofile(
-            input.accessToken, input.name, input.address1, input.address2, input.post, input.state,
-            input.mobile, input.email, input.district,
+            getMultipartString(input.accessToken.toString()), getMultipartString(input.name.toString()), getMultipartString(input.address1.toString()), getMultipartString(input.address2.toString()), getMultipartString(input.post.toString()), getMultipartString(input.state.toString()),
+            getMultipartString(input.mobile.toString()), getMultipartString(input.email.toString()), getMultipartString(input.city.toString()),
             input.profile_pic
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

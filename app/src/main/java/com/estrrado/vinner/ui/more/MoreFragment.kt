@@ -69,9 +69,8 @@ class MoreFragment : Fragment(), View.OnClickListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initControl()
-        textView5.text="Settings"
+        textView5.text = "Settings"
         (activity as VinnerActivity).open()
-        // TODO: Use the ViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -94,7 +93,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
             })
 
         terms.setOnClickListener(object : View.OnClickListener {
-           override fun onClick(v: View?) {
+            override fun onClick(v: View?) {
                 val intent = Intent()
                 intent.action = Intent.ACTION_VIEW
                 intent.addCategory(Intent.CATEGORY_BROWSABLE)
@@ -115,7 +114,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
         })
 
         lyt_logout.setOnClickListener {
-            progressmore.visibility=View.VISIBLE
+            progressmore.visibility = View.VISIBLE
             val mbuilder = AlertDialog.Builder(view?.context)
             val dialogview =
                 LayoutInflater.from(view?.context).inflate(R.layout.dialog_signout, null, false);
@@ -139,12 +138,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
         }
 
 
-
-
     }
 
     private fun signout() {
-        progressmore.visibility=View.VISIBLE
+        progressmore.visibility = View.VISIBLE
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -166,15 +163,13 @@ class MoreFragment : Fragment(), View.OnClickListener {
                     }
 
                 })
-        }
-        else{
+        } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
-            progressmore.visibility=View.GONE
+            progressmore.visibility = View.GONE
         }
     }
 
     private fun initControl() {
-tvProfileName.text=Preferences.get(activity, Preferences.NAME)
         Glide.with(this.requireActivity())
             .load(Preferences.get(activity, PROFILEIMAGE))
             .thumbnail(0.1f)
@@ -203,7 +198,6 @@ tvProfileName.text=Preferences.get(activity, Preferences.NAME)
                 Navigation.findNavController(v).navigate(R.id.address_list)
 
             }
-
 
 
         }

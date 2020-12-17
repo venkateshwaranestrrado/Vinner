@@ -111,10 +111,7 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                                     progress.visibility = View.GONE
                                     Preferences.put(this, MOBILE, phoneNum)
                                     startActivity(Intent(this, OtpActivity::class.java))
-                                    finish()
                                 }
-//                                progress.visibility=View.GONE
-//                                Toast.makeText(this,"Invalid  Credential ",Toast.LENGTH_SHORT).show()
 
                             })
                     } else {
