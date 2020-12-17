@@ -239,7 +239,7 @@ interface APIService {
         @Field("access_token") accessToken: String?,
         @Field("search_date") search_date: String?,
         @Field("search_orderId") search_orderId: String?
-    ): Observable<AddressModel>
+    ): Observable<DataListModel>
 
     @FormUrlEncoded
     @POST("demo_product")

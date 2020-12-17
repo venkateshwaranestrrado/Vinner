@@ -43,10 +43,10 @@ import kotlinx.android.synthetic.main.moree_fragment.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.io.*
 
-class EditProfile: Fragment() {
+class EditProfile : Fragment() {
     var vModel: HomeVM? = null
     private var editable = false
-    private var image:String?=null
+    private var image: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vModel = ViewModelProvider(
@@ -79,9 +79,9 @@ class EditProfile: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         (activity as VinnerActivity).close()
-       initControll()
+        initControll()
         getProfile()
-        textView5.text="Profile"
+        textView5.text = "Profile"
         cam.setOnClickListener {
             openCamera()
         }
@@ -116,7 +116,7 @@ class EditProfile: Fragment() {
         btnSubmit.setOnClickListener(object : ClickListener() {
             override fun onOneClick(v: View) {
                 progressprofile.visibility = View.VISIBLE
-                if (Helper.isNetworkAvailable(activity!!))  {
+                if (Helper.isNetworkAvailable(activity!!)) {
                     if (validate(
                             arrayOf(
                                 name,
@@ -125,36 +125,35 @@ class EditProfile: Fragment() {
                                 post,
                                 state,
                                 mobile,
-                                email,district
+                                email, district
                             )
                         )
                     )
-                    vModel?.getUpdatedProfile(
-                        RequestModel(
-                            accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                            name = name.text.toString(),
-                            address1 = housename.text.toString(),
-                            address2 = area.text.toString(),
-                            post = post.text.toString(),
-                            profile_pic = image,
-                            state = state.text.toString(),
-                            mobile = mobile.text.toString(),
-                            email = email?.text.toString(),
-                            district = district?.text.toString()
-                        )
-                    )?.observe(viewLifecycleOwner, Observer {
+                        vModel?.getUpdatedProfile(
+                            RequestModel(
+                                accessToken = Preferences.get(activity, ACCESS_TOKEN),
+                                name = name.text.toString(),
+                                address1 = housename.text.toString(),
+                                address2 = area.text.toString(),
+                                post = post.text.toString(),
+                                profile_pic = image,
+                                state = state.text.toString(),
+                                mobile = mobile.text.toString(),
+                                email = email?.text.toString(),
+                                district = district?.text.toString()
+                            )
+                        )?.observe(viewLifecycleOwner, Observer {
 
-                        if (it != null) {
-                            Validation.printToast(requireContext(),"Successful")
-                            getProfile()
-                        }
-                    })
+                            if (it != null) {
+                                Validation.printToast(requireContext(), "Successful")
+                                getProfile()
+                            }
+                        })
 
                     progressprofile.visibility = View.GONE
                     editable = false
                     setEditable(editable)
-                }
-                else {
+                } else {
                     progressprofile.visibility = View.GONE
                 }
 
@@ -163,40 +162,40 @@ class EditProfile: Fragment() {
     }
 
 
-private fun getProfile(){
-    if (Helper.isNetworkAvailable(requireContext())) {
-        vModel!!.getProfile(
-            RequestModel(accessToken = Preferences.get(activity, ACCESS_TOKEN))
+    private fun getProfile() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            vModel!!.getProfile(
+                RequestModel(accessToken = Preferences.get(activity, ACCESS_TOKEN))
 
-        ).observe(requireActivity(),
-            Observer {
-                if (it!!.status == "success") {
+            ).observe(requireActivity(),
+                Observer {
+                    if (it!!.status == "success") {
 
-                    progressprofile.visibility = View.GONE
-                    Glide.with(this)
-                        .load(it.data!!.path)
-                        .thumbnail(0.1f)
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(ivprofilephoto)
-
-
-                    Helper.hideKeyboard(activity)
-                    name.setText(it.data!!.name)
-                    housename.setText(it.data.address1)
-                    area.setText(it.data.address2)
-                    post.setText(it.data.post)
-                    state.setText(it.data.state)
-                    mobile.setText(it.data.mobile)
-                    email.setText(it.data.email)
-                    district.setText(it.data.district)
-                    ProfileName.setText(it.data.name)
+                        progressprofile.visibility = View.GONE
+                        Glide.with(this)
+                            .load(it.data!!.path)
+                            .thumbnail(0.1f)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(ivprofilephoto)
 
 
-                }
-            })
+                        Helper.hideKeyboard(activity)
+                        name.setText(it.data!!.name)
+                        housename.setText(it.data.address1)
+                        area.setText(it.data.address2)
+                        post.setText(it.data.post)
+                        state.setText(it.data.state)
+                        mobile.setText(it.data.mobile+it.data.mobile)
+                        email.setText(it.data.email)
+                        district.setText(it.data.district)
+                        ProfileName.setText(it.data.name)
+
+
+                    }
+                })
+        }
     }
-}
 
 
     private fun setEditable(editable: Boolean) {
@@ -233,44 +232,45 @@ private fun getProfile(){
 
     }
 
- private fun openCamera() {
-            activity?.let {
-                if (checkIfPermissionsGranted(
+    private fun openCamera() {
+        activity?.let {
+            if (checkIfPermissionsGranted(
+                    it,
+                    arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                )
+            ) {
+                startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0)
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
                         it,
-                        arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        Manifest.permission.CAMERA
+                    ) && ActivityCompat.shouldShowRequestPermissionRationale(
+                        it,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
                     )
                 ) {
-                    startActivityForResult(Intent(MediaStore.ACTION_IMAGE_CAPTURE), 0)
+                    showSettingspermissionDialog(
+                        activity,
+                        "",
+                        "Grant Permission",
+                        "You need permission to open camera"
+                    )
                 } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(
-                            it,
-                            Manifest.permission.CAMERA
-                        ) && ActivityCompat.shouldShowRequestPermissionRationale(
-                            it,
+                    ActivityCompat.requestPermissions(
+                        it,
+                        arrayOf(
+                            Manifest.permission.CAMERA,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    ) {
-                        showSettingspermissionDialog(
-                            activity,
-                            "",
-                            "Grant Permission",
-                            "You need permission to open camera"
-                        )
-                    } else {
-                        ActivityCompat.requestPermissions(
-                            it,
-                            arrayOf(
-                                Manifest.permission.CAMERA,
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                            ),
-                            100
-                        )
-                    }
+                        ),
+                        100
+                    )
                 }
             }
-
-
         }
+
+
+    }
+
     private fun OpenLibrary() {
         activity?.let {
             if (checkIfPermissionsGranted(
@@ -297,6 +297,7 @@ private fun getProfile(){
             }
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (resultCode) {
             Activity.RESULT_OK -> when (requestCode) {
@@ -307,7 +308,11 @@ private fun getProfile(){
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         when (requestCode) {
             100 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
@@ -359,19 +364,19 @@ private fun getProfile(){
         }
         setImage(bm)
     }
+
     private fun setImage(bm: Bitmap?) {
         try {
             bm?.let {
                 ivprofilephoto.setImageBitmap(bm)
                 Helper.printAny(getRealPathFromURI(activity, getImageUri(activity, bm)))
                 image = Helper.convertBitmap(bm)
-                Validation.printToast(requireContext(),image.toString())
+                Validation.printToast(requireContext(), image.toString())
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
 
 
     private fun validate(elements: Array<EditText>): Boolean {

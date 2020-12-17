@@ -110,7 +110,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
             .load(logo)
             .thumbnail(0.1f)
             .into(img_logo)
-//        getCheckoutAddress()
         initControl()
         getCart()
         getOperators()
@@ -194,14 +193,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         txt_sub_total.text = "0"
                         totalAmount.text = "0"
 
-                        checkout.setEnabled(false);
-//                    if (it?.message.equals("Invalid access token")) {
-//                        startActivity(Intent(activity, LoginActivity::class.java))
-//                        requireActivity().finish()
-////                    } else {
-////                      printToast(requireContext(), it?.message!!)
-//                    }
-////                  printToast(this.requireContext(), it?.message.toString())
+                        checkout.setEnabled(false)
                     }
                 })
         } else {
@@ -211,7 +203,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
     }
 
     private fun getOperators() {
-//    progresscart.visibility= View.VISIBLE
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -309,7 +300,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
                                 address =
                                     it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
-                                            ", " + it.data.getAddress()!!.zip
+                                            ", " + it.data.getAddress()!!.zip + ", " + it.data.getAddress()!!.country
                                 txt_address.text = address
 
                                 housename = it.data.getAddress()!!.houseFlat
@@ -339,7 +330,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             empty.visibility = View.VISIBLE
                             cart.visibility = View.GONE
                             cartFound = false
-                            printToast(requireContext(), "Not Found")
                         }
 
                         setCartDetails(it.data.getCart())
@@ -450,7 +440,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
 //        vModel!!.getAddress.observe(this, Observer { addressSelected ->
         address =
             addressSelected!!.house_flat + ", " + addressSelected!!.road_name +
-                    ", " + addressSelected!!.zip
+                    ", " + addressSelected!!.zip + ", " + addressSelected!!.country
         txt_address.text = address
 
         housename = addressSelected!!.house_flat

@@ -1,5 +1,6 @@
 package com.estrrado.vinner.data.models.response
 
+import com.estrrado.vinner.data.models.ProductDetail
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -146,5 +147,81 @@ class Datum {
     fun setCategoryImage(categoryImage: String?) {
         this.categoryImage = categoryImage
     }
+
+    /*
+    Product List
+     */
+    @SerializedName("sale_id")
+    @Expose
+    private var saleId: String? = null
+
+    @SerializedName("order_id")
+    @Expose
+    private var orderId: String? = null
+
+    @SerializedName("product_details")
+    @Expose
+    private var productDetails: List<ProductDetail?>? = null
+
+    @SerializedName("order_date")
+    @Expose
+    private var orderDate: String? = null
+
+    @SerializedName("delivery_status")
+    @Expose
+    private var deliveryStatus: String? = null
+
+    @SerializedName("delivary_datetime")
+    @Expose
+    private var delivaryDatetime: String? = null
+
+    fun getSaleId(): String? {
+        return saleId
+    }
+
+    fun setSaleId(saleId: String?) {
+        this.saleId = saleId
+    }
+
+    fun getOrderId(): String? {
+        return orderId
+    }
+
+    fun setOrderId(orderId: String?) {
+        this.orderId = orderId
+    }
+
+    fun getProductDetails(): List<ProductDetail?>? {
+        return productDetails
+    }
+
+    fun setProductDetails(productDetails: List<ProductDetail?>?) {
+        this.productDetails = productDetails
+    }
+
+    fun getOrderDate(): String? {
+        return orderDate
+    }
+
+    fun setOrderDate(orderDate: String?) {
+        this.orderDate = orderDate
+    }
+
+    fun getDeliveryStatus(): String? {
+        return deliveryStatus
+    }
+
+    fun setDeliveryStatus(deliveryStatus: String?) {
+        this.deliveryStatus = deliveryStatus
+    }
+
+    fun getDelivaryDatetime(): String? {
+        return delivaryDatetime
+    }
+
+    fun setDelivaryDatetime(delivaryDatetime: String?) {
+        this.delivaryDatetime = delivaryDatetime
+    }
+
 
 }

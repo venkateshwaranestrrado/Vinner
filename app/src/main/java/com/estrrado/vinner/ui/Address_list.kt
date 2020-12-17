@@ -298,7 +298,7 @@ class Address_list : Fragment() {
                     bundle.putString(LANDMARK, addressFilterList!!.get(position)!!.landmark)
                     bundle.putString(NAME, addressFilterList!!.get(position)!!.name)
                     bundle.putString(CITY, addressFilterList!!.get(position)!!.city)
-                    bundle.putString(COUNTRY, addressFilterList!!.get(position)!!.country)
+                    bundle.putString(COUNTRY, addressFilterList!!.get(position)!!.country_code)
                     bundle.putString(IS_DEFAULT, addressFilterList!!.get(position)!!.default)
                     bundle.putBoolean(IS_EDIT, true)
                     fragment.arguments = bundle

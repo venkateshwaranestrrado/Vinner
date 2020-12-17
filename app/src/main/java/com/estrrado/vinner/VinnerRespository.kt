@@ -494,8 +494,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
-    fun OrderList(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel?>()
+    fun OrderList(input: RequestModel): MutableLiveData<DataListModel?> {
+        val data = MutableLiveData<DataListModel?>()
         apiService?.orderlist(
             input.accessToken, input.search_date, input.search_orderId
         )!!.subscribeOn(Schedulers.io())

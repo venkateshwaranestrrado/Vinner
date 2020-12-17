@@ -94,15 +94,6 @@ class CheckoutFragment : Fragment() {
         getDeleveryFee()
         txt_address.setText(address)
 
-        spnr_region_back.visibility = View.VISIBLE
-        spnr_region_back.isEnabled = false
-        regionList = readFromAsset(requireActivity())
-        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
-        spnr_region_back.adapter = regionAdapter
-        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
-            spnr_region_back.setSelection(
-                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
-            )
         card_payfort.setOnClickListener {
             val bundle = Bundle()
             bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)

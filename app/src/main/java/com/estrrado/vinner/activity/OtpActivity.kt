@@ -64,24 +64,24 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.btotpSubmit -> {
-                progressotp!!.visibility=View.VISIBLE
+                progressotp!!.visibility = View.VISIBLE
                 if (Helper.isNetworkAvailable(this)) {
                     if (hasText(etOtp, REQUIRED)) {
                         val otp = etOtp.text.toString()
                         val requestModel = RequestModel()
                         requestModel.otp = otp
                         requestModel.phoneNumber = Preferences.get(this, MOBILE)
-                        requestModel.countryCode=Preferences.get(this,REGION_CODE)
+                        requestModel.countryCode = Preferences.get(this, REGION_CODE)
 
                         authenticateVM!!.verifyOTP(
                             requestModel
                         ).observe(this,
                             Observer {
-//                                printToast(this, it?.message.toString())
+                                printToast(this, it?.message.toString())
+                                progressotp!!.visibility = View.GONE
                                 if (it?.status.equals(SUCCESS)) {
 
                                     if (it?.userstatus.equals(VERIFIED)) {
-                                        progressotp.visibility=View.GONE
                                         Preferences.put(
                                             this,
                                             ACCESS_TOKEN,
@@ -90,24 +90,20 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                                         Preferences.put(this, IS_LOGIN, TRUE)
                                         startActivity(Intent(this, VinnerActivity::class.java))
                                         finish()
-                                    }
-                                    else {
-                                        progressotp.visibility=View.GONE
+                                    } else {
                                         startActivity(Intent(this, RegisterActivity::class.java))
                                         finish()
                                     }
                                 }
 
                             })
-                    }
-                    else{
-                        progressotp.visibility=View.GONE
-                        Toast.makeText(this,"OTP MISMATCH", Toast.LENGTH_SHORT).show()
+                    } else {
+                        progressotp.visibility = View.GONE
+                        Toast.makeText(this, "OTP MISMATCH", Toast.LENGTH_SHORT).show()
                     }
 
-                }
-                else{
-                    Toast.makeText(this,"No Network Available", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show()
                 }
             }
 
