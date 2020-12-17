@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
-    >
+    android:background="@color/white">
 
 
     <include
@@ -40,13 +39,29 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/new_search_background"
+        android:drawablePadding="@dimen/_5sdp"
+        android:hint="  Search by order id or Date"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
         android:padding="8dp"
-
-        android:text="  Search all orders"
         android:textColor="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_search" />
+
+    <ImageView
+        android:id="@+id/img_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_calendar"
+        android:padding="@dimen/_5sdp"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusedByDefault="true"
+        app:layout_constraintTop_toTopOf="@+id/searchlist"
+        app:layout_constraintRight_toRightOf="@+id/searchlist"
+        app:layout_constraintBottom_toBottomOf="@+id/searchlist"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -69,9 +84,9 @@
     <include
         android:id="@+id/progressorderlist"
         layout="@layout/item_progress_sheet"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

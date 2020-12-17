@@ -77,11 +77,11 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         pageTitle.setText("Product List")
+        img_search_toolbar.visibility = View.VISIBLE
 //        Glide.with(this!!.requireActivity()!!)
 //            .load(logo)
 //            .thumbnail(0.1f)
 //            .into(img_logo)
-        progressproductlist.visibility=View.VISIBLE
 //        Helper.setLocation(spnr_region, this!!.requireContext()!!)
         recycle_products.setLayoutManager(GridLayoutManager(context, 2))
         getProductList()
@@ -92,20 +92,17 @@ class ProductListFragment : Fragment() {
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-           requestModel.countryCode = Preferences.get(activity, REGION_NAME)
+            requestModel.countryCode = Preferences.get(activity, REGION_NAME)
             requestModel.limit = null
             requestModel.offset = 0
-
+            progressproductlist.visibility = View.VISIBLE
             vModel!!.getProductList(requestModel).observe(requireActivity(),
                 Observer {
+                    progressproductlist.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
-                        progressproductlist.visibility=View.GONE
                         recycle_products.adapter =
                             ProductsAdapter(this!!.requireActivity()!!, null, it!!.data, view)
-                    }
-
-                    else
-                    {
+                    } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
@@ -116,10 +113,9 @@ class ProductListFragment : Fragment() {
                     }
 
                 })
-        }
-        else{
-            Toast.makeText(context,"No Network Available", Toast.LENGTH_SHORT).show()
-            progressproductlist.visibility=View.GONE
+        } else {
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+            progressproductlist.visibility = View.GONE
         }
     }
 

@@ -1,10 +1,13 @@
 package com.estrrado.vinner.ui
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -34,11 +37,16 @@ import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_order_list.*
 import kotlinx.android.synthetic.main.toolbar_back.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class OrderList : Fragment() {
 
     var vModel: HomeVM? = null
+    private val myCalendar = Calendar.getInstance()
+    var orderIdSearch = ""
+    var dateSearch = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,6 +76,20 @@ class OrderList : Fragment() {
         ).get(HomeVM::class.java)
 
         getData()
+
+        searchlist.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                dateSearch = ""
+                orderIdSearch = searchlist.text.toString()
+                getData()
+                return@OnEditorActionListener true
+            }
+            false
+        })
+
+        img_search.setOnClickListener {
+            showCalender()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -82,30 +104,17 @@ class OrderList : Fragment() {
             vModel!!.getOrderList(
                 RequestModel(
                     accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                    search_date = "",
-                    search_orderId = ""
+                    search_date = dateSearch,
+                    search_orderId = orderIdSearch
                 )
             ).observe(requireActivity(), Observer {
                 progressorderlist.visibility = View.GONE
-//                var products = ArrayList<Productdtls?>()
-//                var data = it!!.data
-//                for (item: AddressList in data!!) {
-//                    var prod = item.product_details!!
-//                    if (prod != null) {
-//                        prod.map {
-//                            it?.delivery_status = item.delivery_status
-//                            it?.delivary_datetime = item.delivary_datetime
-//                            it?.sale_id = item.sale_id
-//
-//                        }
-//                        products.addAll(prod)
-//                    }
                 if (it!!.data != null && it.data!!.size > 0) {
                     recy_order_list.layoutManager = LinearLayoutManager(requireContext())
                     recy_order_list.adapter =
                         Orderliist(it.data!!, this.requireView(), requireActivity())
                     progressorderlist.visibility = View.GONE
-                } else printToast(requireContext(), it!!.message.toString())
+                } else printToast(requireContext(), it.message.toString())
             })
         } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
@@ -148,13 +157,14 @@ class OrderList : Fragment() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+            var rating = 0.0
             if (dataItem.get(position)!!.getDeliveryStatus() == DELIVERED) {
                 holder.tvreview.visibility = View.VISIBLE
                 var isReviewAdded = false
                 for (i in 0 until dataItem.get(position)!!.getProductDetails()!!.size) {
                     if (dataItem.get(position)!!.getProductDetails()!!.get(i)!!.reviewId != 0
                     ) {
+                        rating = dataItem.get(position)!!.getProductDetails()!!.get(i)!!.rating!!.toDouble()
                         isReviewAdded = true
                         break
                     }
@@ -165,13 +175,7 @@ class OrderList : Fragment() {
                     holder.tvreview.text = Constants.VIEW_REVIEW
             } else
                 holder.tvreview.visibility = View.GONE
-            var rating = 0.0
-            if (dataItem.get(position)!!.rating != null && dataItem.get(position)!!.rating.equals(
-                    ""
-                )
-            ) {
-                rating = dataItem.get(position)!!.rating!!.toDouble()
-            }
+
             holder.rating.rating = rating.toFloat()
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)
@@ -215,6 +219,33 @@ class OrderList : Fragment() {
 
     }
 
+    private fun showCalender() {
+        val datePickerDialog = DatePickerDialog(
+            requireContext(), date, myCalendar[Calendar.YEAR],
+            myCalendar[Calendar.MONTH],
+            myCalendar[Calendar.DAY_OF_MONTH]
+        )
+//        datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
+        datePickerDialog.show()
+    }
+    private val date =
+        DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+            // TODO Auto-generated method stub
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, monthOfYear)
+            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDate()
+        }
+
+    private fun updateDate() {
+        val myFormat = "yyyy-MM-dd" //In which you need put here
+        val sdf =
+            SimpleDateFormat(myFormat, Locale.getDefault())
+        searchlist!!.setText(sdf.format(myCalendar.getTime()))
+        orderIdSearch = ""
+        dateSearch = searchlist.text.toString()
+        getData()
+    }
 
 }
 
