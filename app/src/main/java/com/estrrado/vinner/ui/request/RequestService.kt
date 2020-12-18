@@ -38,7 +38,6 @@ class RequestService : Fragment() {
     var vModel: HomeVM? = null
 
     var countryId: String? = null
-    var DemoId: String? = null
     var Servicecateg: String? = null
     var ServiceType: String? = null
     var Date: String? = null
@@ -55,7 +54,6 @@ class RequestService : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        (activity as VinnerActivity).close()
         progressservice.visibility = View.VISIBLE
         vModel = ViewModelProvider(
             this,
@@ -98,7 +96,6 @@ class RequestService : Fragment() {
 
                             formattedDayOfMonth = "0" + dayOfMonth;
                         }
-//                        var monthStr = "0" + month.toString()
 
                         Date = "" + year + "-" + formattedMonth + "-" + formattedDayOfMonth
                         etDate.setText(Date)
@@ -194,12 +191,6 @@ class RequestService : Fragment() {
                     for (item: AddressList in demodata!!) {
                         demo.add(item.product_title.toString())
                     }
-                    val productadapter = ArrayAdapter(
-                        requireContext(),
-                        R.layout.spinner_item, demo
-                    )
-                    spPackages.prompt = "Demo Product"
-                    spPackages.adapter = productadapter
 
 
                 }
@@ -211,26 +202,6 @@ class RequestService : Fragment() {
                     demoid.add(item.product_id.toString())
                     demo.add(item.product_title.toString())
                 }
-                val productadapter = ArrayAdapter(
-                    requireContext(),
-                    R.layout.spinner_item, demo
-                )
-                spPackages.prompt = "Demo Product"
-                spPackages.adapter = productadapter
-                spPackages.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View,
-                        position: Int,
-                        id: Long
-                    ) {
-                        DemoId = demoid.get(position).toString()
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-
-                })
-
 
             })
         vModel!!.getservicecateg(

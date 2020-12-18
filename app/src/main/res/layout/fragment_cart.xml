@@ -58,7 +58,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:visibility="gone"
             app:cardCornerRadius="4dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintBottom_toTopOf="@+id/itemCount"
@@ -76,7 +75,6 @@
                     android:id="@+id/tvDeliveryAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
                     android:text="Delivery Address"
                     android:textSize="@dimen/_10sdp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -86,9 +84,8 @@
                     android:id="@+id/txt_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="2dp"
                     android:textSize="@dimen/_12sdp"
-                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDeliveryAddress" />
 
                 <ImageView
@@ -98,7 +95,7 @@
                     android:padding="@dimen/_5sdp"
                     android:src="@android:drawable/ic_menu_edit"
                     app:layout_constraintBottom_toBottomOf="@+id/txt_address"
-                    app:layout_constraintLeft_toRightOf="@+id/txt_address" />
+                    app:layout_constraintRight_toRightOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

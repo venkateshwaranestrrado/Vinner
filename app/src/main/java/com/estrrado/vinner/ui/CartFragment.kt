@@ -299,8 +299,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             } else {
 
                                 address =
-                                    it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
-                                            ", " + it.data.getAddress()!!.zip + ", " + it.data.getAddress()!!.country
+                                    it.data.getAddress()!!.name + ", " + it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
+                                            ", " + it.data.getAddress()!!.city + ", " + it.data.getAddress()!!.landmark + ", " + it.data.getAddress()!!.country +
+                                            ", " + it.data.getAddress()!!.zip
                                 txt_address.text = address
 
                                 housename = it.data.getAddress()!!.houseFlat
@@ -438,9 +439,10 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     private fun setAddressSelected() {
 //        vModel!!.getAddress.observe(this, Observer { addressSelected ->
-        address =
-            addressSelected!!.house_flat + ", " + addressSelected!!.road_name +
-                    ", " + addressSelected!!.zip + ", " + addressSelected!!.country
+        address = addressSelected!!.name + ", " +
+                addressSelected!!.house_flat + ", " + addressSelected!!.road_name +
+                ", " + addressSelected!!.city + ", " + addressSelected!!.landmark +
+                ", " + addressSelected!!.country + ", " + addressSelected!!.zip
         txt_address.text = address
 
         housename = addressSelected!!.house_flat

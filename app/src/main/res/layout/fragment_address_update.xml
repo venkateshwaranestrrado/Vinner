@@ -129,29 +129,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/edt_name" />
 
             <EditText
-                android:id="@+id/tv_zipcode"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/new_blue_background"
-                android:gravity="center|left"
-                android:hint="Zipcode"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:paddingLeft="8dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="#37000000"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvaddress" />
-
-            <EditText
                 android:id="@+id/tv_roadname"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
@@ -172,8 +149,31 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_zipcode" />
+                app:layout_constraintTop_toBottomOf="@+id/tvaddress" />
 
+            <EditText
+                android:id="@+id/edt_city"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="City"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_roadname" />
 
             <EditText
                 android:id="@+id/tv_landmark"
@@ -197,7 +197,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_roadname" />
+                app:layout_constraintTop_toBottomOf="@+id/edt_city" />
 
             <TextView
                 android:id="@+id/txt_country"
@@ -223,6 +223,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
 
+            <EditText
+                android:id="@+id/tv_zipcode"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="Zipcode"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_country" />
+
             <Spinner
                 android:id="@+id/spnr_region_address"
                 android:layout_width="0dp"
@@ -233,31 +256,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="6dp"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
-
-            <EditText
-                android:id="@+id/edt_city"
-                android:layout_width="0dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/new_blue_background"
-                android:gravity="center|left"
-                android:hint="City"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLines="1"
-                android:paddingLeft="8dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textColorHint="#37000000"
-                android:textSize="14sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_country" />
@@ -271,7 +270,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edt_city">
+                app:layout_constraintTop_toBottomOf="@+id/tv_zipcode">
 
                 <RadioButton
                     android:id="@+id/rb_home"
