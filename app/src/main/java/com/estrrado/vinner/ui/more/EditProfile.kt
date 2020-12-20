@@ -43,7 +43,6 @@ import java.io.*
 
 class EditProfile : Fragment() {
     var vModel: HomeVM? = null
-    private var editable = false
     private var imageUri: Uri? = null
     val neededPermissions = arrayOf(
         Manifest.permission.CAMERA,
