@@ -1,5 +1,5 @@
 package com.estrrado.vinner.`interface`
 
 interface AlertCallback {
-    abstract fun alertSelected(isSelected: Boolean)
+    abstract fun alertSelected(isSelected: Boolean, from:Int)
 }

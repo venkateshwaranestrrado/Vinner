@@ -230,14 +230,14 @@ object Helper {
         malertDialog?.window?.setBackgroundDrawableResource(R.color.transparent)
         malertDialog?.yes?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                alertCallback.alertSelected(true)
+                alertCallback.alertSelected(true, from)
                 malertDialog.cancel()
             }
 
         })
         malertDialog?.no?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
-                alertCallback.alertSelected(false)
+                alertCallback.alertSelected(false, from)
                 malertDialog.cancel()
             }
 

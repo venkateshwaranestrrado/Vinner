@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
@@ -21,6 +22,7 @@ import com.estrrado.vinner.helper.Constants.ADDRESS
 import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.CITY
 import com.estrrado.vinner.helper.Constants.COUNTRY
+import com.estrrado.vinner.helper.Constants.DO_YOU_CONFIRM_TO_CHECK_OUT
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
@@ -31,6 +33,7 @@ import com.estrrado.vinner.helper.Constants.STATUS
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
 import com.estrrado.vinner.helper.Constants.reqCode
+import com.estrrado.vinner.helper.Helper.showAlert
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.readFromAsset
@@ -45,7 +48,7 @@ import kotlinx.android.synthetic.main.fragment_cart.txt_sub_total
 import kotlinx.android.synthetic.main.fragment_checkout.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
-class CheckoutFragment : Fragment() {
+class CheckoutFragment : Fragment(), AlertCallback {
 
     var vModel: HomeVM? = null
     var operatorId: String? = null
@@ -95,64 +98,11 @@ class CheckoutFragment : Fragment() {
         txt_address.setText(address)
 
         card_payfort.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
-            bundle.putString(TOTAL_PAYABLE, totalPayable)
-            bundle.putString(OPERATOR_ID, operatorId)
-            bundle.putString(ADDRESS, address)
-            bundle.putString(HOUSENAME, housename)
-            bundle.putString(ROAD_NAME, Roadname)
-            bundle.putString(PINCODE, pincode)
-            bundle.putString(ADDDRESS_TYPE, addressType)
-            bundle.putString(LANDMARK, landmark)
-            bundle.putString(CITY, arguments?.getString(CITY))
-            bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
-            bundle.putString(NAME, arguments?.getString(NAME))
-            val intent = Intent(activity, PayFortActivity::class.java)
-            intent.putExtras(bundle)
-            startActivityForResult(intent, reqCode)
+            showAlert(DO_YOU_CONFIRM_TO_CHECK_OUT, 1, this, requireContext())
         }
 
         cod.setOnClickListener {
-            progresscheckout.visibility = View.VISIBLE
-            vModel!!.PaymentStatus(
-                RequestModel(
-                    accessToken = Preferences.get(activity, ACCESS_TOKEN),
-                    address_type = arguments?.getString(ADDDRESS_TYPE),
-                    housename = arguments?.getString(HOUSENAME),
-                    road_name = arguments?.getString(ROAD_NAME),
-                    landmark = arguments?.getString(LANDMARK),
-                    pincode = arguments?.getString(PINCODE),
-                    payment_status = "pending",
-                    payment_method = "cod",
-                    operatorId = operatorId,
-                    country = arguments?.getString(COUNTRY),
-                    city = arguments?.getString(CITY),
-                    name = arguments?.getString(NAME)
-                )
-            ).observe(requireActivity(),
-                Observer {
-                    progresscheckout.visibility = View.GONE
-                    if (it?.status.equals(SUCCESS)) {
-                        printToast(requireContext(), "payment successfull")
-                        view.findNavController()
-                            .navigate(R.id.action_checkoutFragment_to_order_list)
-                    } else {
-                        if (it?.message.equals("Invalid access token")) {
-                            startActivity(
-                                Intent(
-                                    activity,
-                                    LoginActivity::class.java
-                                )
-                            )
-                            requireActivity().finish()
-                        } else {
-                            printToast(requireActivity(), it?.message!!)
-                        }
-                        printToast(requireContext(), it?.message.toString())
-                    }
-
-                })
+            showAlert(DO_YOU_CONFIRM_TO_CHECK_OUT, 2, this, requireContext())
         }
     }
 
@@ -192,6 +142,76 @@ class CheckoutFragment : Fragment() {
                 requireView().findNavController()
                     .navigate(R.id.action_checkoutFragment_to_order_list)
         }
+    }
+
+    override fun alertSelected(isSelected: Boolean, from: Int) {
+        if (isSelected) {
+            if (from == 1)
+                payFort()
+            if (from == 2)
+                cod()
+        }
+    }
+
+    private fun payFort() {
+        val bundle = Bundle()
+        bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
+        bundle.putString(TOTAL_PAYABLE, totalPayable)
+        bundle.putString(OPERATOR_ID, operatorId)
+        bundle.putString(ADDRESS, address)
+        bundle.putString(HOUSENAME, housename)
+        bundle.putString(ROAD_NAME, Roadname)
+        bundle.putString(PINCODE, pincode)
+        bundle.putString(ADDDRESS_TYPE, addressType)
+        bundle.putString(LANDMARK, landmark)
+        bundle.putString(CITY, arguments?.getString(CITY))
+        bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
+        bundle.putString(NAME, arguments?.getString(NAME))
+        val intent = Intent(activity, PayFortActivity::class.java)
+        intent.putExtras(bundle)
+        startActivityForResult(intent, reqCode)
+    }
+
+    private fun cod() {
+        progresscheckout.visibility = View.VISIBLE
+        vModel!!.PaymentStatus(
+            RequestModel(
+                accessToken = Preferences.get(activity, ACCESS_TOKEN),
+                address_type = arguments?.getString(ADDDRESS_TYPE),
+                housename = arguments?.getString(HOUSENAME),
+                road_name = arguments?.getString(ROAD_NAME),
+                landmark = arguments?.getString(LANDMARK),
+                pincode = arguments?.getString(PINCODE),
+                payment_status = "pending",
+                payment_method = "cod",
+                operatorId = operatorId,
+                country = arguments?.getString(COUNTRY),
+                city = arguments?.getString(CITY),
+                name = arguments?.getString(NAME)
+            )
+        ).observe(requireActivity(),
+            Observer {
+                progresscheckout.visibility = View.GONE
+                if (it?.status.equals(SUCCESS)) {
+                    printToast(requireContext(), "payment successfull")
+                    requireView().findNavController()
+                        .navigate(R.id.action_checkoutFragment_to_order_list)
+                } else {
+                    if (it?.message.equals("Invalid access token")) {
+                        startActivity(
+                            Intent(
+                                activity,
+                                LoginActivity::class.java
+                            )
+                        )
+                        requireActivity().finish()
+                    } else {
+                        printToast(requireActivity(), it?.message!!)
+                    }
+                    printToast(requireContext(), it?.message.toString())
+                }
+
+            })
     }
 
 }

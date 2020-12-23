@@ -263,7 +263,7 @@ class HomeFragment : Fragment(), AlertCallback {
         }
     }
 
-    override fun alertSelected(isSelected: Boolean) {
+    override fun alertSelected(isSelected: Boolean, from: Int) {
         if (isSelected) {
             setCountry()
             if (Helper.isNetworkAvailable(requireContext())) {

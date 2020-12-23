@@ -168,7 +168,7 @@ class EditProfile : Fragment() {
                         area.setText(it.data.address2)
                         post.setText(it.data.post)
                         city.setText(it.data.city)
-                        mobile.setText(it.data.country_code + it.data.mobile)
+                        mobile.setText(it.data.c_code + it.data.mobile)
                         email.setText(it.data.email)
                         ProfileName.setText(it.data.name)
                     }

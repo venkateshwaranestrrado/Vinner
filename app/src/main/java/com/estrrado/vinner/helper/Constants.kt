@@ -46,4 +46,5 @@ object Constants {
     const val shareLink = "https://vinshopify.com/share"
     var addressSelected: AddressList? = null
     val reqCode: Int = 1
+    val DO_YOU_CONFIRM_TO_CHECK_OUT: String = "Do you confirm to check out the items?"
 }

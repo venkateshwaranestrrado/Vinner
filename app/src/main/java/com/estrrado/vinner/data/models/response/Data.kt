@@ -108,7 +108,6 @@ class Data {
     private var reviews: List<Review?>? = null
 
 
-
     @SerializedName("related_products")
     @Expose
     private var related_products: ArrayList<RelatedProducts>? = null
@@ -133,7 +132,7 @@ class Data {
         return related_products
     }
 
-    fun setRelatedProducts(relatedProducts: ArrayList<RelatedProducts>? ) {
+    fun setRelatedProducts(relatedProducts: ArrayList<RelatedProducts>?) {
         this.related_products = relatedProducts
     }
 
@@ -451,6 +450,10 @@ class Data {
     @field:JsonField(name = arrayOf("country_code"))
     val country_code: String? = null
 
+    @field:SerializedName("c_code")
+    @field:JsonField(name = arrayOf("c_code"))
+    val c_code: String? = null
+
 
     @field:SerializedName("email")
     @field:JsonField(name = arrayOf("email"))
@@ -468,10 +471,12 @@ class Data {
     @field:SerializedName("order_date")
     @field:JsonField(name = arrayOf("order_date"))
     val order_date: String? = null
+
     @field:SerializedName("order_id")
     @field:JsonField(name = arrayOf("order_id"))
     val order_id: String? = null
-  @field:SerializedName("order_total")
+
+    @field:SerializedName("order_total")
     @field:JsonField(name = arrayOf("order_total"))
     val order_total: String? = null
 
@@ -520,9 +525,6 @@ class Data {
     @field:SerializedName("payment_status")
     @field:JsonField(name = arrayOf("payment_status"))
     val payment_status: ArrayList<payment_status?>? = null
-
-
-
 
 
 }
