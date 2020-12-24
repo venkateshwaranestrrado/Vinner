@@ -4,7 +4,7 @@ import com.estrrado.vinner.data.models.Region
 import com.estrrado.vinner.data.models.response.AddressList
 
 object Constants {
-    const val FROM  = "FROM"
+    const val FROM = "FROM"
     const val HOME = "Home"
     const val WORK = "work"
     const val LOGIN_PAGE = "LoginPage"
@@ -15,6 +15,7 @@ object Constants {
     const val VERIFIED = "verified"
     const val MOBILE = "Mobile"
     const val IS_LOGIN = "Is Login"
+    var FROM_LOGIN = 0
     const val ACCESS_TOKEN = "Access Token"
     const val TRUE = "true"
     const val PRODUCT_ID = "Product id"

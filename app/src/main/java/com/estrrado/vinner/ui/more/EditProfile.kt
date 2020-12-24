@@ -44,6 +44,7 @@ import java.io.*
 class EditProfile : Fragment() {
     var vModel: HomeVM? = null
     private var imageUri: Uri? = null
+    private var mobileNum: String = ""
     val neededPermissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -95,7 +96,7 @@ class EditProfile : Fragment() {
         ivprofilephoto.setOnClickListener {
             getImage()
         }
-
+        mobile.isEnabled = false
 
         btnSubmit.setOnClickListener(object : ClickListener() {
             override fun onOneClick(v: View) {
@@ -127,7 +128,7 @@ class EditProfile : Fragment() {
                                 post = post.text.toString(),
                                 profile_pic = multiImg,
                                 state = city.text.toString(),
-                                mobile = mobile.text.toString(),
+                                mobile = mobileNum,
                                 email = email?.text.toString(),
                                 city = city?.text.toString()
                             )
@@ -171,6 +172,7 @@ class EditProfile : Fragment() {
                         mobile.setText(it.data.c_code + it.data.mobile)
                         email.setText(it.data.email)
                         ProfileName.setText(it.data.name)
+                        mobileNum = it.data.mobile.toString()
                     }
                 })
         }

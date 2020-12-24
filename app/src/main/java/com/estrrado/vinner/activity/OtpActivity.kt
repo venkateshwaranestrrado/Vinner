@@ -11,6 +11,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Constants.FROM_LOGIN
 import com.estrrado.vinner.helper.Constants.IS_LOGIN
 import com.estrrado.vinner.helper.Constants.MOBILE
 import com.estrrado.vinner.helper.Constants.REQUIRED
@@ -90,6 +91,7 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                                             it!!.data!!.getAccessToken()!!
                                         )
                                         Preferences.put(this, IS_LOGIN, TRUE)
+                                        FROM_LOGIN = 1
                                         val intent = Intent(this, VinnerActivity::class.java)
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                         startActivity(intent)

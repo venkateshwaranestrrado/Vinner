@@ -58,7 +58,7 @@ class CartAdapter(
 
     private fun changeQty(productId: String, isAdded: Boolean, txtQty: TextView, position: Int) {
         val qty = txtQty.text.toString().toInt()
-        if (!isAdded && qty > 0) {
+        if (!isAdded && qty > 1) {
             txtQty.text = (qty - 1).toString()
         } else if (isAdded)
             txtQty.text = (qty + 1).toString()

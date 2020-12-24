@@ -384,7 +384,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         cartAdapter!!.notifyDataSetChanged()
                         price.text = it.data.getTotalAmount() + " " + currency
                         totalAmount.text = it.data.getGrandTotal() + " " + currency
-
                     }
 //
 //                else

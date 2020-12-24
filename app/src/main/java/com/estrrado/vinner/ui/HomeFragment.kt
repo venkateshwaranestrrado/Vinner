@@ -31,6 +31,7 @@ import com.estrrado.vinner.data.models.Featured
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.CART_ID
+import com.estrrado.vinner.helper.Constants.FROM_LOGIN
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.logo
 import com.estrrado.vinner.helper.Constants.regions
@@ -178,6 +179,8 @@ class HomeFragment : Fragment(), AlertCallback {
                         setProducts(it.data!!.featured)
                         setCategories(it.data!!.categories)
                         logo = it!!.data?.logo!!
+                        if (it.data.cartcount != null && !it.data.cartcount.equals("") && it.data.cartcount!!.toInt() > 0 && FROM_LOGIN == 1)
+                            checkCartRegion()
                         Glide.with(this!!.requireActivity()!!)
                             .load(logo)
                             .thumbnail(0.1f)
@@ -198,6 +201,28 @@ class HomeFragment : Fragment(), AlertCallback {
         } else {
             progresshome.visibility = View.GONE
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun checkCartRegion() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            vModel!!.getCartPage(requestModel).observe(requireActivity(),
+                Observer {
+                    if (it?.status.equals(SUCCESS)) {
+                        for (i in 0 until regionList!!.size) {
+                            if (regionList!!.get(i).name.contains(
+                                    it!!.data!!.getCart()!!.currency.toString(),
+                                    true
+                                )
+                            ) {
+                                spnrSelected = 0
+                                spnr_region.setSelection(i)
+                            }
+                        }
+                    }
+                })
         }
     }
 
