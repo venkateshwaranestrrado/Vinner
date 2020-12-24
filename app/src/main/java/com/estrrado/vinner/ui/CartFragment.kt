@@ -70,6 +70,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var Roadname: String? = null
     var countryName: String? = null
     var city: String? = null
+    var deliveryFee: Int = 0
     var name: String? = null
     var landmark: String? = null
     var pincode: String? = null
@@ -183,12 +184,15 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         txt_delivery.text = it!!.data!!.getDeliveryExpDate()
                         txt_delivery_fee.text =
                             it.data!!.getDeliveryFee() + " " + it.data.getCurrency()
+                        if (!it.data!!.getDeliveryFee().equals(""))
+                            deliveryFee = it.data!!.getDeliveryFee()!!.toInt()
                         price.text = it.data.getPrice() + " " + it.data.getCurrency()
                         txt_sub_total.text = it.data.getSubTotal() + " " + it.data.getCurrency()
                         totalAmount.text = it.data.getTotalAmount() + " " + it.data.getCurrency()
                         checkout.setEnabled(true);
                     } else {
                         txt_delivery_fee.text = "0"
+                        deliveryFee = 0
                         printToast(requireContext(), it!!.message!!)
                         txt_sub_total.text = "0"
                         totalAmount.text = "0"
@@ -357,10 +361,14 @@ class CartFragment : Fragment(), CartadapterCallBack {
     private fun setCartDetails(cart: Cart?) {
         if (!cart!!.totalAmount.equals("null")) {
             price.text = cart.totalAmount + " " + cart.currency
-            totalAmount.text = cart.grandTotal + " " + cart.currency
+            totalAmount.text =
+                (cart.grandTotal!!.toInt() + deliveryFee).toString() + " " + cart.currency
+            txt_sub_total.text =
+                (cart.grandTotal!!.toInt() + deliveryFee).toString() + " " + cart.currency
             currency = cart.currency
         } else {
             price.text = "0 " + cart.currency
+            txt_sub_total.text = "0 " + cart.currency
             totalAmount.text = "0 " + cart.currency
         }
     }
@@ -384,6 +392,11 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         cartAdapter!!.notifyDataSetChanged()
                         price.text = it.data.getTotalAmount() + " " + currency
                         totalAmount.text = it.data.getGrandTotal() + " " + currency
+
+                        totalAmount.text =
+                            (it.data.getGrandTotal()!!.toInt() + deliveryFee).toString() + " " + currency
+                        txt_sub_total.text =
+                            (it.data.getGrandTotal()!!.toInt() + deliveryFee).toString() + " " + currency
                     }
 //
 //                else

@@ -212,8 +212,9 @@ class HomeFragment : Fragment(), AlertCallback {
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         for (i in 0 until regionList!!.size) {
-                            if (regionList!!.get(i).name.contains(
-                                    it!!.data!!.getCart()!!.currency.toString(),
+                            if (it!!.data!!.getCart()!!.currency.toString().contains(
+                                    regionList!!.get(i).name,
+
                                     true
                                 )
                             ) {
