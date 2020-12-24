@@ -43,6 +43,8 @@ object Constants {
     const val DELIVERED = "delivered"
     const val VIEW_REVIEW = "View Review"
     const val WRITE_A_REVIEW = "Write a Review"
+    const val PENDING = "pending"
+    const val ON_DELIVERY = "on-delivery"
     const val shareLink = "https://vinshopify.com/share"
     var addressSelected: AddressList? = null
     val reqCode: Int = 1

@@ -22,6 +22,9 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.Data
 import com.estrrado.vinner.data.models.response.Productdetails
 import com.estrrado.vinner.helper.Constants
+import com.estrrado.vinner.helper.Constants.DELIVERED
+import com.estrrado.vinner.helper.Constants.ON_DELIVERY
+import com.estrrado.vinner.helper.Constants.PENDING
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.retrofit.ApiClient
@@ -101,7 +104,15 @@ class Orderdetail : Fragment() {
                         txt_tax.setText(it.data.tax +""+ it.data.getCurrency())
                         txt_total.setText(it.data.getTotalAmount()+""+ it.data.getCurrency())
                         txt_Orderstotal.setText(it.data.getGrandTotal()+""+ it.data.getCurrency())
-
+                        textView6.setText(it.data.delivery_status)
+                        seek_bar.isEnabled = false
+                        seek_bar.setMaxValue(2.0F).apply()
+                        if (it.data.delivery_status.equals(PENDING))
+                            seek_bar.setMaxStartValue(0.0F).apply()
+                        else if (it.data.delivery_status.equals(ON_DELIVERY))
+                            seek_bar.setMaxStartValue(1.0F).apply()
+                        else if (it.data.delivery_status.equals(DELIVERED))
+                            seek_bar.setMaxStartValue(2.0F).apply()
 
                         recyclerView.layoutManager = LinearLayoutManager(
                             activity,
