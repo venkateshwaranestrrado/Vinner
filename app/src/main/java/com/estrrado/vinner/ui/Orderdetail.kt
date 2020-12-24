@@ -70,20 +70,19 @@ class Orderdetail : Fragment() {
     }
 
 
-
-    private fun initControl(){
+    private fun initControl() {
         pageTitle.setText("Order Detail")
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN)
-            requestModel.order_id= arguments?.getString(Preferences.ORDER_ID)
+            requestModel.order_id = arguments?.getString(Preferences.ORDER_ID)
 
             vModel!!.getorderdetail(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(Constants.SUCCESS)) {
                         textView34.setText(it!!.data!!.order_date)
                         textView35.setText(it.data!!.order_id)
-                        textView36.setText(it.data.order_total+"(" + it.data.items_count + "item"+")" +""+it.data.getCurrency())
+                        textView36.setText(it.data.order_total + "(" + it.data.items_count + "item" + ")" + "" + it.data.getCurrency())
                         txt_orderd.setText(it.data.ordered)
                         txt_dlvrd.setText(it.data.delivered)
                         txt_pymntmthd.setText(it.data.payment_method)
@@ -98,13 +97,12 @@ class Orderdetail : Fragment() {
                         txt_ship_zip.setText(it.data.shipping_address!!.get(0)!!.s_zip)
 
 
-                        txt_items.setText(it.data.getTotalAmount()+""+ it.data.getCurrency())
-                        txt_packing.setText( it.data.shipping_cost+""+it.data.getCurrency())
-                        txt_before_tax.setText(it.data.getTotalAmount()+""+ it.data.getCurrency())
-                        txt_tax.setText(it.data.tax +""+ it.data.getCurrency())
-                        txt_total.setText(it.data.getTotalAmount()+""+ it.data.getCurrency())
-                        txt_Orderstotal.setText(it.data.getGrandTotal()+""+ it.data.getCurrency())
-                        textView6.setText(it.data.delivery_status)
+                        txt_items.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
+                        txt_packing.setText(it.data.shipping_cost + "" + it.data.getCurrency())
+                        txt_before_tax.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
+                        txt_tax.setText(it.data.tax + "" + it.data.getCurrency())
+                        txt_total.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
+                        txt_Orderstotal.setText(it.data.getGrandTotal() + "" + it.data.getCurrency())
                         seek_bar.isEnabled = false
                         seek_bar.setMaxValue(2.0F).apply()
                         if (it.data.delivery_status.equals(PENDING))
@@ -129,7 +127,7 @@ class Orderdetail : Fragment() {
 
                 })
 
-                }
+        }
 
     }
 
@@ -137,7 +135,7 @@ class Orderdetail : Fragment() {
         private var activity: FragmentActivity,
         var newitem: Data?,
         var dataItem: ArrayList<Productdetails>?
-    ):
+    ) :
         RecyclerView.Adapter<OrderdetailAdapter.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -155,7 +153,7 @@ class Orderdetail : Fragment() {
         }
 
         @SuppressLint("SetTextI18n")
-        override fun onBindViewHolder(holder: ViewHolder, position: Int){
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
 
             var rating = 0
@@ -172,6 +170,7 @@ class Orderdetail : Fragment() {
 
 
         }
+
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             val price: TextView = itemView.findViewById(R.id.textView38)

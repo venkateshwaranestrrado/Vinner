@@ -7,7 +7,6 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
-
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -28,10 +27,9 @@
 
             <ImageView
                 android:id="@+id/Productimage"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
+                android:layout_width="@dimen/_90sdp"
+                android:layout_height="@dimen/_90sdp"
                 android:layout_marginStart="8dp"
-
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:contentDescription="Product"
@@ -44,10 +42,56 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:textStyle="bold"
+                android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
                 app:layout_constraintTop_toTopOf="@+id/Productimage" />
+
+            <TextView
+                android:id="@+id/tv_lbl_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray"
+                android:text="@string/order_id_"
+                app:layout_constraintStart_toEndOf="@+id/Productimage"
+                app:layout_constraintTop_toBottomOf="@+id/tv_prdct_name" />
+
+            <TextView
+                android:id="@+id/tv_order_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toEndOf="@+id/tv_lbl_id"
+                app:layout_constraintTop_toBottomOf="@+id/tv_prdct_name" />
+
+            <TextView
+                android:id="@+id/tv_lbl_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray"
+                android:text="@string/order_date_"
+                app:layout_constraintStart_toEndOf="@+id/Productimage"
+                app:layout_constraintTop_toBottomOf="@+id/tv_lbl_id" />
+
+            <TextView
+                android:id="@+id/tv_order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray"
+                app:layout_constraintStart_toEndOf="@+id/tv_lbl_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_lbl_id" />
 
             <TextView
                 android:id="@+id/tv_deliv_status"
@@ -57,7 +101,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
-                app:layout_constraintTop_toBottomOf="@+id/tv_prdct_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_lbl_date" />
 
             <RatingBar
                 android:id="@+id/product_rating"
@@ -68,6 +112,8 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/_3sdp"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
                 app:layout_constraintTop_toBottomOf="@+id/tv_deliv_status" />
 

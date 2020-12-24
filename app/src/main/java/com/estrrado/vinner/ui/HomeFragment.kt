@@ -58,6 +58,7 @@ class HomeFragment : Fragment(), AlertCallback {
     var timerLoad: Boolean = true
     var spnrSelected: Int = 0
     var spnrPosition: Int = 0
+    var cartCount: Int = 0
     var regionList: List<RegionSpinner>? = null
 
     override fun onCreateView(
@@ -114,7 +115,7 @@ class HomeFragment : Fragment(), AlertCallback {
                 id: Long
             ) {
                 spnrPosition = position
-                if (spnrSelected != 0)
+                if (spnrSelected != 0 && cartCount > 0)
                     showAlert(
                         "If you change Region, Your cart items will be removed.",
                         1,
@@ -179,8 +180,12 @@ class HomeFragment : Fragment(), AlertCallback {
                         setProducts(it.data!!.featured)
                         setCategories(it.data!!.categories)
                         logo = it!!.data?.logo!!
-                        if (it.data.cartcount != null && !it.data.cartcount.equals("") && it.data.cartcount!!.toInt() > 0 && FROM_LOGIN == 1)
-                            checkCartRegion()
+                        if (it.data.cartcount != null && !it.data.cartcount.equals("")) {
+                            cartCount = it.data!!.cartcount!!.toInt()
+                            if (it.data.cartcount!!.toInt() > 0 && FROM_LOGIN == 1) {
+                                checkCartRegion()
+                            }
+                        }
                         Glide.with(this!!.requireActivity()!!)
                             .load(logo)
                             .thumbnail(0.1f)

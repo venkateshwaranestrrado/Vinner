@@ -134,9 +134,9 @@ class OrderList : Fragment() {
             val review: TextView = itemView.findViewById(R.id.tv_review)
             val rating: RatingBar = itemView.findViewById(R.id.product_rating)
             val orderlist: CardView = itemView.findViewById(R.id.ordrlist)
-
             val tvreview: TextView = itemView.findViewById(R.id.tv_review)
-
+            val tvOrderId: TextView = itemView.findViewById(R.id.tv_order_id)
+            val tvOrderDate: TextView = itemView.findViewById(R.id.tv_order_date)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -186,6 +186,8 @@ class OrderList : Fragment() {
 
             holder.name?.text = dataItem?.get(position)!!.getProductDetails()!!.get(0)!!.name
             holder.delivstatus?.text = dataItem?.get(position)!!.getDelivaryDatetime()
+            holder.tvOrderId?.text = dataItem?.get(position)!!.getOrderId()
+            holder.tvOrderDate?.text = dataItem?.get(position)!!.getOrderDate()
 
             holder.orderlist.setOnClickListener {
                 val bundle = Bundle()
