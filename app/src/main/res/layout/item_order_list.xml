@@ -43,6 +43,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:textStyle="bold"
+                android:maxLines="2"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
                 app:layout_constraintTop_toTopOf="@+id/Productimage" />
@@ -56,6 +57,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/gray"
                 android:text="@string/order_id_"
+                android:textSize="@dimen/_8sdp"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
                 app:layout_constraintTop_toBottomOf="@+id/tv_prdct_name" />
 
@@ -66,6 +68,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:textSize="@dimen/_8sdp"
                 android:textColor="@color/gray"
                 app:layout_constraintStart_toEndOf="@+id/tv_lbl_id"
                 app:layout_constraintTop_toBottomOf="@+id/tv_prdct_name" />
@@ -79,6 +82,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/gray"
                 android:text="@string/order_date_"
+                android:textSize="@dimen/_8sdp"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
                 app:layout_constraintTop_toBottomOf="@+id/tv_lbl_id" />
 
@@ -90,6 +94,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/gray"
+                android:textSize="@dimen/_8sdp"
                 app:layout_constraintStart_toEndOf="@+id/tv_lbl_date"
                 app:layout_constraintTop_toBottomOf="@+id/tv_lbl_id" />
 
@@ -100,6 +105,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:textSize="@dimen/_8sdp"
                 app:layout_constraintStart_toEndOf="@+id/Productimage"
                 app:layout_constraintTop_toBottomOf="@+id/tv_lbl_date" />
 

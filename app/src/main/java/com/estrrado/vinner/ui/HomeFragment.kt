@@ -183,6 +183,7 @@ class HomeFragment : Fragment(), AlertCallback {
                         if (it.data.cartcount != null && !it.data.cartcount.equals("")) {
                             cartCount = it.data!!.cartcount!!.toInt()
                             if (it.data.cartcount!!.toInt() > 0 && FROM_LOGIN == 1) {
+                                FROM_LOGIN = 0
                                 checkCartRegion()
                             }
                         }
@@ -223,7 +224,8 @@ class HomeFragment : Fragment(), AlertCallback {
                                     true
                                 )
                             ) {
-                                spnrSelected = 0
+                                if (i != spnr_region.selectedItemPosition)
+                                    spnrSelected = 0
                                 spnr_region.setSelection(i)
                             }
                         }
@@ -323,11 +325,6 @@ class HomeFragment : Fragment(), AlertCallback {
             if (!Preferences.get(activity, COUNTRY_POSITION).equals(""))
                 spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        spnrSelected = 0
     }
 
 }

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -52,7 +53,7 @@ class Address_list : Fragment() {
     var vModel: HomeVM? = null
     var address: String? = null
     private var addressAdapter: AddresslistAdapter? = null
-    var from: Int? = null
+    var from: Int? = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -124,9 +125,9 @@ class Address_list : Fragment() {
         const_add_new_address.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, AddAddress()).commit()
-
+            val bundle = bundleOf(Constants.FROM to from)
             requireView().findNavController()
-                .navigate(R.id.action_address_list_to_addAddress)
+                .navigate(R.id.action_address_list_to_addAddress, bundle)
         }
 
 
@@ -147,6 +148,7 @@ class Address_list : Fragment() {
                         vModel!!,
                         Helper,
                         from,
+                        view,
                         requireActivity()
                     )
                     recy_address_list.adapter = addressAdapter
@@ -165,6 +167,7 @@ class Address_list : Fragment() {
         val vModel: HomeVM,
         val param: Helper,
         val from: Int?,
+        val view: View?,
         private var activity: FragmentActivity
     ) : RecyclerView.Adapter<AddresslistAdapter.ViewHolder>(), Filterable {
 
@@ -288,7 +291,6 @@ class Address_list : Fragment() {
                 }
 
                 holder.buttonedit!!.setOnClickListener {
-                    val fragment = AddAddress()
                     val bundle = Bundle()
                     bundle.putString(ADDRESS_ID, addressFilterList!!.get(position)!!.adrs_id)
                     bundle.putString(
@@ -304,10 +306,13 @@ class Address_list : Fragment() {
                     bundle.putString(COUNTRY, addressFilterList!!.get(position)!!.country_code)
                     bundle.putString(IS_DEFAULT, addressFilterList!!.get(position)!!.default)
                     bundle.putBoolean(IS_EDIT, true)
-                    fragment.arguments = bundle
+                    if (from != null) {
+                        bundle.putInt(Constants.FROM, from)
+                    }
                     activity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit()
+                        .replace(R.id.nav_host_fragment, AddAddress()).commit()
+                    view?.findNavController()
+                        ?.navigate(R.id.action_address_list_to_addAddress, bundle)
                 }
 
                 holder.buttondlte!!.setOnClickListener {
@@ -318,6 +323,7 @@ class Address_list : Fragment() {
                         vModel,
                         param,
                         from,
+                        view,
                         activity
                     ).notifyDataSetChanged()
                     activity.recy_address_list.invalidate()
@@ -375,6 +381,7 @@ class Address_list : Fragment() {
                             vModel!!,
                             Helper,
                             from,
+                            view,
                             requireActivity()
                         )
 //                        var checkoutAddressList = it!!.data

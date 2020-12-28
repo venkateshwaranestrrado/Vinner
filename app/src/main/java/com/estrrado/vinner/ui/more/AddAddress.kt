@@ -174,12 +174,21 @@ class AddAddress : Fragment(), LocationListener {
             check_default.isChecked = true
         }
         Handler().postDelayed({
-            txt_country.setText(arguments?.getString(Constants.COUNTRY, "").toString())
+            if (txt_country != null)
+                txt_country.setText(arguments?.getString(Constants.COUNTRY, "").toString())
         }, 1500)
     }
 
     private fun initControll() {
-        initialiseRegion()
+        regionList = readFromAsset(requireActivity())
+        if (arguments?.getInt(Constants.FROM) != null && arguments?.getInt(
+                Constants.FROM
+            ) == 1
+        ) {
+            txt_country.text = Preferences.get(activity, Preferences.REGION_NAME)
+            txt_country.isEnabled = false
+        } else
+            initialiseRegion()
         addresslyt.setOnClickListener {
             getLocation()
         }
@@ -243,8 +252,16 @@ class AddAddress : Fragment(), LocationListener {
                                 progressaddress.visibility = View.GONE
                                 printToast(this.requireContext(), it!!.message.toString())
                                 if (it!!.status == "success") {
-                                    requireActivity().supportFragmentManager.beginTransaction()
-                                        .replace(R.id.nav_host_fragment, Address_list()).commit()
+                                    if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(
+                                            Constants.FROM
+                                        ) != 1
+                                    ) {
+                                        requireActivity().supportFragmentManager.beginTransaction()
+                                            .replace(R.id.nav_host_fragment, Address_list())
+                                            .commit()
+                                    } else {
+                                        requireActivity().onBackPressed()
+                                    }
                                 } else {
                                     if (it.message.equals("Invalid access token")) {
                                         startActivity(Intent(activity, LoginActivity::class.java))
@@ -277,8 +294,16 @@ class AddAddress : Fragment(), LocationListener {
                                 progressaddress.visibility = View.GONE
                                 printToast(this.requireContext(), it!!.message.toString())
                                 if (it!!.status == "success") {
-                                    requireActivity().supportFragmentManager.beginTransaction()
-                                        .replace(R.id.nav_host_fragment, Address_list()).commit()
+                                    if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(
+                                            Constants.FROM
+                                        ) != 1
+                                    ) {
+                                        requireActivity().supportFragmentManager.beginTransaction()
+                                            .replace(R.id.nav_host_fragment, Address_list())
+                                            .commit()
+                                    } else {
+                                        requireActivity().onBackPressed()
+                                    }
                                 } else {
                                     if (it.message.equals("Invalid access token")) {
                                         startActivity(Intent(activity, LoginActivity::class.java))
@@ -299,7 +324,6 @@ class AddAddress : Fragment(), LocationListener {
     }
 
     private fun initialiseRegion() {
-        regionList = readFromAsset(requireActivity())
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region_address.adapter = regionAdapter
         spnr_region_address.setOnItemSelectedListener(object :
@@ -473,9 +497,18 @@ class AddAddress : Fragment(), LocationListener {
     }
 
     fun validateRegion(region: String): Boolean {
-        for (i in 0 until regionList!!.size) {
-            if (regionList!!.get(i).name.equals(region)) {
+        if (arguments?.getInt(Constants.FROM) != null && arguments?.getInt(
+                Constants.FROM
+            ) == 1
+        ) {
+            if (region.equals(Preferences.get(activity, Preferences.REGION_NAME)))
                 return true
+            else txt_country.isEnabled = true
+        } else {
+            for (i in 0 until regionList!!.size) {
+                if (regionList!!.get(i).name.equals(region)) {
+                    return true
+                }
             }
         }
         printToast(requireContext(), NOT_SERVING_IN_THIS_REGION)

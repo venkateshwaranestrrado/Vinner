@@ -111,7 +111,10 @@ class Orderdetail : Fragment() {
                             seek_bar.setMaxStartValue(1.0F).apply()
                         else if (it.data.delivery_status.equals(DELIVERED))
                             seek_bar.setMaxStartValue(2.0F).apply()
-
+                        seek_bar.visibility = View.VISIBLE
+                        textView.visibility = View.VISIBLE
+                        textView7.visibility = View.VISIBLE
+                        textView6.visibility = View.VISIBLE
                         recyclerView.layoutManager = LinearLayoutManager(
                             activity,
                             LinearLayoutManager.HORIZONTAL,
