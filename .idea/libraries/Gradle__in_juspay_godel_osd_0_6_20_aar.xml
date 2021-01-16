@@ -1,15 +1,21 @@
 <component name="libraryTable">
   <library name="Gradle: in.juspay:godel-osd:0.6.20@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d1125ef24871bd4a51ef716d85b4db0/jetified-godel-osd-0.6.20/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/519f9856bd9f74adb3d082015531988a/jetified-godel-osd-0.6.20/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe76c0b09f982e4f1877bb173c05dc4f/jetified-godel-osd-0.6.20/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce9c4d76b8523a607280677174890d27/jetified-godel-osd-0.6.20/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d1125ef24871bd4a51ef716d85b4db0/jetified-godel-osd-0.6.20/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7d1125ef24871bd4a51ef716d85b4db0/jetified-godel-osd-0.6.20/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/519f9856bd9f74adb3d082015531988a/jetified-godel-osd-0.6.20/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/519f9856bd9f74adb3d082015531988a/jetified-godel-osd-0.6.20/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe76c0b09f982e4f1877bb173c05dc4f/jetified-godel-osd-0.6.20/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe76c0b09f982e4f1877bb173c05dc4f/jetified-godel-osd-0.6.20/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fe76c0b09f982e4f1877bb173c05dc4f/jetified-godel-osd-0.6.20/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce9c4d76b8523a607280677174890d27/jetified-godel-osd-0.6.20/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce9c4d76b8523a607280677174890d27/jetified-godel-osd-0.6.20/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ce9c4d76b8523a607280677174890d27/jetified-godel-osd-0.6.20/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
-    <LIBRARY_FILE />
-    <LIBRARY_FILE />
     <SOURCES />
   </library>
 </component>

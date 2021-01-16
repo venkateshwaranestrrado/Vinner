@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.shamanland:fonticon:0.1.9@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e9a8a838c5292ef78d2a3c6e1870f12a/jetified-fonticon-0.1.9/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e9a8a838c5292ef78d2a3c6e1870f12a/jetified-fonticon-0.1.9/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/e9a8a838c5292ef78d2a3c6e1870f12a/jetified-fonticon-0.1.9/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.shamanland/fonticon/0.1.9/de61e2e64f734dbdf80e87ecde531fc23018c68/fonticon-0.1.9-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.shamanland/fonticon/0.1.9/cf38251650b5860f903a3e9a6af32d3ef32c110d/fonticon-0.1.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
