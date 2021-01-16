@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
-    var apiData = WebConfig.TEST
+    var apiData = WebConfig.PUBLISH
     var LIVE_URL = apiData.getLiveUrl()
     private var interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
