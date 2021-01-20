@@ -4,17 +4,14 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -29,13 +26,10 @@ import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Helper.checkIfPermissionsGranted
-import com.estrrado.vinner.helper.Helper.getImageUri
-import com.estrrado.vinner.helper.Helper.getRealPathFromURI
-import com.estrrado.vinner.helper.Helper.showSettingspermissionDialog
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import gun0912.tedbottompicker.TedBottomPicker
+import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.android.synthetic.main.edit_profile.*
 import kotlinx.android.synthetic.main.toolbar.*
 import okhttp3.MultipartBody
@@ -226,24 +220,35 @@ class EditProfile : Fragment() {
                 )
             )
         ) {
-            TedBottomPicker.with(activity)
-                //.setPeekHeight(getResources().getDisplayMetrics().heightPixels/2)
-//                .setSelectedUri(selectedUri) //.showVideoMedia()
-                .setPeekHeight(1200)
-                .show({ uri ->
-                    if (uri != null) {
-                        val bitmap = BitmapFactory.decodeStream(
-                            requireContext().getContentResolver().openInputStream(uri)
-                        )
-                        ivprofilephoto.setImageBitmap(bitmap)
-                        imageUri = uri
-                    }
-                })
+            ImagePicker.with(this)
+                .crop()	    			//Crop image(Optional), Check Customization for more option
+                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+//                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
+                .start()
 
         } else {
             ActivityCompat.requestPermissions(requireActivity(), neededPermissions, 10003)
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            //Image Uri will not be null for RESULT_OK
+            val fileUri = data?.data
+            if (fileUri != null) {
+                val bitmap = BitmapFactory.decodeStream(
+                    requireContext().getContentResolver().openInputStream(fileUri)
+                )
+                ivprofilephoto.setImageBitmap(bitmap)
+                imageUri = fileUri
+            }
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(context, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Task Cancelled", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
