@@ -67,10 +67,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pager" />
 
-
                 <TextView
                     android:id="@+id/tv_prod_see_all"
                     style="@style/TextSubTitle"
+                    android:textColor="@color/green"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/see_all"

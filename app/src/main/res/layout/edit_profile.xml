@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar"
+        layout="@layout/toolbar_prev"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,8 +63,8 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
             android:id="@+id/profile_constrain"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
@@ -75,12 +76,12 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                android:digits="@string/characters"
                 android:hint="Name"
-
-                android:textColor="@color/dark_blue"
-                android:textSize="@dimen/_12sdp"
                 android:inputType="textPersonName"
+                android:textColor="@color/dark_blue"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -94,11 +95,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
                 android:hint="House Name/ Door No"
                 android:inputType="text"
                 android:textColor="@color/dark_blue"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -112,11 +113,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
                 android:hint="Area/Location/Street"
                 android:inputType="text"
                 android:textColor="@color/dark_blue"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/housename" />
@@ -130,11 +131,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
                 android:hint="Post"
+                android:inputType="textPersonName"
                 android:textColor="@color/dark_blue"
-                android:inputType="number"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/area" />
@@ -148,11 +149,12 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
+                android:digits="@string/characters"
                 android:hint="City"
-                android:textColor="@color/dark_blue"
                 android:inputType="text"
+                android:textColor="@color/dark_blue"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/post" />
@@ -166,11 +168,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
                 android:hint="Email"
-                android:textColor="@color/dark_blue"
                 android:inputType="textEmailAddress"
+                android:textColor="@color/dark_blue"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/city" />
@@ -184,17 +186,18 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:textSize="@dimen/_12sdp"
                 android:hint="Mobile"
-                android:textColor="@color/dark_blue"
                 android:inputType="number"
+                android:textColor="@color/dark_blue"
                 android:textColorHint="@color/dark_blue"
+                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/email" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="match_parent"
@@ -210,6 +213,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
     <include
         android:id="@+id/progressprofile"
         layout="@layout/item_progress_sheet"

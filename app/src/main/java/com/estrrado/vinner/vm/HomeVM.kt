@@ -7,6 +7,7 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
 
 class HomeVM(var respo: VinnerRespository) : ViewModel() {
+    fun getFeatureProductList(input: RequestModel) = respo.getFeatureProductList(input)
     fun getProductList(input: RequestModel) = respo.getProductList(input)
     fun getCartPage(input: RequestModel) = respo.getCartPage(input)
     fun addCart(input: RequestModel) = respo.addCart(input)

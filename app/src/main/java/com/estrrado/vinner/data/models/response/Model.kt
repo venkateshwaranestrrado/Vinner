@@ -19,7 +19,6 @@ data class Model (
     @field:JsonField(name = arrayOf("message"))
     val message: String? = null,
 
-
     @field:SerializedName("status")
     @field:JsonField(name = arrayOf("status"))
     val status: String? = null

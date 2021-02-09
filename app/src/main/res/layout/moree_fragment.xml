@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <include
         android:id="@+id/include"
@@ -51,11 +51,11 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/profilelyt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:orientation="horizontal"
-                android:id="@+id/profilelyt"
 
                 >
 
@@ -81,17 +81,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="8dp"
-
                 android:background="#1569B0" />
 
             <LinearLayout
+                android:id="@+id/myorderslyt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:orientation="horizontal"
-                android:id="@+id/myorderslyt"
-
-                >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/ivorders"
@@ -110,11 +107,9 @@
             </LinearLayout>
 
             <View
-
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="8dp"
-
                 android:background="#1569B0" />
 
             <LinearLayout
@@ -135,10 +130,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="16dp"
-                    android:textColor="#1569B0"
-                    android:text="My Delivery Address"/>
+                    android:layout_marginTop="8dp"
+                    android:text="My Delivery Address"
+                    android:textColor="#1569B0" />
 
             </LinearLayout>
 
@@ -147,16 +142,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="8dp"
-                android:visibility="gone"
-                android:background="#1569B0" />
+                android:background="#1569B0"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:orientation="horizontal"
-android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/ivtrackorder"
@@ -213,16 +207,15 @@ android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_margin="8dp"
-                android:visibility="gone"
-                android:background="#1569B0" />
+                android:background="#1569B0"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:orientation="horizontal"
-                android:visibility="gone"
-                >
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/ivfaq"
@@ -249,10 +242,10 @@ android:visibility="gone"
                 android:background="#1569B0" />
 
             <LinearLayout
+                android:id="@+id/share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:id="@+id/share"
                 android:orientation="horizontal"
 
                 >
@@ -308,12 +301,13 @@ android:visibility="gone"
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
     <include
         android:id="@+id/progressmore"
         layout="@layout/item_progress_sheet"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

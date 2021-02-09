@@ -82,7 +82,7 @@ class Orderdetail : Fragment() {
                     if (it?.status.equals(Constants.SUCCESS)) {
                         textView34.setText(it!!.data!!.order_date)
                         textView35.setText(it.data!!.order_id)
-                        textView36.setText(it.data.order_total + "(" + it.data.items_count + "item" + ")" + "" + it.data.getCurrency())
+                        textView36.setText(it.data.order_total + " " + it.data.getCurrency())
                         txt_orderd.setText(it.data.ordered)
                         txt_dlvrd.setText(it.data.delivered)
                         txt_pymntmthd.setText(it.data.payment_method)
@@ -101,7 +101,7 @@ class Orderdetail : Fragment() {
                         txt_packing.setText(it.data.shipping_cost + "" + it.data.getCurrency())
                         txt_before_tax.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
                         txt_tax.setText(it.data.tax + "" + it.data.getCurrency())
-                        txt_total.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
+                        txt_total.setText((it.data.getTotalAmount() + it.data.shipping_cost) + "" + it.data.getCurrency())
                         txt_Orderstotal.setText(it.data.getGrandTotal() + "" + it.data.getCurrency())
                         seek_bar.isEnabled = false
                         seek_bar.setMaxValue(2.0F).apply()

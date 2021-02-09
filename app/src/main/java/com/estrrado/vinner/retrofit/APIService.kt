@@ -60,6 +60,15 @@ interface APIService {
     ): Observable<DataListModel>
 
     @FormUrlEncoded
+    @POST("featured_product")
+    fun getFeatureProductList(
+        @Field("access_token") accessToken: String?,
+        @Field("limit") limit: Int?,
+        @Field("offset") offset: Int?,
+        @Field("country_code") countryCode: String?
+    ): Observable<DataListModel>
+
+    @FormUrlEncoded
     @POST("product_detail")
     fun productDetail(
         @Field("access_token") accessToken: String?,

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,10 +18,13 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.adapters.CategoryAdapter
 import com.estrrado.vinner.adapters.IndustryAdapter
+import com.estrrado.vinner.adapters.RegionAdapter
+import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.SUCCESS
+import com.estrrado.vinner.helper.Constants.logo
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -34,6 +38,11 @@ import kotlinx.android.synthetic.main.toolbar_back.*
 class BrowseFragment : Fragment() {
 
     var vModel: HomeVM? = null
+    var regionList: List<RegionSpinner>? = null
+    var spnrSelected: Int = 0
+    var spnrPosition: Int = 0
+
+
     companion object {
         fun newInstance() = BrowseFragment()
     }
@@ -70,14 +79,58 @@ class BrowseFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-progressbrowse.visibility=View.VISIBLE
-        pageTitle.setText("Browse by Category & Industry")
-//        Glide.with(this.requireActivity())
-//            .load(logo)
-//            .thumbnail(0.1f)
-//            .into(img_logo)
+        progressbrowse.visibility = View.VISIBLE
+        //textView5.setText("Browse by Category & Industry")
+        Glide.with(this.requireActivity())
+            .load(logo)
+            .thumbnail(0.1f)
+            .into(img_logo)
+        spnr_region.visibility = View.VISIBLE
+        regionList = readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext(), regionList!!)
+        spnr_region.adapter = regionAdapter
+        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals("")) {
+            spnrSelected = 0
+            spnr_region.setSelection(
+                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
+            )
+        }
+        /*spnr_region.setOnItemSelectedListener(object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                spnrPosition = position
+                if (spnrSelected != 0 && cartCount > 0)
+                    Helper.showAlert(
+                        "If you change Region, Your cart items will be removed.",
+                        1,
+                        alertCallback = this@BrowseFragment,
+                        context = requireContext()
+                    )
+                else {
+                    setCountry()
+                    initControl()
+                }
+                spnrSelected = spnrSelected + 1
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        })*/
+
         getCategories()
         getIndustries()
+    }
+
+    private fun setCountry() {
+        val code = regionList!!.get(spnrPosition).code
+        val name = regionList!!.get(spnrPosition).name
+        Preferences.put(activity, Preferences.REGION_NAME, name!!)
+        Preferences.put(activity, Preferences.COUNTRY_POSITION, spnrPosition.toString())
+        Preferences.put(activity, Preferences.REGION_CODE, code!!)
     }
 
     private fun getCategories() {
@@ -90,11 +143,9 @@ progressbrowse.visibility=View.VISIBLE
                     if (it?.status.equals(SUCCESS)) {
 
 
-                        progressbrowse.visibility=View.GONE
+                        progressbrowse.visibility = View.GONE
                         recycle_cat.adapter = CategoryAdapter(requireActivity(), null, it!!.data)
-                    }
-                    else
-                    {
+                    } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
@@ -105,10 +156,9 @@ progressbrowse.visibility=View.VISIBLE
                     }
 
                 })
-        }
-        else{
-            progressbrowse.visibility=View.GONE
-            Toast.makeText(activity,"No Network Available", Toast.LENGTH_SHORT).show()
+        } else {
+            progressbrowse.visibility = View.GONE
+            Toast.makeText(activity, "No Network Available", Toast.LENGTH_SHORT).show()
 
         }
     }
@@ -121,11 +171,9 @@ progressbrowse.visibility=View.VISIBLE
             vModel!!.getIndustries(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-                        progressbrowse.visibility=View.GONE
+                        progressbrowse.visibility = View.GONE
                         recycle_industry.adapter = IndustryAdapter(requireActivity(), it!!.data)
-                    }
-                    else
-                    {
+                    } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
@@ -136,10 +184,9 @@ progressbrowse.visibility=View.VISIBLE
                     }
 
                 })
-        }
-        else{
-            Toast.makeText(activity,"No Network Available",Toast.LENGTH_SHORT).show()
-            progressbrowse.visibility=View.GONE
+        } else {
+            Toast.makeText(activity, "No Network Available", Toast.LENGTH_SHORT).show()
+            progressbrowse.visibility = View.GONE
         }
     }
 

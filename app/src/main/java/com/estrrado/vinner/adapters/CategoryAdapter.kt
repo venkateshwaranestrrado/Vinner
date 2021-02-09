@@ -31,7 +31,7 @@ class CategoryAdapter(
     RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
     var productId: String = ""
-    var produtName:String=""
+    var produtName: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
@@ -59,20 +59,17 @@ class CategoryAdapter(
                 .transform(RoundedCorners(radius))
                 .thumbnail(0.1f)
                 .into(holder.image)
-            productId= dataList!!.get(position).categoryId!!
-            produtName=dataList!!.get(position).categoryName!!
+            productId = dataList!!.get(position).categoryId!!
+            produtName = dataList!!.get(position).categoryName!!
             holder.mView!!.setOnClickListener {
-                productId= dataList!!.get(position).categoryId!!
-                produtName=dataList!!.get(position).categoryName!!
-//                printToast(activity,productId)
+                productId = dataList!!.get(position).categoryId!!
+                produtName = dataList!!.get(position).categoryName!!
                 val bundle = bundleOf(PRODUCT_ID to productId, PRODUCT_NAME to produtName)
-
-         Navigation.findNavController(it).navigate(R.id.action_navigation_home_to_productCategory,bundle)
+                Navigation.findNavController(it)
+                    .navigate(R.id.action_navigation_home_to_productCategory, bundle)
             }
 
-        }
-
-        else {
+        } else {
 
 
             holder.name.text = catList?.get(position)!!.getCategoryName()
@@ -86,7 +83,7 @@ class CategoryAdapter(
 
             holder.mView!!.setOnClickListener {
                 productId = catList!!.get(position).getCategoryId()!!
-                produtName=catList!!.get(position).getCategoryName()!!
+                produtName = catList!!.get(position).getCategoryName()!!
 //                printToast(activity, productId)
                 val bundle = bundleOf(PRODUCT_ID to productId, PRODUCT_NAME to produtName)
 

@@ -1,5 +1,6 @@
 package com.estrrado.vinner.retrofit
 
+import android.util.Log
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
@@ -10,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
-    var apiData = WebConfig.PUBLISH
+    var apiData = WebConfig.TEST
     var LIVE_URL = apiData.getLiveUrl()
     private var interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -33,7 +34,6 @@ object ApiClient {
             retrofit = Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(LIVE_URL)
-
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()

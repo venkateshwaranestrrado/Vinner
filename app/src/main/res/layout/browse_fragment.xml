@@ -9,18 +9,17 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar_back"
+        layout="@layout/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <androidx.core.widget.NestedScrollView
+        style="@style/RootView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        style="@style/RootView"
         android:layout_marginTop="@dimen/_14sdp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +32,10 @@
 
             <TextView
                 android:id="@+id/tvCategory"
+                style="@style/TextTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Browse by category "
-                style="@style/TextTitle"
                 android:textColor="@color/grey"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -46,8 +45,8 @@
                 android:id="@+id/recycle_cat"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/tvCategory"
-                android:layout_marginTop="@dimen/_10sdp"/>
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/tvCategory" />
 
             <TextView
                 android:id="@+id/tvbrowse"
@@ -66,7 +65,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintBottom_toBottomOf="@+id/progressbrowse"
                 app:layout_constraintTop_toBottomOf="@+id/tvbrowse" />
 
 
@@ -79,9 +77,9 @@
     <include
         android:id="@+id/progressbrowse"
         layout="@layout/item_progress_sheet"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

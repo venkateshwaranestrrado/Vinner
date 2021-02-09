@@ -14,10 +14,9 @@ class TrackFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-     val root = inflater.inflate(R.layout.track_order, container, false)
+        val root = inflater.inflate(R.layout.track_order, container, false)
 
-
-      return root
+        return root
     }
 
 

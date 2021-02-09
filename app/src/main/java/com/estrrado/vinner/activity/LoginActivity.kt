@@ -1,13 +1,12 @@
 package com.estrrado.vinner.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
@@ -15,7 +14,6 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.Input
-import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.MOBILE
 import com.estrrado.vinner.helper.Constants.SUCCESS
@@ -23,6 +21,7 @@ import com.estrrado.vinner.helper.Preferences.REGION_CODE
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.Validation.validate
+import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.AuthVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.google.gson.Gson
@@ -36,9 +35,6 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login)
         initControl()
-
-        //for git checking remove
-
     }
 
 
@@ -61,7 +57,11 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                 var name = modelList.get(position).name
                 Preferences.put(this@LoginActivity, REGION_NAME, name)
                 Preferences.put(this@LoginActivity, REGION_CODE, code)
-                Preferences.put(this@LoginActivity, Preferences.COUNTRY_POSITION, position.toString())
+                Preferences.put(
+                    this@LoginActivity,
+                    Preferences.COUNTRY_POSITION,
+                    position.toString()
+                )
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -107,24 +107,20 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                             )
                         ).observe(this,
                             Observer {
-
+                                progress.visibility = View.GONE
                                 printToast(this, it?.message.toString())
                                 if (it?.status.equals(SUCCESS)) {
-
-                                    progress.visibility = View.GONE
                                     Preferences.put(this, MOBILE, phoneNum)
                                     startActivity(Intent(this, OtpActivity::class.java))
                                 }
-
                             })
                     } else {
                         progress.visibility = View.GONE
                         Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    progress.visibility = View.GONE
                 }
-//                else
-//                progress.visibility=View.GONE
-//                Toast.makeText(this,"Invalid  Credential ",Toast.LENGTH_SHORT).show()
             }
 
         }

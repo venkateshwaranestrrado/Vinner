@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -140,13 +139,13 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:visibility="gone"
                 app:bar_color="@color/gray"
                 app:bar_highlight_color="@color/dark_blue"
                 app:data_type="_float"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView"
                 app:left_thumb_color="@color/dark_blue"
-                android:visibility="gone"
                 app:right_thumb_color="@color/dark_blue" />
 
             <TextView
@@ -403,6 +402,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Total before tax :"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/textView48"
                     app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
@@ -412,6 +412,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Tax :"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@+id/textView49"
                     app:layout_constraintTop_toBottomOf="@+id/textView49" />
 
@@ -461,7 +462,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/txt_packing"
                     app:layout_constraintTop_toBottomOf="@+id/txt_packing" />
 
@@ -470,7 +471,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="17dp"
                     android:layout_marginTop="8dp"
-
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@+id/txt_before_tax"
                     app:layout_constraintTop_toBottomOf="@+id/txt_before_tax" />
 
@@ -479,7 +480,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="@+id/txt_tax"
                     app:layout_constraintTop_toBottomOf="@+id/txt_tax" />
 

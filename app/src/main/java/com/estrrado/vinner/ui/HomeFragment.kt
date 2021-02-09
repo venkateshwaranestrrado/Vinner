@@ -132,7 +132,7 @@ class HomeFragment : Fragment(), AlertCallback {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })
         tv_prod_see_all.setOnClickListener {
-            view?.findNavController()?.navigate(R.id.action_navigation_home_to_productListFragment)
+            view.findNavController().navigate(R.id.action_navigation_home_to_productListFragment)
         }
     }
 
@@ -143,7 +143,6 @@ class HomeFragment : Fragment(), AlertCallback {
         Preferences.put(activity, COUNTRY_POSITION, spnrPosition.toString())
         Preferences.put(activity, Preferences.REGION_CODE, code!!)
     }
-
 
     private fun initControl() {
         // Helper.showLoading(activity)

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/white"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
-    <include layout="@layout/toolbar_back"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar_prev"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/include"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -52,6 +52,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:background="#E3F3FF"
+                android:digits="@string/characters"
                 android:hint="Name"
                 android:imeOptions="actionNext"
                 android:inputType="textPersonName"
@@ -83,11 +84,7 @@
                 android:background="@drawable/spinner_bg"
                 android:dropDownSelector="@color/black"
                 android:hint="Country"
-                android:spinnerMode="dropdown"
-
-
-                />
-
+                android:spinnerMode="dropdown" />
 
             <EditText
                 android:id="@+id/spdemoCity"
@@ -97,13 +94,12 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="16dp"
                 android:background="#E3F3FF"
+                android:digits="@string/characters"
                 android:hint="City"
                 android:imeOptions="actionNext"
                 android:inputType="textPostalAddress"
                 android:paddingLeft="4dp"
-                android:singleLine="true"
-
-                />
+                android:singleLine="true" />
 
             <EditText
                 android:id="@+id/etdemoemail"
@@ -150,13 +146,13 @@
                     android:layout_marginRight="16dp"
                     android:layout_weight="5"
                     android:background="#E3F3FF"
-                    android:hint="Date"
-                    android:onClick="onClick"
                     android:clickable="true"
-
                     android:editable="false"
-                    android:longClickable="false"
                     android:focusable="false"
+
+                    android:hint="Date"
+                    android:longClickable="false"
+                    android:onClick="onClick"
                     android:paddingStart="8dp"
                     android:paddingLeft="4dp" />
 
@@ -168,14 +164,14 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="5"
-                    android:onClick="onClick"
+                    android:background="#E3F3FF"
                     android:clickable="true"
 
                     android:editable="false"
-                    android:longClickable="false"
                     android:focusable="false"
-                    android:background="#E3F3FF"
                     android:hint="Time"
+                    android:longClickable="false"
+                    android:onClick="onClick"
                     android:paddingStart="8dp"
                     android:paddingLeft="4dp" />
 
@@ -191,7 +187,7 @@
                 android:layout_marginBottom="@dimen/_16sdp"
                 android:background="#E3F3FF"
                 android:gravity="start"
-                android:hint="Request Demo"
+                android:hint="@string/remarks"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:paddingStart="8dp"
@@ -226,19 +222,19 @@
         android:id="@+id/btndemoCancel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="#61AF38"
-        app:layout_constraintStart_toEndOf="@+id/btndemoSubmit"
         android:layout_marginStart="8dp"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="#61AF38"
         android:text="CANCEL"
-
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btndemoSubmit" />
+
     <include
         android:id="@+id/progressdemo"
         layout="@layout/item_progress_sheet"

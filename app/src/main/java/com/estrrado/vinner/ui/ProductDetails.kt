@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,7 +31,6 @@ import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.shareLink
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -42,12 +40,8 @@ import kotlinx.android.synthetic.main.fragment_product_details.*
 import kotlinx.android.synthetic.main.fragment_review.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
 
 class ProductDetails : Fragment(), View.OnClickListener {
     // TODO: Rename and change types of parameters
@@ -201,7 +195,10 @@ class ProductDetails : Fragment(), View.OnClickListener {
             if ((product.price == "null") || (product.price == "") || (product.price == "0")) {
                 addcart.visibility = View.GONE
                 buy.visibility = View.GONE
-                Validation.printToast(requireContext(), "THE PRODUCT IS UNAVAILABLE IN THIS REGION")
+                printToast(requireContext(), "THE PRODUCT IS UNAVAILABLE IN THIS REGION")
+            } else {
+                addcart.visibility = View.VISIBLE
+                buy.visibility = View.VISIBLE
             }
             if (product.productImage != null)
                 Glide.with(this!!.requireActivity()!!)
@@ -222,16 +219,27 @@ class ProductDetails : Fragment(), View.OnClickListener {
             } else {
                 tvdescription.setText(Html.fromHtml(product.description.toString()));
             }
-            if (detail.getReviews()!!.size > 0) {
-                ratingBar2.rating = product.rating!!.toFloat()
-                rating_total.rating = product.rating!!.toFloat()
-                txt_rating_count.text = product.reatedCustomers + " " + "Customer ratings"
-                txt_rating_total.text = product.rating + " " + "out of 5"
-                recycle_rating.adapter = ReviewAdapter(
-                    this!!.requireActivity()!!,
-                    detail.getReviews()
-                )
+
+            //if (detail.getReviews()!!.size > 0) {
+            ratingBar2.rating = product.rating!!.toFloat()
+            rating_total.rating = product.rating!!.toFloat()
+            txt_rating_count.text = product.reatedCustomers + " " + "Customer ratings"
+            product.rating?.let {
+                if (it != "") {
+                    it.toDouble().also {
+                        txt_rating_total.text =
+                            (if (it > it.toInt()) String.format(
+                                "%s",
+                                it
+                            ) else String.format("%d", it.toInt())) + " out of 5"
+                    }
+                }
             }
+            recycle_rating.adapter = ReviewAdapter(
+                this!!.requireActivity()!!,
+                detail.getReviews()
+            )
+            // }
         }
 
 

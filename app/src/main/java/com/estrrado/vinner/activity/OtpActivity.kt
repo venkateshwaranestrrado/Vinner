@@ -107,7 +107,7 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                             })
                     } else {
                         progressotp.visibility = View.GONE
-                        Toast.makeText(this, "OTP MISMATCH", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Enter OTP", Toast.LENGTH_SHORT).show()
                     }
 
                 } else {

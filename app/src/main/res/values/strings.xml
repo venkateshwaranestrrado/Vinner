@@ -40,10 +40,13 @@
 
     </string-array>
     <string name="rs"> \u20B9 </string>
-    <string name="magazine">Postage &amp; Packing    :</string>
+    <string name="magazine">Shipping charge :</string>
     <string name="hint"><font size="10">Address Type</font></string>
     <string name="no_address_found">Noaddress found</string>
     <string name="work">Work</string>
     <string name="order_id_">Order Id:</string>
     <string name="order_date_">Order date:</string>
+    <string name="order">Order :</string>
+    <string name="remarks">Remarks</string>
+    <string name="characters">qwertyuiopasdfghjklmnbvcxz., POIUYTREWQASDFGHJKLMNBVCXZ-</string>
 </resources>

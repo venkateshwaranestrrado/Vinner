@@ -126,6 +126,25 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
+    fun getFeatureProductList(input: RequestModel): MutableLiveData<DataListModel?> {
+        val data = MutableLiveData<DataListModel?>()
+        apiService?.getFeatureProductList(
+            input.accessToken,
+            input.limit,
+            input.offset,
+            input.countryCode
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
+
+            })
+        return data
+    }
+
+    @SuppressLint("CheckResult")
     fun getProductList(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
         apiService?.getProductList(

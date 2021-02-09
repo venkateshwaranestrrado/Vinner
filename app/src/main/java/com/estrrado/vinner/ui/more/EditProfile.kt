@@ -32,6 +32,8 @@ import com.estrrado.vinner.vm.MainViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.android.synthetic.main.edit_profile.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar.textView5
+import kotlinx.android.synthetic.main.toolbar_prev.*
 import okhttp3.MultipartBody
 import java.io.*
 
@@ -79,7 +81,7 @@ class EditProfile : Fragment() {
         (activity as VinnerActivity).close()
         initControll()
         getProfile()
-        textView5.text = "Profile"
+        pageTitle.text = "Profile"
         ivprofilephoto.setOnClickListener {
             getImage()
         }

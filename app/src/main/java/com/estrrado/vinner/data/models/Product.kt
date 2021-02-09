@@ -54,5 +54,4 @@ class Product {
     val productImage: List<String>? = null
 
 
-
 }

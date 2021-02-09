@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/include2"
-        layout="@layout/toolbar_back"
+        layout="@layout/toolbar_prev"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -92,6 +92,7 @@
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
                 android:hint="Name"
+                android:digits="@string/characters"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
@@ -163,6 +164,7 @@
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
                 android:hint="City"
+                android:digits="@string/characters"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLines="1"

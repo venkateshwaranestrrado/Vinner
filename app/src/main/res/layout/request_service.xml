@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/toolbar_back"
+        layout="@layout/toolbar_prev"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,19 +30,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-<!--            <androidx.appcompat.widget.AppCompatSpinner-->
-<!--                android:id="@+id/spPackages"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="50dp"-->
-<!--                android:layout_marginLeft="16dp"-->
-<!--                android:layout_marginTop="8dp"-->
+            <!--            <androidx.appcompat.widget.AppCompatSpinner-->
+            <!--                android:id="@+id/spPackages"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="50dp"-->
+            <!--                android:layout_marginLeft="16dp"-->
+            <!--                android:layout_marginTop="8dp"-->
 
-<!--                android:layout_marginRight="16dp"-->
-<!--                android:background="@drawable/spinner_bg"-->
-<!--                android:dropDownSelector="@color/black"-->
-<!--                android:paddingStart="8dp"-->
-<!--                android:paddingLeft="8dp"-->
-<!--                android:spinnerMode="dropdown" />-->
+            <!--                android:layout_marginRight="16dp"-->
+            <!--                android:background="@drawable/spinner_bg"-->
+            <!--                android:dropDownSelector="@color/black"-->
+            <!--                android:paddingStart="8dp"-->
+            <!--                android:paddingLeft="8dp"-->
+            <!--                android:spinnerMode="dropdown" />-->
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/servicecateg"
                 android:layout_width="match_parent"
@@ -94,6 +94,7 @@
                 android:layout_marginRight="16dp"
                 android:background="#E3F3FF"
                 android:hint="Name"
+                android:digits="@string/characters"
                 android:imeOptions="actionNext"
                 android:inputType="textPersonName"
                 android:paddingStart="8dp"
@@ -135,6 +136,7 @@
                 android:layout_marginRight="16dp"
                 android:background="#E3F3FF"
                 android:hint="City"
+                android:digits="@string/characters"
                 android:imeOptions="actionNext"
                 android:inputType="textPostalAddress"
                 android:paddingLeft="8dp"
@@ -227,7 +229,7 @@
                 android:layout_marginRight="16dp"
                 android:background="#E3F3FF"
                 android:gravity="start"
-                android:hint="Remark"
+                android:hint="@string/remarks"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:paddingStart="8dp"

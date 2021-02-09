@@ -84,7 +84,7 @@ class RequestService : Fragment() {
                 val day = c.get(Calendar.DAY_OF_MONTH)
                 val date = DatePickerDialog(
                     requireContext(),
-                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                    { view, year, monthOfYear, dayOfMonth ->
                         val month = monthOfYear + 1
                         var formattedMonth = "" + month
                         var formattedDayOfMonth = "" + dayOfMonth
@@ -98,13 +98,21 @@ class RequestService : Fragment() {
                         }
 
                         Date = "" + year + "-" + formattedMonth + "-" + formattedDayOfMonth
-                        etDate.setText(Date)
+                        etDate.setText(
+                            String.format(
+                                "%s/%s/%s",
+                                formattedDayOfMonth,
+                                formattedMonth,
+                                year
+                            )
+                        )
 
                     },
                     year,
                     month,
                     day
                 )
+                date.datePicker.minDate = System.currentTimeMillis() - 1000
                 date.show()
             }
         })

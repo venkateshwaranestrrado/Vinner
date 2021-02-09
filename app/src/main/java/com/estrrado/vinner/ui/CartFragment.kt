@@ -55,6 +55,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar_empty.*
 
 class CartFragment : Fragment(), CartadapterCallBack {
 
@@ -105,12 +106,12 @@ class CartFragment : Fragment(), CartadapterCallBack {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        textView5.text = "Cart"
+        pageTitle.text = "Cart"
         progresscart.visibility = View.VISIBLE
-        Glide.with(requireContext())
+        /*Glide.with(requireContext())
             .load(logo)
             .thumbnail(0.1f)
-            .into(img_logo)
+            .into(img_logo)*/
         initControl()
         getCart()
         getOperators()
@@ -250,7 +251,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     }
 
     private fun initControl() {
-        spnr_region.visibility = View.VISIBLE
+        /*spnr_region.visibility = View.VISIBLE
         spnr_region.isEnabled = false
         regionList = com.estrrado.vinner.helper.readFromAsset(requireActivity())
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
@@ -258,7 +259,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
         if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
             spnr_region.setSelection(
                 Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
-            )
+            )*/
         cont_shop.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, HomeFragment()).commit()

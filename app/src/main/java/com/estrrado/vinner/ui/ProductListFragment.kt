@@ -96,7 +96,7 @@ class ProductListFragment : Fragment() {
             requestModel.limit = null
             requestModel.offset = 0
             progressproductlist.visibility = View.VISIBLE
-            vModel!!.getProductList(requestModel).observe(requireActivity(),
+            vModel!!.getFeatureProductList(requestModel).observe(requireActivity(),
                 Observer {
                     progressproductlist.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {

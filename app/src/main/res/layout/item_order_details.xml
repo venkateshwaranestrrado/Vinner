@@ -54,7 +54,6 @@ android:gravity="left"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-
             app:layout_constraintStart_toEndOf="@+id/imageView9"
             app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
@@ -67,6 +66,8 @@ android:gravity="left"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
+            android:progressTint="@color/yellow"
+            tools:ignore="UnusedAttribute"
             app:layout_constraintStart_toEndOf="@+id/imageView9"
             app:layout_constraintTop_toBottomOf="@+id/textView38" />
     </androidx.constraintlayout.widget.ConstraintLayout>
