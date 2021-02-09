@@ -9,6 +9,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ca0d942d3a489381160fb12257303e72/jetified-android-sdk-3.2.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ca0d942d3a489381160fb12257303e72/jetified-android-sdk-3.2.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ca0d942d3a489381160fb12257303e72/jetified-android-sdk-3.2.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e84a61059a483c9c19080b697bbbed9/jetified-android-sdk-3.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e84a61059a483c9c19080b697bbbed9/jetified-android-sdk-3.2.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1e84a61059a483c9c19080b697bbbed9/jetified-android-sdk-3.2.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.instamojo/android-sdk/3.2.0/687f8aaee85ba5f467e9e74319b5090fa59af5c2/android-sdk-3.2.0-javadoc.jar!/" />

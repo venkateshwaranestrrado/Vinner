@@ -1,6 +1,5 @@
 package com.estrrado.vinner.retrofit
 
-
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
@@ -22,7 +21,6 @@ object ApiClient {
         .connectTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(interceptor)
         .build()
-
 
     private fun getClient(): Retrofit? {
         if (retrofit == null) {

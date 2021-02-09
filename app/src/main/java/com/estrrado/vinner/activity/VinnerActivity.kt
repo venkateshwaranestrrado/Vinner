@@ -17,7 +17,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_vinner.*
 
-
 @Suppress("NAME_SHADOWING")
 class VinnerActivity : AppCompatActivity() {
     var notificationBadgeTextView: TextView? = null

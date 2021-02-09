@@ -36,6 +36,9 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login)
         initControl()
+
+        //for git checking
+
     }
 
 

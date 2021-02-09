@@ -257,13 +257,12 @@ class HomeFragment : Fragment(), AlertCallback {
     }
 
     override fun onDestroy() {
-
         timerLoad = true
         mTimer.cancel()
         super.onDestroy()
-
     }
 
+    //9747971820
 
     private fun timerPager(viewPager: ViewPager) {
         if (timerLoad) {
