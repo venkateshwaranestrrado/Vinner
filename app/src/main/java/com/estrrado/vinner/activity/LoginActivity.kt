@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         setContentView(R.layout.fragment_login)
         initControl()
 
-        //for git checking
+        //for git checking remove
 
     }
 
