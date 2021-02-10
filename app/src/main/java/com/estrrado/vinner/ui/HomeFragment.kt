@@ -78,22 +78,17 @@ class HomeFragment : Fragment(), AlertCallback {
             )
         ).get(HomeVM::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        // val textView: TextView = root.findViewById(R.id.text_home)
-        /* homeViewModel.text.observe(viewLifecycleOwner, Observer {
-             //textView.text = it
-         })*/
-
         return root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as VinnerActivity).open()
 
         searchtool.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, SearchFragment()).commit()
+            /*requireActivity().supportFragmentManager.beginTransaction()
+                .add(R.id.nav_host_fragment, SearchFragment(), "Search").commit()*/
+            view.findNavController().navigate(R.id.action_navigation_home_to_searchFragment)
         }
 
         spnr_region.visibility = View.VISIBLE
@@ -238,7 +233,7 @@ class HomeFragment : Fragment(), AlertCallback {
     }
 
     private fun setProducts(featured: List<Featured>?) {
-        homeList.adapter = ProductsAdapter(this!!.requireActivity()!!, featured, null, view)
+        homeList.adapter = ProductsAdapter(this.requireActivity(), featured, null, view)
     }
 
     private fun setBannerImgs(bannerSlider: List<BannerSlider>?) {

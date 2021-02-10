@@ -42,7 +42,7 @@
     <string name="rs"> \u20B9 </string>
     <string name="magazine">Shipping charge :</string>
     <string name="hint"><font size="10">Address Type</font></string>
-    <string name="no_address_found">Noaddress found</string>
+    <string name="no_address_found">No address found</string>
     <string name="work">Work</string>
     <string name="order_id_">Order Id:</string>
     <string name="order_date_">Order date:</string>

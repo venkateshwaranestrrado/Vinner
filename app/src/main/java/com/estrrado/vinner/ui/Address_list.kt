@@ -130,7 +130,6 @@ class Address_list : Fragment() {
                 .navigate(R.id.action_address_list_to_addAddress, bundle)
         }
 
-
     }
 
     private fun getData() {

@@ -6,64 +6,70 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
-    <include
+    <LinearLayout
         android:id="@+id/include2"
-        layout="@layout/toolbar_back"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="#1466AF"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/edt_search"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:text="Your Orders"
-        android:textSize="@dimen/_12sdp"
-        android:textStyle="bold"
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:drawableStart="@drawable/ic_round_arrow_back"
+            android:text="Your Orders"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/include"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include2" />
+        app:layout_constraintTop_toBottomOf="@id/include2">
 
+        <EditText
+            android:id="@+id/searchlist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/new_search_background"
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:hint="Search all by order id, order date(DD-MM-YYYY)"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="8dp"
+            android:paddingStart="@dimen/_5sdp"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_12sdp" />
 
-    <EditText
-        android:id="@+id/searchlist"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/new_search_background"
-        android:drawablePadding="@dimen/_5sdp"
-        android:hint="Search order id"
-        android:paddingStart="@dimen/_5sdp"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textColor="@color/grey"
-        android:textSize="@dimen/_12sdp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_search" />
-
-    <ImageView
-        android:id="@+id/img_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_calendar"
-        android:padding="@dimen/_5sdp"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusedByDefault="true"
-        app:layout_constraintTop_toTopOf="@+id/searchlist"
-        app:layout_constraintRight_toRightOf="@+id/searchlist"
-        app:layout_constraintBottom_toBottomOf="@+id/searchlist"/>
+        <TextView
+            android:id="@+id/txtCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="Cancel"
+            android:textColor="@color/gray"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -80,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchlist"
+        app:layout_constraintTop_toBottomOf="@+id/include"
         tools:listitem="@layout/item_order_list" />
 
     <include
@@ -91,4 +97,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

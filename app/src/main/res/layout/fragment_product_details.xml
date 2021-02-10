@@ -254,7 +254,6 @@
                 android:paddingBottom="@dimen/_2sdp"
                 android:text="Return Policy"
                 android:textAllCaps="false"
-
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/productDescription"
                 app:layout_constraintEnd_toEndOf="parent"

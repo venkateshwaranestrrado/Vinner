@@ -3,8 +3,8 @@ package com.estrrado.vinner.ui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -24,8 +24,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.data.models.OrderModel
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.DELIVERED
@@ -36,9 +36,9 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_order_list.*
-import kotlinx.android.synthetic.main.toolbar_back.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class OrderList : Fragment() {
@@ -87,14 +87,16 @@ class OrderList : Fragment() {
             false
         })
 
-        img_search.setOnClickListener {
-            showCalender()
+        txtCancel.setOnClickListener {
+            searchlist.setText("")
+            dateSearch = ""
+            orderIdSearch = ""
+            getData()
         }
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        pageTitle.text = "Order List"
+        pageTitle.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
     }
 
     private fun getData() {
@@ -111,8 +113,28 @@ class OrderList : Fragment() {
                 progressorderlist.visibility = View.GONE
                 if (it!!.data != null && it.data!!.size > 0) {
                     recy_order_list.layoutManager = LinearLayoutManager(requireContext())
+                    val orders = ArrayList<OrderModel>()
+                    for (i in 0..it.data!!.size - 1) {
+                        for (j in 0..it.data!![i].getProductDetails()!!.size-1) {
+                            val ord = it.data!![i]
+                            val item = it.data!![i].getProductDetails()?.get(j)
+                            orders.add(
+                                OrderModel(
+                                    ord.getSaleId(),
+                                    ord.getOrderId(),
+                                    item?.id,
+                                    item?.name,
+                                    item?.image,
+                                    item?.reviewId,
+                                    ord.getOrderDate(),
+                                    ord.getDeliveryStatus(),
+                                    ord.getDelivaryDatetime()
+                                )
+                            )
+                        }
+                    }
                     recy_order_list.adapter =
-                        Orderliist(it.data!!, this.requireView(), requireActivity())
+                        Orderliist(orders, this.requireView(), requireActivity())
                     progressorderlist.visibility = View.GONE
                 } else printToast(requireContext(), it.message.toString())
             })
@@ -122,7 +144,7 @@ class OrderList : Fragment() {
     }
 
     class Orderliist(
-        var dataItem: List<Datum?>,
+        var dataItem: ArrayList<OrderModel>,
         var view: View,
         private var activity: FragmentActivity
     ) : RecyclerView.Adapter<Orderliist.ViewHolder>() {
@@ -158,17 +180,18 @@ class OrderList : Fragment() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             var rating = 0.0
-            if (dataItem.get(position)!!.getDeliveryStatus() == DELIVERED) {
+            if (dataItem.get(position).delivery_status == DELIVERED) {
                 holder.tvreview.visibility = View.VISIBLE
-                var isReviewAdded = false
-                for (i in 0 until dataItem.get(position)!!.getProductDetails()!!.size) {
+                val isReviewAdded = dataItem.get(position).review_id != 0
+                /*for (i in 0 until dataItem.get(position)!!.getProductDetails()!!.size) {
                     if (dataItem.get(position)!!.getProductDetails()!!.get(i)!!.reviewId != 0
                     ) {
-                        rating = dataItem.get(position)!!.getProductDetails()!!.get(i)!!.rating!!.toDouble()
+                        rating = dataItem.get(position)!!.getProductDetails()!!
+                            .get(i)!!.rating!!.toDouble()
                         isReviewAdded = true
                         break
                     }
-                }
+                }*/
                 if (!isReviewAdded)
                     holder.tvreview.text = Constants.WRITE_A_REVIEW
                 else
@@ -179,38 +202,36 @@ class OrderList : Fragment() {
             holder.rating.rating = rating.toFloat()
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)
-                .load(dataItem?.get(position)!!.getProductDetails()!!.get(0)!!.image)
+                .load(dataItem.get(position).image)
                 .transform(RoundedCorners(radius))
                 .thumbnail(0.1f)
                 .into(holder.image)
 
-            holder.name?.text = dataItem?.get(position)!!.getProductDetails()!!.get(0)!!.name
-            holder.delivstatus?.text = dataItem?.get(position)!!.getDelivaryDatetime()
-            holder.tvOrderId?.text = dataItem?.get(position)!!.getOrderId()
-            holder.tvOrderDate?.text = dataItem?.get(position)!!.getOrderDate()
+            holder.name?.text = dataItem.get(position).name
+            holder.delivstatus?.text = dataItem.get(position).delivary_datetime
+            holder.tvOrderId?.text = dataItem.get(position).order_id
+            holder.tvOrderDate?.text = dataItem.get(position).order_date
 
             holder.orderlist.setOnClickListener {
                 val bundle = Bundle()
-                bundle.putString(Preferences.ORDER_ID, dataItem.get(position)!!.getSaleId())
+                bundle.putString(Preferences.ORDER_ID, dataItem.get(position).sale_id)
                 view.findNavController()
                     .navigate(R.id.action_navigation_orderList_to_orderDetail, bundle)
             }
-
-
 
             holder.tvreview.setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString(
                     Preferences.PRODUCTNAME,
-                    dataItem.get(position)!!.getProductDetails()!!.get(0)!!.name
+                    dataItem.get(position).name
                 )
                 bundle.putString(
                     Preferences.PROFILEIMAGE,
-                    dataItem.get(position)!!.getProductDetails()!!.get(0)!!.image
+                    dataItem.get(position).image
                 )
                 bundle.putString(
                     PRODUCT_ID,
-                    dataItem.get(position)!!.getProductDetails()!!.get(0)!!.id
+                    dataItem.get(position).prodid
                 )
                 view.findNavController()
                     .navigate(R.id.action_navigation_orderList_to_addReview, bundle)
@@ -230,6 +251,7 @@ class OrderList : Fragment() {
 //        datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
         datePickerDialog.show()
     }
+
     private val date =
         DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             // TODO Auto-generated method stub

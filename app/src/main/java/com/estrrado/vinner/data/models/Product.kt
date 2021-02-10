@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 
 class Product {
+
     @SerializedName("product_id")
     @Expose
     var productId: String? = null
@@ -44,6 +45,10 @@ class Product {
     @SerializedName("description")
     @Expose
     var description: String? = null
+
+    @SerializedName("current_stock")
+    @Expose
+    var current_stock: String? = null
 
     @SerializedName("category")
     @Expose

@@ -1,12 +1,12 @@
 package com.estrrado.vinner.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
@@ -14,7 +14,6 @@ import com.estrrado.vinner.R
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_vinner.*
 
 @Suppress("NAME_SHADOWING")
@@ -38,7 +37,6 @@ class VinnerActivity : AppCompatActivity() {
                 R.id.navigation_more
             )
         )
-
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         SetNotificationBadge()
@@ -52,7 +50,6 @@ class VinnerActivity : AppCompatActivity() {
     fun onBack(view: View) {
         onBackPressed()
     }
-
 
     fun close() {
 

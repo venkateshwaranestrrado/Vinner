@@ -101,11 +101,10 @@ class ProductsAdapter(
             img = productList?.get(position)!!.productImage!!
             productId = productList?.get(position)!!.productId!!
 
-
         }
 
         holder.name.text = name
-        holder.qty.text = qty
+        //holder.qty.text = qty
         holder.price.text = price
 
         if (rating != null && !rating.equals(""))
@@ -184,7 +183,7 @@ class ProductsAdapter(
         val price: TextView = v.findViewById(R.id.price)
         val name: TextView = v.findViewById(R.id.name)
         val image: ImageView = v.findViewById(R.id.image)
-        val qty: TextView = v.findViewById(R.id.qty)
+        //val qty: TextView = v.findViewById(R.id.qty)
         val rating: RatingBar = v.findViewById(R.id.ratingBar2)
         val cardView: CardView = v.findViewById(R.id.lyt_container)
         val homename: TextView = v.findViewById(R.id.housename)

@@ -31,12 +31,9 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_order_details.*
-import kotlinx.android.synthetic.main.toolbar_prev.*
-
 
 class Orderdetail : Fragment() {
     var vModel: HomeVM? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,12 +63,16 @@ class Orderdetail : Fragment() {
             )
         ).get(HomeVM::class.java)
 
+        pageTitle.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+
         initControl()
     }
 
 
     private fun initControl() {
-        pageTitle.setText("Order Detail")
+
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN)
@@ -90,11 +91,13 @@ class Orderdetail : Fragment() {
                         txt_road.setText(it.data.billing_address!!.get(0)!!.road_name)
                         txt_lnd.setText(it.data.billing_address!!.get(0)!!.landmark)
                         txt_zip.setText(it.data.billing_address!!.get(0)!!.zip)
+                        txt_region.setText(it.data.billing_address!!.get(0)!!.country)
 
                         txt_ship_house.setText(it.data.shipping_address!!.get(0)!!.s_house_flat)
                         txt_ship_road.setText(it.data.shipping_address!!.get(0)!!.s_road_name)
                         txt_ship_lnd.setText(it.data.shipping_address!!.get(0)!!.s_landmark)
                         txt_ship_zip.setText(it.data.shipping_address!!.get(0)!!.s_zip)
+                        txt_ship_region.setText(it.data.shipping_address!!.get(0)!!.s_country)
 
 
                         txt_items.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())

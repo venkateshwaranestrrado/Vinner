@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,6 +115,10 @@ class EditProfile : Fragment() {
 
                             multiImg = getMultipartImage(fileUri, "profile_pic", activity)
                         }
+
+                        Log.e("token", Preferences.get(activity, ACCESS_TOKEN))
+                        Log.e("token", mobileNum)
+
                         progressprofile.visibility = View.VISIBLE
                         vModel?.getUpdatedProfile(
                             RequestModel(
@@ -130,6 +135,7 @@ class EditProfile : Fragment() {
                             )
                         )?.observe(viewLifecycleOwner, Observer {
                             progressprofile.visibility = View.GONE
+                            Log.e("message ", it!!.message.toString())
                             Validation.printToast(requireContext(), it!!.message.toString())
                             if (it.status.equals(SUCCESS)) {
                                 getProfile()
@@ -165,7 +171,7 @@ class EditProfile : Fragment() {
                         area.setText(it.data.address2)
                         post.setText(it.data.post)
                         city.setText(it.data.city)
-                        mobile.setText(it.data.c_code + it.data.mobile)
+                        mobile.setText("+" + it.data.c_code + "  " + it.data.mobile)
                         email.setText(it.data.email)
                         ProfileName.setText(it.data.name)
                         mobileNum = it.data.mobile.toString()
@@ -223,8 +229,8 @@ class EditProfile : Fragment() {
             )
         ) {
             ImagePicker.with(this)
-                .crop()	    			//Crop image(Optional), Check Customization for more option
-                .compress(1024)			//Final image size will be less than 1 MB(Optional)
+                .crop()                    //Crop image(Optional), Check Customization for more option
+                .compress(1024)            //Final image size will be less than 1 MB(Optional)
 //                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
 

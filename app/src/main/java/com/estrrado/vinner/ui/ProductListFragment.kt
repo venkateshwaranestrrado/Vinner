@@ -29,17 +29,6 @@ import kotlinx.android.synthetic.main.fragment_product_list.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProductListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProductListFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -48,10 +37,6 @@ class ProductListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -76,13 +61,8 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pageTitle.setText("Product List")
+        pageTitle.setText("Featured Product List")
         img_search_toolbar.visibility = View.VISIBLE
-//        Glide.with(this!!.requireActivity()!!)
-//            .load(logo)
-//            .thumbnail(0.1f)
-//            .into(img_logo)
-//        Helper.setLocation(spnr_region, this!!.requireContext()!!)
         recycle_products.setLayoutManager(GridLayoutManager(context, 2))
         getProductList()
     }

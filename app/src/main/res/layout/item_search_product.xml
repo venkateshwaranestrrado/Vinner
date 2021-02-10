@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lyt_container"
     android:layout_width="@dimen/_130sdp"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/_14sdp"
-    android:orientation="vertical"
     android:layout_marginTop="@dimen/_8sdp"
     android:layout_marginBottom="@dimen/_8sdp"
-    android:id="@+id/lyt_container">
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:id="@+id/srch_lyt"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/_5sdp">
 
@@ -55,7 +54,7 @@
             android:textColor="@color/red"
             android:textSize="@dimen/_16sdp"
             android:textStyle="bold"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/price"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,9 +89,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:progressTint="@color/yellow"
-            tools:ignore="UnusedAttribute"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price" />
+            app:layout_constraintTop_toBottomOf="@+id/price"
+            tools:ignore="UnusedAttribute" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

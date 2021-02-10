@@ -66,38 +66,42 @@ class Industrycategory : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        progressindustrylist.visibility=View.VISIBLE
+        progressindustrylist.visibility = View.VISIBLE
 
         pageTitle.setText("Industry Category")
         initcontroll()
 
     }
 
-    private fun initcontroll(){
+    private fun initcontroll() {
         brandId = arguments?.getString(BRAND_ID)!!
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-        requestModel.countryCode= Preferences.get(activity, Preferences.REGION_NAME)
-        requestModel.industry_id=brandId
+        requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
+        requestModel.industry_id = brandId
         vModel!!.getIndustrylist(requestModel)
             .observe(requireActivity(),
                 Observer {
-                    if(it!!.data!!.size>0) {
+                    if (it!!.data!!.size > 0) {
                         progressindustrylist.visibility = View.GONE
 
-                        recy_indstry_lst.adapter = IndstryList(requireActivity(), it!!.data,view)
+                        recy_indstry_lst.adapter = IndstryList(requireActivity(), it!!.data, view)
                         recy_indstry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
-                    }
-                    else{
+                    } else {
                         progressindustrylist.visibility = View.GONE
-                        emptylist.visibility=View.VISIBLE
+                        emptylist.visibility = View.VISIBLE
                     }
 
                 })
 
     }
-    class IndstryList(private var activity: FragmentActivity, var dataItem: ArrayList<AddressList>?, private var view: View?) : RecyclerView.Adapter<IndstryList.ViewHolder>() {
+
+    class IndstryList(
+        private var activity: FragmentActivity,
+        var dataItem: ArrayList<AddressList>?,
+        private var view: View?
+    ) : RecyclerView.Adapter<IndstryList.ViewHolder>() {
 
         var productId: String = ""
 
@@ -111,8 +115,12 @@ class Industrycategory : Fragment() {
             val cardView: CardView = itemView.findViewById(R.id.lyt_catgry)
             val INDname: TextView = itemView.findViewById(R.id.INDname)
         }
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-     return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_industry_list, parent, false))
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            return ViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_industry_list, parent, false)
+            )
         }
 
 
@@ -122,24 +130,25 @@ class Industrycategory : Fragment() {
         }
 
         @SuppressLint("SetTextI18n")
-        override fun onBindViewHolder(holder: ViewHolder, position: Int){
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             var rating = ""
             if (dataItem != null) {
-                if (dataItem!!.get(position).current_stock =="0"){
+                if (dataItem!!.get(position).current_stock == "0") {
 
-                    holder.INDname?.text="OUT OF STOCK"
+                    holder.INDname?.text = "OUT OF STOCK"
 //                    holder.name?.visibility=View.GONE
-                    holder.INDname?.visibility=View.VISIBLE
+                    holder.INDname?.visibility = View.VISIBLE
                     holder.INDname?.setTextColor(activity.getResources().getColor(R.color.red));
                     holder.cardView.setEnabled(false);
                     holder.cardView.setClickable(false);
                 }
-                rating=dataItem?.get(position)!!.rating!!
+                rating = dataItem?.get(position)!!.rating!!
                 holder.name.text = dataItem!!.get(position).product_title
-                holder.price.text = dataItem?.get(position)!!.price + " " + dataItem?.get(position)!!.currency
+                holder.price.text =
+                    dataItem?.get(position)!!.price + " " + dataItem?.get(position)!!.currency
                 holder.qty.text = dataItem?.get(position)!!.unit
 
-                if (rating!= null && !rating.equals(""))
+                if (rating != null && !rating.equals(""))
 
                     holder.rating.rating = rating.toFloat()
 
@@ -152,16 +161,15 @@ class Industrycategory : Fragment() {
 
 
                 holder.cardView.setOnClickListener {
-                    productId= dataItem!!.get(position).product_id!!
+                    productId = dataItem!!.get(position).product_id!!
                     val bundle = bundleOf(PRODUCT_ID to productId)
                     view!!.findNavController()
                         .navigate(R.id.action_industrycategory_to_navigation_product, bundle)
 
 
                 }
-            }
-            else{
-                activity.emptylist.visibility=View.VISIBLE
+            } else {
+                activity.emptylist.visibility = View.VISIBLE
             }
 
         }

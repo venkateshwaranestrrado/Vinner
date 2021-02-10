@@ -36,26 +36,24 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_product_details.*
+import kotlinx.android.synthetic.main.fragment_product_details.price
 import kotlinx.android.synthetic.main.fragment_review.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 class ProductDetails : Fragment(), View.OnClickListener {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     var vModel: HomeVM? = null
     var productId: String = ""
     var json_string: String? = null
+
+    var cartQty = 0
+    var stockQty = 0
+    var prod_id = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -69,7 +67,6 @@ class ProductDetails : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        (activity as VinnerActivity).close()
         vModel = ViewModelProvider(
             this,
             MainViewModel(
@@ -82,10 +79,6 @@ class ProductDetails : Fragment(), View.OnClickListener {
             )
         ).get(HomeVM::class.java)
         progressproductdetail.visibility = View.VISIBLE
-//        Glide.with(this!!.requireActivity()!!)
-//            .load(logo)
-//            .thumbnail(0.1f)
-//            .into(img_logo)
         productId = arguments?.getString(PRODUCT_ID, "").toString()
         pageTitle.setText("Product Detail")
         initControl()
@@ -123,13 +116,13 @@ class ProductDetails : Fragment(), View.OnClickListener {
                         progressproductdetail.visibility = View.GONE
                         setProductDetail(it!!.data!!)
 
-
-                        if (it!!.data!!.getProduct()!!.return_policy != "") {
+                        if (it.data!!.getProduct()!!.return_policy != "") {
+                            button3.visibility = View.GONE
                             button3.setOnClickListener(object : View.OnClickListener {
                                 override fun onClick(view: View) {
                                     val alertDialog: android.app.AlertDialog? =
                                         android.app.AlertDialog.Builder(activity)
-                                            .create() //Read Update
+                                            .create()
                                     alertDialog!!.setTitle("Return Policy")
                                     alertDialog.setMessage(it.data!!.getProduct()!!.return_policy)
                                     alertDialog.setButton("Cancel",
@@ -139,11 +132,10 @@ class ProductDetails : Fragment(), View.OnClickListener {
                                     alertDialog.show() //<-- See This!
                                 }
                             })
-                        } else
-                            printToast(
-                                requireContext(),
-                                "No Return Policy Available for this product"
-                            )
+                        } else {
+                            button3.visibility = View.GONE
+                        }
+
                     } else
                         printToast(this!!.requireContext()!!, it?.message.toString())
 
@@ -154,7 +146,14 @@ class ProductDetails : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun addToCart() {
+    private fun validation(): Boolean {
+        if (cartQty >= stockQty) {
+            return false
+        }
+        return true
+    }
+
+    private fun addToCart(type: View?) {
 
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
@@ -164,7 +163,12 @@ class ProductDetails : Fragment(), View.OnClickListener {
 
             vModel!!.addCart(requestModel).observe(this,
                 Observer {
-                    printToast(this!!.requireContext()!!, it?.message.toString())
+                    cartQty += 1
+                    if (type != null) {
+                        Navigation.findNavController(requireView()).navigate(R.id.navigation_cart)
+                    } else {
+                        printToast(this!!.requireContext()!!, it?.message.toString())
+                    }
                     if (it?.status.equals(SUCCESS)) {
                         progressproductdetail.visibility = View.GONE
                         setProductDetail(it!!.data!!)
@@ -187,10 +191,20 @@ class ProductDetails : Fragment(), View.OnClickListener {
     private fun setProductDetail(detail: Data?) {
         val product = detail!!.getProduct()
 
-
-
         if (product != null) {
             progressproductdetail.visibility = View.GONE
+
+            product.productId?.let {
+                prod_id = it
+                if (cartQty <= 0)
+                    getCart()
+            }
+
+            if (product.current_stock != "") {
+                product.current_stock?.let {
+                    stockQty = it.toInt()
+                }
+            }
 
             if ((product.price == "null") || (product.price == "") || (product.price == "0")) {
                 addcart.visibility = View.GONE
@@ -239,37 +253,41 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 this!!.requireActivity()!!,
                 detail.getReviews()
             )
-            // }
         }
 
-
-        if (detail.getRelatedProducts()!!.size > 0) {
-            recycle_related_prod.layoutManager = LinearLayoutManager(
-                activity,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            recycle_related_prod.adapter = RelatedProuctsAdapter(
-                requireActivity(), detail.getRelatedProducts()!!
-            )
+        detail.getRelatedProducts()?.let {
+            if (detail.getRelatedProducts()!!.size > 0) {
+                recycle_related_prod.layoutManager = LinearLayoutManager(
+                    activity,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+                recycle_related_prod.adapter = RelatedProuctsAdapter(
+                    requireActivity(), detail.getRelatedProducts()!!
+                )
+            }
         }
+
     }
-
 
     override fun onClick(v: View?) {
 
         when (v!!.id) {
 
             R.id.addcart -> {
-                addToCart()
+                if (validation()) {
+                    addToCart(null)
+                } else {
+                    printToast(requireContext(), "Out Of Stock!")
+                }
             }
 
             R.id.buy -> {
-                addToCart()
-                Navigation.findNavController(v).navigate(
-                    R.id.navigation_cart
-
-                )
+                if (validation()) {
+                    addToCart(v)
+                } else {
+                    Navigation.findNavController(v).navigate(R.id.navigation_cart)
+                }
             }
 
         }
@@ -288,6 +306,29 @@ class ProductDetails : Fragment(), View.OnClickListener {
             Array<RegionSpinner>::class.java
         ).toList()
         return modelList
+    }
+
+    private fun getCart() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
+            vModel!!.getCartPage(requestModel).observe(requireActivity(),
+                Observer {
+                    if (it?.status.equals(SUCCESS)) {
+                        it?.data?.getCartItems()?.let {
+                            for (item in it) {
+                                if (item!!.productId == prod_id) {
+                                    cartQty = item.productQuantity!!.toInt()
+                                }
+                            }
+                        }
+                    }
+                })
+        } else {
+            progresscart.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

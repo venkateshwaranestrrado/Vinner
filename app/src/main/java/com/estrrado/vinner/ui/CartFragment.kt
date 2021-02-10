@@ -16,13 +16,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CartAdapter
-import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.Cart
 import com.estrrado.vinner.data.models.CartItem
@@ -43,7 +41,6 @@ import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.addressSelected
-import com.estrrado.vinner.helper.Constants.logo
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
@@ -56,6 +53,9 @@ import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.toolbar_empty.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CartFragment : Fragment(), CartadapterCallBack {
 
@@ -182,15 +182,33 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         progresscart.visibility = View.GONE
-                        txt_delivery.text = it!!.data!!.getDeliveryExpDate()
-                        txt_delivery_fee.text =
-                            it.data!!.getDeliveryFee() + " " + it.data.getCurrency()
-                        if (!it.data!!.getDeliveryFee().equals(""))
-                            deliveryFee = it.data!!.getDeliveryFee()!!.toInt()
-                        price.text = it.data.getPrice() + " " + it.data.getCurrency()
-                        txt_sub_total.text = it.data.getSubTotal() + " " + it.data.getCurrency()
-                        totalAmount.text = it.data.getTotalAmount() + " " + it.data.getCurrency()
-                        checkout.setEnabled(true);
+                        it?.let {
+                            it.data?.getDeliveryExpDate()?.let { expDate ->
+                                if (expDate != "") {
+                                    val date =
+                                        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(
+                                            expDate
+                                        )
+                                    date?.let {
+                                        txt_delivery.text =
+                                            SimpleDateFormat(
+                                                "dd-MM-yyyy",
+                                                Locale.getDefault()
+                                            ).format(date)
+                                    }
+                                }
+                            }
+
+                            txt_delivery_fee.text =
+                                it.data!!.getDeliveryFee() + " " + it.data.getCurrency()
+                            if (!it.data!!.getDeliveryFee().equals(""))
+                                deliveryFee = it.data!!.getDeliveryFee()!!.toInt()
+                            price.text = it.data.getPrice() + " " + it.data.getCurrency()
+                            txt_sub_total.text = it.data.getSubTotal() + " " + it.data.getCurrency()
+                            totalAmount.text =
+                                it.data.getTotalAmount() + " " + it.data.getCurrency()
+                            checkout.setEnabled(true)
+                        }
                     } else {
                         txt_delivery_fee.text = "0"
                         deliveryFee = 0
@@ -277,12 +295,10 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     @SuppressLint("SetTextI18n")
     private fun getCart() {
-//    progresscart.visibility= View.VISIBLE
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
             requestModel.countryCode = Preferences.get(activity, REGION_NAME)
-            //requestModel.accessToken="122874726"
             vModel!!.getCartPage(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
@@ -339,8 +355,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         }
 
                         setCartDetails(it.data.getCart())
-//                var cartId1 = it!!.data.cart_items!!.get(0).cart_item_id
-//                Toast.makeText(context,cartId1.toString(),Toast.LENGTH_SHORT).show()
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
@@ -395,9 +409,11 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         totalAmount.text = it.data.getGrandTotal() + " " + currency
 
                         totalAmount.text =
-                            (it.data.getGrandTotal()!!.toInt() + deliveryFee).toString() + " " + currency
+                            (it.data.getGrandTotal()!!
+                                .toInt() + deliveryFee).toString() + " " + currency
                         txt_sub_total.text =
-                            (it.data.getGrandTotal()!!.toInt() + deliveryFee).toString() + " " + currency
+                            (it.data.getGrandTotal()!!
+                                .toInt() + deliveryFee).toString() + " " + currency
                     }
 //
 //                else

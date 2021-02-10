@@ -3,7 +3,7 @@ package com.estrrado.vinner.data.models.response
 import com.bluelinelabs.logansquare.annotation.JsonField
 import com.google.gson.annotations.SerializedName
 
-class Shippingaddress (
+class Shippingaddress(
     @field:SerializedName("s_address_type")
     @field:JsonField(name = arrayOf("s_address_type"))
     val s_address_type: String? = null,
@@ -22,6 +22,10 @@ class Shippingaddress (
 
     @field:SerializedName("s_zip")
     @field:JsonField(name = arrayOf("s_zip"))
-    val s_zip: String? = null
+    val s_zip: String? = null,
+
+    @field:SerializedName("s_country")
+    @field:JsonField(name = arrayOf("s_country"))
+    val s_country: String? = null
 
 )

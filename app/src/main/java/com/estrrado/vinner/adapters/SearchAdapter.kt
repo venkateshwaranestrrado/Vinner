@@ -20,8 +20,9 @@ import com.estrrado.vinner.helper.Constants.PRODUCT_ID
 import kotlinx.android.synthetic.main.item_search_product.*
 
 
-class SearchAdapter(private var activity: FragmentActivity) : RecyclerView.Adapter<ItemViewHolder>() {
-     var mSearch = ArrayList<AddressList>()
+class SearchAdapter(private var activity: FragmentActivity) :
+    RecyclerView.Adapter<ItemViewHolder>() {
+    var mSearch = ArrayList<AddressList>()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -35,27 +36,28 @@ class SearchAdapter(private var activity: FragmentActivity) : RecyclerView.Adapt
     }
 
 
-        override fun getItemCount(): Int {
-            return mSearch.size
-        }
+    override fun getItemCount(): Int {
+        return mSearch.size
+    }
 
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        if (mSearch!!.get(position)!!.current_stock =="0"){
-
-            holder.srchname?.text="OUT OF STOCK"
-//                    holder.name?.visibility=View.GONE
-            holder.srchname?.visibility=View.VISIBLE
-            holder.srchname?.setTextColor(activity.getResources().getColor(R.color.red));
-            holder.view.setEnabled(false);
-            holder.view.setClickable(false);
+        if (mSearch.get(position).current_stock == "0") {
+            holder.srchname.text = "OUT OF STOCK"
+            holder.srchname.visibility = View.VISIBLE
+            holder.view.setEnabled(false)
+            holder.view.setClickable(false)
+        } else {
+            holder.srchname.visibility = View.GONE
+            holder.view.setEnabled(true)
+            holder.view.setClickable(true)
         }
 
         var rating = ""
-        var productId= mSearch?.get(position)!!.product_id!!
+        var productId = mSearch?.get(position)!!.product_id!!
         holder.prdctname.text = mSearch?.get(position)!!.product_title
-        holder.price.text = mSearch?.get(position)!!.price  + " " + mSearch?.get(position)!!.currency
+        holder.price.text = mSearch?.get(position)!!.price + " " + mSearch?.get(position)!!.currency
         holder.unit.text = mSearch?.get(position)!!.unit
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(activity)
@@ -64,8 +66,8 @@ class SearchAdapter(private var activity: FragmentActivity) : RecyclerView.Adapt
             .thumbnail(0.1f)
             .into(holder.prdctimage)
 
-        rating=mSearch?.get(position)!!.rating!!
-        if (rating!= null && !rating.equals("")) {
+        rating = mSearch?.get(position)!!.rating!!
+        if (rating != null && !rating.equals("")) {
             holder.prdctratingBar.rating = rating.toFloat()
         }
 
@@ -73,34 +75,34 @@ class SearchAdapter(private var activity: FragmentActivity) : RecyclerView.Adapt
 
             val bundle = bundleOf(PRODUCT_ID to productId)
 
-                it.findNavController()
-                    ?.navigate(R.id.navigation_product,bundle)
-
+            it.findNavController()
+                ?.navigate(R.id.navigation_product, bundle)
 
 
         }
 
 
     }
-    fun setSongs(search: ArrayList<AddressList>){
+
+    fun setSongs(search: ArrayList<AddressList>) {
         mSearch = search
     }
 
-    private fun hide(){
+    private fun hide() {
         activity.srch_lyt.setClickable(false);
         activity.srch_lyt.setEnabled(false);
     }
 
 
-
 }
+
 class ItemViewHolder(v: View) : RecyclerView.ViewHolder(v) {
     val prdctname: TextView = v.findViewById(R.id.name)
     val prdctimage: ImageView = v.findViewById(R.id.image)
     val prdctratingBar: RatingBar = v.findViewById(R.id.ratingBar2)
     val price: TextView = v.findViewById(R.id.price)
     val unit: TextView = v.findViewById(R.id.unit)
-        val view:ConstraintLayout=v.findViewById(R.id.srch_lyt)
+    val view: ConstraintLayout = v.findViewById(R.id.srch_lyt)
     val srchname: TextView = v.findViewById(R.id.srchname)
 
 }

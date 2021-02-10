@@ -33,6 +33,10 @@ class CartItem {
     @Expose
     var productTotal: String? = null
 
+    @SerializedName("current_stock")
+    @Expose
+    var current_stock: Int? = 0
+
     @SerializedName("currency")
     @Expose
     var currency: String? = null

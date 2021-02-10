@@ -5,25 +5,31 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <include
+    <LinearLayout
         android:id="@+id/include5"
-        layout="@layout/toolbar_prev"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="#1466AF"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Order Details"
-        android:textColor="#000"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include5" />
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:drawableStart="@drawable/ic_round_arrow_back"
+            android:text="Order Details"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -37,7 +43,7 @@
         android:background="@drawable/new_background_designs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView29">
+        app:layout_constraintTop_toBottomOf="@+id/include5">
 
         <TextView
             android:id="@+id/textView31"
@@ -278,7 +284,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintStart_toStartOf="@+id/textView13"
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -287,7 +292,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintStart_toStartOf="@+id/txt_bill_house"
                     app:layout_constraintTop_toBottomOf="@+id/txt_bill_house" />
 
@@ -296,7 +300,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintStart_toStartOf="@+id/txt_road"
                     app:layout_constraintTop_toBottomOf="@+id/txt_road" />
 
@@ -305,7 +308,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="@+id/txt_ship_road"
                     app:layout_constraintTop_toBottomOf="@+id/txt_ship_road" />
 
@@ -314,7 +316,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="@+id/textView14"
                     app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -323,7 +324,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="@+id/txt_ship_house"
                     app:layout_constraintTop_toBottomOf="@+id/txt_ship_house" />
 
@@ -332,22 +332,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/txt_lnd"
                     app:layout_constraintTop_toBottomOf="@+id/txt_lnd" />
+
+                <TextView
+                    android:id="@+id/txt_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/txt_zip"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_zip" />
 
                 <TextView
                     android:id="@+id/txt_ship_zip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/txt_ship_lnd"
                     app:layout_constraintTop_toBottomOf="@+id/txt_ship_lnd" />
+
+                <TextView
+                    android:id="@+id/txt_ship_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_ship_zip"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_ship_zip" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

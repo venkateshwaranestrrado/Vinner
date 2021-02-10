@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -20,7 +21,6 @@ class CartAdapter(
 ) :
     RecyclerView.Adapter<CartAdapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(activity).inflate(R.layout.item_cart, parent, false)
         val holder = CartAdapter.ViewHolder(itemView)
@@ -33,7 +33,7 @@ class CartAdapter(
 
     override fun onBindViewHolder(holder: CartAdapter.ViewHolder, position: Int) {
         holder.name.text = dataList?.get(position)!!.productName
-        Preferences.put(activity,PRODUCTNAME,dataList?.get(position)!!.productName!!)
+        Preferences.put(activity, PRODUCTNAME, dataList?.get(position)!!.productName!!)
         holder.txtDesc.text = dataList?.get(position)!!.categoryName
         holder.txtCost.text =
             dataList?.get(position)!!.productTotal + " " + dataList?.get(position)!!.currency
@@ -44,15 +44,35 @@ class CartAdapter(
             .thumbnail(0.1f)
             .into(holder.image)
         holder.txtPlus.setOnClickListener {
-            changeQty(dataList?.get(position)!!.productId.toString(), true, holder.txtQty, position)
+            dataList?.get(position)?.let {
+                if (it.productQuantity!!.toInt() >= it.current_stock!!) {
+                    Toast.makeText(holder.itemView.context, "Out Of Stock!", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    changeQty(
+                        dataList?.get(position)!!.productId.toString(),
+                        true,
+                        holder.txtQty,
+                        position
+                    )
+                }
+            }
         }
 
         holder.txtMinus.setOnClickListener {
-            changeQty(dataList?.get(position)!!.productId.toString(), false, holder.txtQty, position)
+            changeQty(
+                dataList?.get(position)!!.productId.toString(),
+                false,
+                holder.txtQty,
+                position
+            )
         }
 
         holder.txtRemove.setOnClickListener {
-            cartadapterCallBack.productRemoved(dataList?.get(position)!!.productId.toString(), position)
+            cartadapterCallBack.productRemoved(
+                dataList?.get(position)!!.productId.toString(),
+                position
+            )
         }
     }
 

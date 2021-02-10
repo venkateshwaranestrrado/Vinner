@@ -27,12 +27,13 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.searchtoolbar.*
 
 class SearchFragment : Fragment() {
+
     var mSearch = ArrayList<AddressList>()
     var mSearchFilter = ArrayList<AddressList>()
     private var vModel: HomeVM? = null
 
     private lateinit var gridlayoutmanager: GridLayoutManager
-    private lateinit var  adapter:SearchAdapter
+    private lateinit var adapter: SearchAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -55,7 +56,7 @@ class SearchFragment : Fragment() {
             )
         ).get(HomeVM::class.java)
 
-       // initcntroll()
+        // initcntroll()
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
 
@@ -103,7 +104,8 @@ class SearchFragment : Fragment() {
         })
 
     }
-private fun initcntroll(){
+
+    private fun initcntroll() {
 
         vModel!!.getsearch(
             RequestModel(
@@ -129,6 +131,7 @@ private fun initcntroll(){
         adapter.setSongs(mSearch)
         adapter.notifyDataSetChanged()
     }
+
     fun updateSearchFilterList() {
         adapter.setSongs(mSearchFilter)
         adapter.notifyDataSetChanged()
