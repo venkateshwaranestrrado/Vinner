@@ -24,7 +24,6 @@ class SearchAdapter(private var activity: FragmentActivity) :
     RecyclerView.Adapter<ItemViewHolder>() {
     var mSearch = ArrayList<AddressList>()
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
 
         return ItemViewHolder(
@@ -54,10 +53,9 @@ class SearchAdapter(private var activity: FragmentActivity) :
             holder.view.setClickable(true)
         }
 
-        var rating = ""
         var productId = mSearch?.get(position)!!.product_id!!
         holder.prdctname.text = mSearch?.get(position)!!.product_title
-        holder.price.text = mSearch?.get(position)!!.price + " " + mSearch?.get(position)!!.currency
+        holder.price.text = mSearch?.get(position)!!.currency + " " + mSearch?.get(position)!!.price
         holder.unit.text = mSearch?.get(position)!!.unit
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(activity)
@@ -66,21 +64,17 @@ class SearchAdapter(private var activity: FragmentActivity) :
             .thumbnail(0.1f)
             .into(holder.prdctimage)
 
-        rating = mSearch?.get(position)!!.rating!!
-        if (rating != null && !rating.equals("")) {
-            holder.prdctratingBar.rating = rating.toFloat()
+        holder.prdctratingBar.rating = 0f
+        val rating = mSearch.get(holder.adapterPosition).rating
+        rating?.let {
+            if (it != "") holder.prdctratingBar.rating = it.toFloat()
         }
 
         holder.view.setOnClickListener {
-
             val bundle = bundleOf(PRODUCT_ID to productId)
-
             it.findNavController()
                 ?.navigate(R.id.navigation_product, bundle)
-
-
         }
-
 
     }
 

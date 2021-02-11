@@ -222,7 +222,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
 //            Helper.setLocation(spnr_region, this!!.requireContext()!!)
             productName.text = product.productName
             productDescription.text = product.category
-            price.text = product.price + " " + product.currency
+            price.text = product.currency + " " + product.price
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 tvdescription.setText(
                     Html.fromHtml(

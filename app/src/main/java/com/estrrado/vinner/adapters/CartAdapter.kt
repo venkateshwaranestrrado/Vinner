@@ -36,7 +36,7 @@ class CartAdapter(
         Preferences.put(activity, PRODUCTNAME, dataList?.get(position)!!.productName!!)
         holder.txtDesc.text = dataList?.get(position)!!.categoryName
         holder.txtCost.text =
-            dataList?.get(position)!!.productTotal + " " + dataList?.get(position)!!.currency
+            dataList?.get(position)!!.currency + " " + dataList?.get(position)!!.productTotal
         holder.txtDelivery.text = dataList?.get(position)!!.delivery
         holder.txtQty.text = dataList?.get(position)!!.productQuantity
         Glide.with(activity!!)

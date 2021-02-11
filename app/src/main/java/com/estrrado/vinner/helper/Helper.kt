@@ -1,12 +1,12 @@
 package com.estrrado.vinner.helper
 
+
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -15,23 +15,16 @@ import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-
-
 import com.estrrado.vinner.R
 import com.estrrado.vinner.`interface`.AlertCallback
-import com.estrrado.vinner.data.models.Region
 import com.estrrado.vinner.helper.Constants.regions
 import kotlinx.android.synthetic.main.dialog_signout.*
-import kotlinx.android.synthetic.main.moree_fragment.*
-import kotlinx.android.synthetic.main.toolbar.*
 import java.io.ByteArrayOutputStream
 
 
@@ -238,6 +231,24 @@ object Helper {
         malertDialog?.no?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 alertCallback.alertSelected(false, from)
+                malertDialog.cancel()
+            }
+
+        })
+    }
+
+    fun showSingleAlert(msg: String, context: Context) {
+        val mbuilder = AlertDialog.Builder(context)
+        val dialogview =
+            LayoutInflater.from(context).inflate(R.layout.dialog_signout, null, false);
+        mbuilder.setView(dialogview)
+        val malertDialog = mbuilder.show()
+        malertDialog.txt_msg.setText(msg)
+        malertDialog?.window?.setBackgroundDrawableResource(R.color.transparent)
+        malertDialog?.no?.visibility = View.GONE
+        malertDialog?.yess?.text = "Ok"
+        malertDialog?.yes?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
                 malertDialog.cancel()
             }
 

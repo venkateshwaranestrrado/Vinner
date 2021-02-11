@@ -44,7 +44,7 @@ class CategryList(private var activity: FragmentActivity, var dataItem: ArrayLis
 
             rating=dataItem?.get(position)!!.rating!!
             holder.name?.text = dataItem!!.get(position).product_title
-            holder.price?.text = dataItem?.get(position)!!.price +" " + dataItem?.get(position)!!.currency
+            holder.price?.text = dataItem?.get(position)!!.currency +" " + dataItem?.get(position)!!.price
             holder.qty?.text = dataItem?.get(position)!!.unit
 
             if (dataItem!!.get(position).current_stock =="0"){

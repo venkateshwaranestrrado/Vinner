@@ -7,12 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import com.estrrado.vinner.data.models.request.Input
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressModel
-import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.DataListModel
+import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.helper.getMultipartString
-
 import com.estrrado.vinner.retrofit.APIService
-
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -230,7 +228,6 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
                 data.value = it
             }, {
                 it.printStackTrace()
-
             })
         return data
     }
@@ -437,8 +434,15 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun UpdateProfile(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.updateprofile(
-            getMultipartString(input.accessToken.toString()), getMultipartString(input.name.toString()), getMultipartString(input.address1.toString()), getMultipartString(input.address2.toString()), getMultipartString(input.post.toString()), getMultipartString(input.state.toString()),
-            getMultipartString(input.mobile.toString()), getMultipartString(input.email.toString()), getMultipartString(input.city.toString()),
+            getMultipartString(input.accessToken.toString()),
+            getMultipartString(input.name.toString()),
+            getMultipartString(input.address1.toString()),
+            getMultipartString(input.address2.toString()),
+            getMultipartString(input.post.toString()),
+            getMultipartString(input.state.toString()),
+            getMultipartString(input.mobile.toString()),
+            getMultipartString(input.email.toString()),
+            getMultipartString(input.city.toString()),
             input.profile_pic
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

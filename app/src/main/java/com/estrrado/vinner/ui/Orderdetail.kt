@@ -70,7 +70,6 @@ class Orderdetail : Fragment() {
         initControl()
     }
 
-
     private fun initControl() {
 
         if (Helper.isNetworkAvailable(requireContext())) {
@@ -83,7 +82,7 @@ class Orderdetail : Fragment() {
                     if (it?.status.equals(Constants.SUCCESS)) {
                         textView34.setText(it!!.data!!.order_date)
                         textView35.setText(it.data!!.order_id)
-                        textView36.setText(it.data.order_total + " " + it.data.getCurrency())
+                        textView36.setText(it.data.getCurrency() + " " + it.data.order_total)
                         txt_orderd.setText(it.data.ordered)
                         txt_dlvrd.setText(it.data.delivered)
                         txt_pymntmthd.setText(it.data.payment_method)
@@ -99,13 +98,9 @@ class Orderdetail : Fragment() {
                         txt_ship_zip.setText(it.data.shipping_address!!.get(0)!!.s_zip)
                         txt_ship_region.setText(it.data.shipping_address!!.get(0)!!.s_country)
 
-
-                        txt_items.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
-                        txt_packing.setText(it.data.shipping_cost + "" + it.data.getCurrency())
-                        txt_before_tax.setText(it.data.getTotalAmount() + "" + it.data.getCurrency())
-                        txt_tax.setText(it.data.tax + "" + it.data.getCurrency())
-                        txt_total.setText((it.data.getTotalAmount() + it.data.shipping_cost) + "" + it.data.getCurrency())
-                        txt_Orderstotal.setText(it.data.getGrandTotal() + "" + it.data.getCurrency())
+                        txt_items.setText(it.data.getCurrency() + " " + it.data.getTotalAmount())
+                        txt_packing.setText(it.data.getCurrency() + " " + it.data.shipping_cost)
+                        txt_Orderstotal.setText(it.data.getCurrency() + " " + it.data.getGrandTotal())
                         seek_bar.isEnabled = false
                         seek_bar.setMaxValue(2.0F).apply()
                         if (it.data.delivery_status.equals(PENDING))
@@ -165,7 +160,7 @@ class Orderdetail : Fragment() {
             var rating = 0
 //        holder.rating.rating= dataItem?.get(position)!!.rating!!.toInt()
             holder.name.text = dataItem!!.get(position).name
-            holder.price.text = dataItem?.get(position)!!.price + " " + newitem!!.getCurrency()
+            holder.price.text = newitem!!.getCurrency() + " " + dataItem?.get(position)!!.price
 
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)

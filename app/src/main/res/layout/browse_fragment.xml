@@ -73,7 +73,6 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
     <include
         android:id="@+id/progressbrowse"
         layout="@layout/item_progress_sheet"
@@ -82,4 +81,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

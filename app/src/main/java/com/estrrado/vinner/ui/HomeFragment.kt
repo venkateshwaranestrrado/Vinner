@@ -2,6 +2,7 @@ package com.estrrado.vinner.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Helper.showAlert
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.COUNTRY_POSITION
+import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.readFromAsset
@@ -51,8 +53,8 @@ import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.android.synthetic.main.view_notification_bage.*
 import java.util.*
 
-
 class HomeFragment : Fragment(), AlertCallback {
+
     var vModel: HomeVM? = null
     var mTimer = Timer()
     var timerLoad: Boolean = true
@@ -86,8 +88,6 @@ class HomeFragment : Fragment(), AlertCallback {
         (activity as VinnerActivity).open()
 
         searchtool.setOnClickListener {
-            /*requireActivity().supportFragmentManager.beginTransaction()
-                .add(R.id.nav_host_fragment, SearchFragment(), "Search").commit()*/
             view.findNavController().navigate(R.id.action_navigation_home_to_searchFragment)
         }
 
@@ -95,11 +95,6 @@ class HomeFragment : Fragment(), AlertCallback {
         regionList = readFromAsset(requireActivity())
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region.adapter = regionAdapter
-        if (!Preferences.get(activity, COUNTRY_POSITION).equals("")) {
-            spnrSelected = 0
-            spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
-        }
-//                        setLocation(spnr_region, this!!.requireContext()!!)
 
         spnr_region.setOnItemSelectedListener(object :
             AdapterView.OnItemSelectedListener {
@@ -110,7 +105,11 @@ class HomeFragment : Fragment(), AlertCallback {
                 id: Long
             ) {
                 spnrPosition = position
-                if (spnrSelected != 0 && cartCount > 0)
+                if ((regionList!!.get(spnrPosition).code != Preferences.get(
+                        activity,
+                        Preferences.REGION_CODE
+                    )) && cartCount > 0
+                )
                     showAlert(
                         "If you change Region, Your cart items will be removed.",
                         1,
@@ -126,21 +125,32 @@ class HomeFragment : Fragment(), AlertCallback {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })
+
         tv_prod_see_all.setOnClickListener {
             view.findNavController().navigate(R.id.action_navigation_home_to_productListFragment)
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!Preferences.get(activity, COUNTRY_POSITION).equals("")) {
+            spnrSelected = 0
+            spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
         }
     }
 
     private fun setCountry() {
         val code = regionList!!.get(spnrPosition).code
         val name = regionList!!.get(spnrPosition).name
-        Preferences.put(activity, REGION_NAME, name!!)
+        val fullname = regionList!!.get(spnrPosition).fullname
+        Preferences.put(activity, REGION_NAME, name)
+        Preferences.put(activity, REGION_FULLNAME, fullname)
         Preferences.put(activity, COUNTRY_POSITION, spnrPosition.toString())
         Preferences.put(activity, Preferences.REGION_CODE, code!!)
     }
 
     private fun initControl() {
-        // Helper.showLoading(activity)
         categoryList.setLayoutManager(GridLayoutManager(activity, 4))
         homeList.layoutManager = LinearLayoutManager(
             activity,
@@ -148,10 +158,11 @@ class HomeFragment : Fragment(), AlertCallback {
             false
         )
         getHome()
-
     }
 
     private fun getHome() {
+
+        Log.e("sdsd", Preferences.get(activity, ACCESS_TOKEN))
 
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()

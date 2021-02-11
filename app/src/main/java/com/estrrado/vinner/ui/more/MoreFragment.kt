@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.estrrado.vinner.R
@@ -137,6 +138,9 @@ class MoreFragment : Fragment(), View.OnClickListener {
             })
         }
 
+        searchtool.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_more_to_searchFragment)
+        }
 
     }
 

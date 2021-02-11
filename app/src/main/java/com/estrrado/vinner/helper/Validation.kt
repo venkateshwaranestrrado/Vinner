@@ -6,6 +6,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import java.util.regex.Pattern
+
 object Validation {
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     fun EditText.validate(): Boolean {

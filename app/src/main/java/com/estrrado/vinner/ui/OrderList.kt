@@ -40,7 +40,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class OrderList : Fragment() {
 
     var vModel: HomeVM? = null
@@ -207,10 +206,16 @@ class OrderList : Fragment() {
                 .thumbnail(0.1f)
                 .into(holder.image)
 
-            holder.name?.text = dataItem.get(position).name
-            holder.delivstatus?.text = dataItem.get(position).delivary_datetime
-            holder.tvOrderId?.text = dataItem.get(position).order_id
-            holder.tvOrderDate?.text = dataItem.get(position).order_date
+            holder.name.text = dataItem.get(position).name
+            holder.delivstatus.text = dataItem.get(position).delivary_datetime
+            holder.tvOrderId.text = dataItem.get(position).order_id
+
+            dataItem.get(position).order_date?.let {
+                val date = SimpleDateFormat("dd MMM yyyy",Locale.getDefault()).parse(it)
+                date?.let {
+                    holder.tvOrderDate.text =SimpleDateFormat("dd-MM-yyyy",Locale.getDefault()).format(date)
+                }
+            }
 
             holder.orderlist.setOnClickListener {
                 val bundle = Bundle()

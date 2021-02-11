@@ -1,16 +1,19 @@
 [
   {
     "name": "SA",
+    "fullname": "Saudi Arabia",
     "url": "saudi",
     "code": "966"
   },
   {
     "name": "BH",
+    "fullname": "Bahrain",
     "url": "baharin",
     "code": "973"
   },
   {
     "name": "AE",
+    "fullname": "UAE",
     "url": "uae",
     "code": "971"
   }

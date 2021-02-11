@@ -320,7 +320,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-
         <Button
             android:id="@+id/checkout"
             style="@style/RootView"

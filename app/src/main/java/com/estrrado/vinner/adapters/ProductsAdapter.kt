@@ -75,7 +75,7 @@ class ProductsAdapter(
             name = dataList?.get(position)!!.prdName!!
             qty = dataList?.get(position)!!.unit!!
             if (!dataList?.get(position)!!.price.equals("0"))
-                price = dataList?.get(position)!!.price + " " + dataList?.get(position)!!.currency
+                price = dataList?.get(position)!!.currency + " " + dataList?.get(position)!!.price
             else price = ""
             rating = dataList?.get(position)!!.rating!!
             img = dataList?.get(position)!!.prdImage!!
@@ -84,18 +84,16 @@ class ProductsAdapter(
             if (productList!!.get(position)!!.current_stock == "0") {
 
                 holder.homename?.text = "OUT OF STOCK"
-//                    holder.name?.visibility=View.GONE
                 holder.homename?.visibility = View.VISIBLE
                 holder.homename?.setTextColor(activity.getResources().getColor(R.color.red));
                 holder.cardView.setEnabled(false);
                 holder.cardView.setClickable(false);
             }
             name = productList?.get(position)!!.productTitle!!
-//            qty = productList?.get(position)!!.qty + " " + productList?.get(position)!!.unit
             qty = productList?.get(position)!!.unit!!
             if (!productList?.get(position)!!.price.equals("0"))
                 price =
-                    productList?.get(position)!!.price + " " + productList?.get(position)!!.currency
+                    productList?.get(position)!!.currency + " " + productList?.get(position)!!.price
             else price = ""
             rating = productList?.get(position)!!.rating.toString()
             img = productList?.get(position)!!.productImage!!

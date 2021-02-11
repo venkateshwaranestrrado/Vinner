@@ -8,19 +8,18 @@ object Preferences {
 
     const val PREFERENCE_NAME = "DATA"
     const val TOKEN = "id"
-    var REGION_CODE="code"
-    var REGION_NAME="name"
-    var COUNTRY_POSITION="country_position"
-    var CATEGORY_ID="cat_id"
-    var OPERATOR_ID="operator_id"
-    var NAME="NAME"
-    var PROFILEIMAGE="IMAGE"
-    var PRODUCTNAME="NAME"
-    var CARTCOUNT=""
-    var ADDRESS_ID=""
-    var ORDER_ID=""
-
-
+    var REGION_CODE = "code"
+    var REGION_NAME = "name"
+    var REGION_FULLNAME = "fullname"
+    var COUNTRY_POSITION = "country_position"
+    var CATEGORY_ID = "cat_id"
+    var OPERATOR_ID = "operator_id"
+    var NAME = "NAME"
+    var PROFILEIMAGE = "IMAGE"
+    var PRODUCTNAME = "NAME"
+    var CARTCOUNT = ""
+    var ADDRESS_ID = ""
+    var ORDER_ID = ""
 
     fun clearOne(context: Context?, FileName: String, KeyName: String) {
         val settings = context?.getSharedPreferences(FileName, Context.MODE_PRIVATE)
@@ -28,7 +27,8 @@ object Preferences {
     }
 
     fun getAll(context: Context, FileName: String): String? {
-        val preferencesData = context.applicationContext.getSharedPreferences(FileName, Context.MODE_PRIVATE)
+        val preferencesData =
+            context.applicationContext.getSharedPreferences(FileName, Context.MODE_PRIVATE)
         return preferencesData.getString("keyName", "keyValue")
     }
 
@@ -40,17 +40,20 @@ object Preferences {
     }
 
     fun get(context: FragmentActivity?, KeyName: String): String? {
-        val preferencesData = context?.applicationContext?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val preferencesData =
+            context?.applicationContext?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return preferencesData?.getString(KeyName, "")
     }
 
     fun get(context: Service?, KeyName: String): String? {
-        val preferencesData = context?.applicationContext?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val preferencesData =
+            context?.applicationContext?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return preferencesData?.getString(KeyName, "")
     }
 
     fun put(activity: FragmentActivity?, key: String, value: String) {
-        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val sharedPreferences =
+            activity?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val spe = sharedPreferences?.edit()
         spe?.putString(key, value)
         spe?.apply()
@@ -62,7 +65,6 @@ object Preferences {
         spe?.putString(key, value)
         spe?.apply()
     }
-
 
 
 }

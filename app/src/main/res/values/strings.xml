@@ -45,8 +45,8 @@
     <string name="no_address_found">No address found</string>
     <string name="work">Work</string>
     <string name="order_id_">Order Id:</string>
-    <string name="order_date_">Order date:</string>
-    <string name="order">Order :</string>
+    <string name="order_date_">Order date :</string>
+    <string name="order">Order Id :</string>
     <string name="remarks">Remarks</string>
     <string name="characters">qwertyuiopasdfghjklmnbvcxz., POIUYTREWQASDFGHJKLMNBVCXZ-</string>
 </resources>

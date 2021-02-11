@@ -3,6 +3,7 @@ package com.estrrado.vinner.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,7 @@ import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.addressSelected
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
@@ -67,6 +69,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var operators: List<Datum>? = null
     var operatorId: String? = null
     var address: String? = null
+    var addressRegion: String? = null
     var housename: String? = null
     var Roadname: String? = null
     var countryName: String? = null
@@ -120,6 +123,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             textView8.visibility = View.INVISIBLE
 
         }
+
         spinner_operators.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
@@ -134,26 +138,33 @@ class CartFragment : Fragment(), CartadapterCallBack {
             }
 
         }
+
         checkout.setOnClickListener {
             if (cartFound == true) {
                 if (operatorId != null) {
                     if (address != null) {
-                        val bundle = bundleOf(
-                            OPERATOR_ID to operatorId,
-                            CART_ID to cartId,
-                            ADDRESS to address,
-                            PINCODE to pincode,
-                            HOUSENAME to housename,
-                            LANDMARK to landmark,
-                            ADDDRESS_TYPE to addressType,
-                            ROAD_NAME to Roadname,
-                            COUNTRY to countryName,
-                            CITY to city,
-                            NAME to name
-                        )
-//                val bundle = bundleOf(OPERATOR_ID to "1", CART_ID to cartId)
-                        view.findNavController()
-                            .navigate(R.id.action_navigation_cart_to_checkoutFragment, bundle)
+                        if (Preferences.get(activity, REGION_FULLNAME) == addressRegion) {
+                            val bundle = bundleOf(
+                                OPERATOR_ID to operatorId,
+                                CART_ID to cartId,
+                                ADDRESS to address,
+                                PINCODE to pincode,
+                                HOUSENAME to housename,
+                                LANDMARK to landmark,
+                                ADDDRESS_TYPE to addressType,
+                                ROAD_NAME to Roadname,
+                                COUNTRY to countryName,
+                                CITY to city,
+                                NAME to name
+                            )
+                            view.findNavController()
+                                .navigate(R.id.action_navigation_cart_to_checkoutFragment, bundle)
+                        } else {
+                            Helper.showSingleAlert(
+                                "Selected country not matching with your default delivery address. Please choose correct delivery address.",
+                                context = requireContext()
+                            )
+                        }
                     } else {
                         printToast(requireContext(), "Please Enter a valid Address")
                     }
@@ -170,7 +181,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     @SuppressLint("SetTextI18n")
     private fun getDeleveryFee(position: Int) {
-//    progresscart.visibility= View.VISIBLE
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             operatorId = operators!!.get(position).getShippingOperatorId()
@@ -200,13 +210,13 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             }
 
                             txt_delivery_fee.text =
-                                it.data!!.getDeliveryFee() + " " + it.data.getCurrency()
+                                it.data!!.getCurrency() + " " + it.data.getDeliveryFee()
                             if (!it.data!!.getDeliveryFee().equals(""))
                                 deliveryFee = it.data!!.getDeliveryFee()!!.toInt()
-                            price.text = it.data.getPrice() + " " + it.data.getCurrency()
-                            txt_sub_total.text = it.data.getSubTotal() + " " + it.data.getCurrency()
+                            price.text = it.data.getCurrency() + " " + it.data.getPrice()
+                            txt_sub_total.text = it.data.getCurrency() + " " + it.data.getSubTotal()
                             totalAmount.text =
-                                it.data.getTotalAmount() + " " + it.data.getCurrency()
+                                it.data.getCurrency() + " " + it.data.getTotalAmount()
                             checkout.setEnabled(true)
                         }
                     } else {
@@ -290,11 +300,14 @@ class CartFragment : Fragment(), CartadapterCallBack {
         }
 
         productList.layoutManager = LinearLayoutManager(activity as VinnerActivity)
-        // productList.isNestedScrollingEnabled = false
     }
 
     @SuppressLint("SetTextI18n")
     private fun getCart() {
+
+        Log.e("accessToken", Preferences.get(activity, ACCESS_TOKEN))
+        Log.e("countryCode", Preferences.get(activity, REGION_NAME))
+
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -324,6 +337,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                             ", " + it.data.getAddress()!!.city + ", " + it.data.getAddress()!!.landmark + ", " + it.data.getAddress()!!.country +
                                             ", " + it.data.getAddress()!!.zip
                                 txt_address.text = address
+                                addressRegion = it.data.getAddress()!!.country
 
                                 housename = it.data.getAddress()!!.houseFlat
                                 Roadname = it.data.getAddress()!!.roadName
@@ -473,6 +487,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 ", " + addressSelected!!.city + ", " + addressSelected!!.landmark +
                 ", " + addressSelected!!.country + ", " + addressSelected!!.zip
         txt_address.text = address
+        addressRegion = addressSelected!!.country
 
         housename = addressSelected!!.house_flat
         Roadname = addressSelected!!.road_name

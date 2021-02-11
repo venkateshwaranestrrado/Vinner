@@ -63,7 +63,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="Order Id"
+            android:text="Order #  "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
@@ -443,17 +443,8 @@
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textView52"
-                    app:layout_constraintTop_toBottomOf="@+id/textView52" />
-
-                <TextView
-                    android:id="@+id/textView52"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Total :"
-                    app:layout_constraintStart_toStartOf="@+id/textView50"
-                    app:layout_constraintTop_toBottomOf="@+id/textView50" />
+                    app:layout_constraintStart_toStartOf="@+id/textView48"
+                    app:layout_constraintTop_toBottomOf="@+id/textView48" />
 
                 <TextView
                     android:id="@+id/txt_items"
@@ -470,11 +461,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-
                     app:layout_constraintEnd_toEndOf="@+id/txt_items"
                     app:layout_constraintTop_toBottomOf="@+id/txt_items" />
 
-                <TextView
+              <!--  <TextView
                     android:id="@+id/txt_before_tax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -498,7 +488,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="@+id/txt_tax"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_tax" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_tax" />-->
 
                 <TextView
                     android:id="@+id/txt_Orderstotal"
@@ -506,11 +496,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-
                     android:textColor="@color/red"
-
-                    app:layout_constraintEnd_toEndOf="@+id/txt_total"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_total" />
+                    app:layout_constraintEnd_toEndOf="@+id/txt_packing"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_packing" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

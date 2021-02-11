@@ -108,7 +108,7 @@ interface APIService {
     ): Observable<Model>
 
     @FormUrlEncoded
-    @POST("empty_cart")
+    @POST("clear_cart")
     fun emptyCart(
         @Field("access_token") accessToken: String?,
         @Field("cart_id") cartId: String?

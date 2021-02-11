@@ -131,6 +131,7 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <include
         android:id="@+id/progresshome"
         layout="@layout/item_progress_sheet"
