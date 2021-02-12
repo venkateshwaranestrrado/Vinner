@@ -11,11 +11,12 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.net.URISyntaxException
+import java.text.DecimalFormat
 
 fun readFromAsset(requireActivity: Activity): List<RegionSpinner> {
     val file_name = "login_region.json"
     val bufferReader = requireActivity.assets.open(file_name).bufferedReader()
-    var json_string:String?=null
+    var json_string: String? = null
     json_string = bufferReader.use {
         it.readText()
     }
@@ -53,4 +54,14 @@ fun getMultipartImage(
             activity!!.contentResolver.getType(fileUri)?.toMediaTypeOrNull()
         )
     return MultipartBody.Part.createFormData(imageName, file.name, requestFile)
+}
+
+fun priceFormat(value: String?): String {
+    value?.let {
+        if (it != "") {
+            val price = it.replace(",", "")
+            return DecimalFormat("#,###.00").format(price.toDouble())
+        }
+    }
+    return "0.00"
 }

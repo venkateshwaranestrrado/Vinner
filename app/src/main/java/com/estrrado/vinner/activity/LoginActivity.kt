@@ -18,6 +18,7 @@ import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.MOBILE
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Preferences.REGION_CODE
+import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.Validation.validate
@@ -37,7 +38,6 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         initControl()
     }
 
-
     private fun initControl() {
         val regionList: List<RegionSpinner> = readFromAsset()
         val regionAdapter = RegionAdapter(this, regionList)
@@ -49,14 +49,15 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                 position: Int,
                 id: Long
             ) {
-                val selectedItem = parent.getItemAtPosition(position).toString()
                 val gson = Gson()
                 val modelList: List<RegionSpinner> =
                     gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
-                var code = modelList.get(position).code
-                var name = modelList.get(position).name
+                val code = modelList.get(position).code
+                val name = modelList.get(position).name
+                val fullname = regionList.get(position).fullname
                 Preferences.put(this@LoginActivity, REGION_NAME, name)
                 Preferences.put(this@LoginActivity, REGION_CODE, code)
+                Preferences.put(this@LoginActivity, REGION_FULLNAME, fullname)
                 Preferences.put(
                     this@LoginActivity,
                     Preferences.COUNTRY_POSITION,
@@ -66,8 +67,6 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })
-//        tvnewuser.setOnClickListener(this)
-//        tvnewregister.setOnClickListener(this)
         tvSubmit.setOnClickListener(this)
 
         authenticateVM = ViewModelProvider(
@@ -83,40 +82,54 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         ).get(AuthVM::class.java)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!Preferences.get(this, Preferences.COUNTRY_POSITION).equals("")) {
+            region_spinner.setSelection(
+                Preferences.get(this, Preferences.COUNTRY_POSITION)!!.toInt()
+            )
+        }
+    }
+
+    private fun validation(): Boolean {
+        if (phone.length() < 7) {
+            printToast(this, "Invalid phone number. Pls give correct phone number.")
+            return false
+        }
+        return true
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id) {
-//            R.id.tvnewuser, R.id.tvnewregister -> {
-//
-//                startActivity(Intent(this, RegisterActivity::class.java))
-//
-//            }
-
             R.id.tvSubmit -> {
                 progress.visibility = View.VISIBLE
-                var Regioncode = Preferences.get(this, REGION_CODE)
+                val Regioncode = Preferences.get(this, REGION_CODE)
                 if ((phone.validate())) {
-
-                    if (Helper.isNetworkAvailable(this)) {
-                        var phoneNum = phone.text.toString()
-                        phoneNum = phoneNum
-                        authenticateVM!!.login(
-                            Input(
-                                "", "",
-                                phoneNum,
-                                c_code = Regioncode
-                            )
-                        ).observe(this,
-                            Observer {
-                                progress.visibility = View.GONE
-                                printToast(this, it?.message.toString())
-                                if (it?.status.equals(SUCCESS)) {
-                                    Preferences.put(this, MOBILE, phoneNum)
-                                    startActivity(Intent(this, OtpActivity::class.java))
-                                }
-                            })
+                    if ((validation())) {
+                        if (Helper.isNetworkAvailable(this)) {
+                            var phoneNum = phone.text.toString()
+                            phoneNum = phoneNum
+                            authenticateVM!!.login(
+                                Input(
+                                    "", "",
+                                    phoneNum,
+                                    c_code = Regioncode
+                                )
+                            ).observe(this,
+                                Observer {
+                                    progress.visibility = View.GONE
+                                    printToast(this, it?.message.toString())
+                                    if (it?.status.equals(SUCCESS)) {
+                                        Preferences.put(this, MOBILE, phoneNum)
+                                        startActivity(Intent(this, OtpActivity::class.java))
+                                    }
+                                })
+                        } else {
+                            progress.visibility = View.GONE
+                            Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
                         progress.visibility = View.GONE
-                        Toast.makeText(this, "No Network Available", Toast.LENGTH_SHORT).show()
                     }
                 } else {
                     progress.visibility = View.GONE

@@ -13,6 +13,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
+import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
@@ -35,6 +36,7 @@ import com.estrrado.vinner.helper.Constants.reqCode
 import com.estrrado.vinner.helper.Helper.showAlert
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.testpay.PayFortActivity
 import com.estrrado.vinner.vm.HomeVM
@@ -115,10 +117,12 @@ class CheckoutFragment : Fragment(), AlertCallback {
                 progresscheckout.visibility = View.GONE
                 if (it?.status.equals(SUCCESS)) {
                     txt_delivery_fee.text =
-                        it!!.data!!.getCurrency() + " " + it.data!!.getDeliveryFee()
-                    price.text = it!!.data!!.getCurrency() + " " + it.data!!.getPrice()
-                    txt_sub_total.text = it.data!!.getCurrency() + " " + it.data!!.getSubTotal()
-                    totalAmount.text = it.data!!.getCurrency() + " " + it.data!!.getTotalAmount()
+                        it!!.data!!.getCurrency() + " " + priceFormat(it.data!!.getDeliveryFee())
+                    price.text = it!!.data!!.getCurrency() + " " + priceFormat(it.data!!.getPrice())
+                    txt_sub_total.text =
+                        it.data!!.getCurrency() + " " + priceFormat(it.data!!.getSubTotal())
+                    totalAmount.text =
+                        it.data!!.getCurrency() + " " + priceFormat(it.data!!.getTotalAmount())
                     totalPayable = it.data!!.getTotalAmount()
                 } else {
                     if (it?.message.equals("Invalid access token")) {
@@ -192,6 +196,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
                 progresscheckout.visibility = View.GONE
                 if (it?.status.equals(SUCCESS)) {
                     printToast(requireContext(), "payment successfull")
+                    (activity as VinnerActivity).refreshBadgeView("0")
                     requireView().findNavController()
                         .navigate(R.id.action_checkoutFragment_to_order_list)
                 } else {

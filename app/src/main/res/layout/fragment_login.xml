@@ -105,6 +105,7 @@
             android:paddingLeft="@dimen/_10sdp"
             android:singleLine="true"
             android:textSize="@dimen/_10sdp" />
+
     </LinearLayout>
 
     <!--    <EditText-->

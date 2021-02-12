@@ -1,6 +1,5 @@
 package com.estrrado.vinner.retrofit
 
-import android.util.Log
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
@@ -13,7 +12,8 @@ object ApiClient {
 
     var apiData = WebConfig.TEST
     var LIVE_URL = apiData.getLiveUrl()
-    private var interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    private var interceptor: HttpLoggingInterceptor =
+        HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     private var retrofit: Retrofit? = null
 

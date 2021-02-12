@@ -47,6 +47,7 @@ import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -74,7 +75,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var Roadname: String? = null
     var countryName: String? = null
     var city: String? = null
-    var deliveryFee: Int = 0
+    var deliveryFee: Double = 0.00
     var name: String? = null
     var landmark: String? = null
     var pincode: String? = null
@@ -111,10 +112,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
         super.onViewCreated(view, savedInstanceState)
         pageTitle.text = "Cart"
         progresscart.visibility = View.VISIBLE
-        /*Glide.with(requireContext())
-            .load(logo)
-            .thumbnail(0.1f)
-            .into(img_logo)*/
         initControl()
         getCart()
         getOperators()
@@ -210,21 +207,23 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             }
 
                             txt_delivery_fee.text =
-                                it.data!!.getCurrency() + " " + it.data.getDeliveryFee()
+                                it.data!!.getCurrency() + " " + priceFormat(it.data.getDeliveryFee())
                             if (!it.data!!.getDeliveryFee().equals(""))
-                                deliveryFee = it.data!!.getDeliveryFee()!!.toInt()
-                            price.text = it.data.getCurrency() + " " + it.data.getPrice()
-                            txt_sub_total.text = it.data.getCurrency() + " " + it.data.getSubTotal()
+                                deliveryFee = it.data!!.getDeliveryFee()!!.toDouble()
+                            price.text =
+                                it.data.getCurrency() + " " + priceFormat(it.data.getPrice())
+                            txt_sub_total.text =
+                                it.data.getCurrency() + " " + priceFormat(it.data.getSubTotal())
                             totalAmount.text =
-                                it.data.getCurrency() + " " + it.data.getTotalAmount()
+                                it.data.getCurrency() + " " + priceFormat(it.data.getTotalAmount())
                             checkout.setEnabled(true)
                         }
                     } else {
-                        txt_delivery_fee.text = "0"
-                        deliveryFee = 0
+                        txt_delivery_fee.text = " 0.00"
+                        deliveryFee = 0.00
                         printToast(requireContext(), it!!.message!!)
-                        txt_sub_total.text = "0"
-                        totalAmount.text = "0"
+                        txt_sub_total.text = " 0.00"
+                        totalAmount.text = " 0.00"
 
                         checkout.setEnabled(false)
                     }
@@ -272,22 +271,13 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
         val aa = ArrayAdapter(requireContext(), R.layout.spinner_item, dOperator.toTypedArray())
         spinner_operators.adapter = aa
-        if (dOperator != null && dOperator.size > 0) {
+        if (dOperator.size > 0) {
             spinner_operators.visibility = View.VISIBLE
             textView8.visibility = View.GONE
         }
     }
 
     private fun initControl() {
-        /*spnr_region.visibility = View.VISIBLE
-        spnr_region.isEnabled = false
-        regionList = com.estrrado.vinner.helper.readFromAsset(requireActivity())
-        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
-        spnr_region.adapter = regionAdapter
-        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
-            spnr_region.setSelection(
-                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
-            )*/
         cont_shop.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.nav_host_fragment, HomeFragment()).commit()
@@ -304,10 +294,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     @SuppressLint("SetTextI18n")
     private fun getCart() {
-
-        Log.e("accessToken", Preferences.get(activity, ACCESS_TOKEN))
-        Log.e("countryCode", Preferences.get(activity, REGION_NAME))
-
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -374,10 +360,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
                         }
-//                    else {
-//                      printToast(requireContext(), it?.message!!)
-//                    }
-//                                  printToast(requireContext(), it?.message.toString())
                     }
                 })
         } else {
@@ -389,22 +371,23 @@ class CartFragment : Fragment(), CartadapterCallBack {
     @SuppressLint("SetTextI18n")
     private fun setCartDetails(cart: Cart?) {
         if (!cart!!.totalAmount.equals("null")) {
-            price.text = cart.totalAmount + " " + cart.currency
+            price.text = cart.currency + " " + priceFormat(cart.totalAmount)
             totalAmount.text =
-                (cart.grandTotal!!.toInt() + deliveryFee).toString() + " " + cart.currency
+                cart.currency + " " + priceFormat((cart.grandTotal!!.toDouble() + deliveryFee).toString())
             txt_sub_total.text =
-                (cart.grandTotal!!.toInt() + deliveryFee).toString() + " " + cart.currency
+                cart.currency + " " + priceFormat((cart.grandTotal!!.toDouble() + deliveryFee).toString())
             currency = cart.currency
+            Log.e("currency ", "" + currency)
         } else {
-            price.text = "0 " + cart.currency
-            txt_sub_total.text = "0 " + cart.currency
-            totalAmount.text = "0 " + cart.currency
+            price.text = cart.currency + " 0.00"
+            txt_sub_total.text = cart.currency + " 0.00"
+            totalAmount.text = cart.currency + " 0.00"
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun productUpdated(productId: String, count: String, position: Int) {
-//    progresscart.visibility= View.VISIBLE
+        progresscart.visibility = View.VISIBLE
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -415,25 +398,27 @@ class CartFragment : Fragment(), CartadapterCallBack {
             vModel!!.updateCart(requestModel).observe(this,
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
+                        printToast(requireContext(), it?.message.toString())
                         progresscart.visibility = View.GONE
                         cartItems!!.get(position)!!.productTotal = it!!.data!!.getProductTotal()
                         cartItems!!.get(position)!!.productQuantity = it.data!!.getProductQty()
                         cartAdapter!!.notifyDataSetChanged()
-                        price.text = it.data.getTotalAmount() + " " + currency
-                        totalAmount.text = it.data.getGrandTotal() + " " + currency
+                        price.text = currency + " " + priceFormat(it.data.getTotalAmount())
+                        totalAmount.text = currency + " " + priceFormat(it.data.getGrandTotal())
 
                         totalAmount.text =
-                            (it.data.getGrandTotal()!!
-                                .toInt() + deliveryFee).toString() + " " + currency
+                            currency + " " + priceFormat(
+                                (it.data.getGrandTotal()!!
+                                    .toDouble() + deliveryFee).toString()
+                            )
                         txt_sub_total.text =
-                            (it.data.getGrandTotal()!!
-                                .toInt() + deliveryFee).toString() + " " + currency
+                            currency + " " + priceFormat(
+                                (it.data.getGrandTotal()!!
+                                    .toDouble() + deliveryFee).toString()
+                            )
+                        if (spinner_operators.count > 0)
+                            getDeleveryFee(spinner_operators.selectedItemPosition)
                     }
-//
-//                else
-//
-//                  printToast(requireContext(), it?.message.toString()
-//                  )
                 })
         } else {
             progresscart.visibility = View.GONE
@@ -443,7 +428,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     @SuppressLint("SetTextI18n")
     override fun productRemoved(productId: String, position: Int) {
-//    progresscart.visibility= View.VISIBLE
+        progresscart.visibility = View.VISIBLE
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -452,7 +437,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             requestModel.productId = productId
             vModel!!.deleteCart(requestModel).observe(this,
                 Observer {
-//                printToast(requireContext(), it?.message.toString())
+                    printToast(requireContext(), it?.message.toString())
                     if (it?.status.equals(SUCCESS)) {
                         progresscart.visibility = View.GONE
                         cartItems!!.removeAt(position)
@@ -460,6 +445,8 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         getCart()
                         itemCount.text = cartItems!!.size.toString() + " Items"
                         (activity as VinnerActivity).refreshBadgeView(it!!.data!!.getItemsTotal())
+                        if (spinner_operators.count > 0)
+                            getDeleveryFee(spinner_operators.selectedItemPosition)
                     }
                 })
         } else {

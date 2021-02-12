@@ -17,6 +17,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
+import com.estrrado.vinner.helper.priceFormat
 import kotlinx.android.synthetic.main.item_search_product.*
 
 
@@ -55,7 +56,8 @@ class SearchAdapter(private var activity: FragmentActivity) :
 
         var productId = mSearch?.get(position)!!.product_id!!
         holder.prdctname.text = mSearch?.get(position)!!.product_title
-        holder.price.text = mSearch?.get(position)!!.currency + " " + mSearch?.get(position)!!.price
+        holder.price.text =
+            mSearch?.get(position)!!.currency + " " + priceFormat(mSearch.get(position).price)
         holder.unit.text = mSearch?.get(position)!!.unit
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(activity)

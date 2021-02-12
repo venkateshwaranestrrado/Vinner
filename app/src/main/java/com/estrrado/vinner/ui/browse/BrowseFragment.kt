@@ -18,6 +18,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
+import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CategoryAdapter
 import com.estrrado.vinner.adapters.IndustryAdapter
 import com.estrrado.vinner.adapters.RegionAdapter
@@ -216,16 +217,13 @@ class BrowseFragment : Fragment(), AlertCallback {
         if (isSelected) {
             setCountry()
             if (Helper.isNetworkAvailable(requireContext())) {
-                if (Preferences.get(activity, Constants.CART_ID).equals("0")) {
-                    initControl()
-                    return
-                }
                 val requestModel = RequestModel()
                 requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-                requestModel.cartId = Preferences.get(activity, Constants.CART_ID)
+                requestModel.cartId = "0"
                 progressbrowse.visibility = View.VISIBLE
                 vModel!!.emptyCart(requestModel).observe(requireActivity(),
                     Observer {
+                        (activity as VinnerActivity).refreshBadgeView("0")
                         progressbrowse.visibility = View.GONE
                         printToast(requireContext(), it?.message!!)
                         initControl()

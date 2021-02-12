@@ -9,20 +9,16 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
-import androidx.core.view.marginLeft
-import androidx.core.view.marginTop
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.Featured
-import com.estrrado.vinner.data.models.response.Data
 import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
-
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.ui.ProductDetails
 import kotlinx.android.synthetic.main.item_home_product.*
 
@@ -60,40 +56,43 @@ class ProductsAdapter(
         var img = ""
         var productId = ""
 
-
         if (dataList != null) {
             if (dataList!!.get(position)!!.current_stock == "0") {
-
-                holder.homename?.text = "OUT OF STOCK"
-//                    holder.name?.visibility=View.GONE
-                holder.homename?.visibility = View.VISIBLE
-                holder.homename?.setTextColor(activity.getResources().getColor(R.color.red));
+                holder.homename.text = "OUT OF STOCK"
+                holder.homename.visibility = View.VISIBLE
+                holder.homename.setTextColor(activity.getResources().getColor(R.color.red));
                 holder.cardView.setEnabled(false);
                 holder.cardView.setClickable(false);
+            } else {
+                holder.homename.text = ""
+                holder.homename.visibility = View.GONE
+                holder.cardView.setEnabled(true)
+                holder.cardView.setClickable(true)
             }
 
             name = dataList?.get(position)!!.prdName!!
             qty = dataList?.get(position)!!.unit!!
             if (!dataList?.get(position)!!.price.equals("0"))
-                price = dataList?.get(position)!!.currency + " " + dataList?.get(position)!!.price
+                price =
+                    dataList?.get(position)!!.currency + " " + priceFormat(dataList?.get(position)!!.price)
             else price = ""
             rating = dataList?.get(position)!!.rating!!
             img = dataList?.get(position)!!.prdImage!!
             productId = dataList?.get(position)!!.prdId!!
         } else {
-            if (productList!!.get(position)!!.current_stock == "0") {
+            if (productList!!.get(position).current_stock == "0") {
 
-                holder.homename?.text = "OUT OF STOCK"
-                holder.homename?.visibility = View.VISIBLE
-                holder.homename?.setTextColor(activity.getResources().getColor(R.color.red));
-                holder.cardView.setEnabled(false);
-                holder.cardView.setClickable(false);
+                holder.homename.text = "OUT OF STOCK"
+                holder.homename.visibility = View.VISIBLE
+                holder.homename.setTextColor(activity.getResources().getColor(R.color.red));
+                holder.cardView.setEnabled(false)
+                holder.cardView.setClickable(false)
             }
             name = productList?.get(position)!!.productTitle!!
             qty = productList?.get(position)!!.unit!!
             if (!productList?.get(position)!!.price.equals("0"))
                 price =
-                    productList?.get(position)!!.currency + " " + productList?.get(position)!!.price
+                    productList?.get(position)!!.currency + " " + priceFormat(dataList?.get(position)?.price)
             else price = ""
             rating = productList?.get(position)!!.rating.toString()
             img = productList?.get(position)!!.productImage!!
@@ -102,43 +101,17 @@ class ProductsAdapter(
         }
 
         holder.name.text = name
-        //holder.qty.text = qty
         holder.price.text = price
 
-        if (rating != null && !rating.equals(""))
-            holder.rating.rating = rating!!.toFloat()
+        if (!rating.equals(""))
+            holder.rating.rating = rating.toFloat()
 
-        /*if (dataList!![position]!!.fav!!) {
-            holder.like.setImageResource(R.drawable.ic_heart_select)
-        } else {
-            holder.like.setImageResource(R.drawable.ic_heart)
-        }*/
-
-        /* holder.like.setOnClickListener {
-             if (!dataList!![position]!!.fav!!) {
-                 dataList!![position]!!.fav = true
-                 holder.like.setImageResource(R.drawable.ic_heart_select)
-                 //callApi(dataList!![position]!!.productId, true)
-             } else {
-                 dataList!![position]!!.fav = false
-                 holder.like.setImageResource(R.drawable.ic_heart)
-                // callApi(dataList!![position]!!.productId, false)
-             }
-         }*/
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(activity)
             .load(img)
             .transform(RoundedCorners(radius))
             .thumbnail(0.1f)
             .into(holder.image)
-//        Glide.with(activity).load(img)
-//            .into(holder.image)
-//        holder.image.setOnClickListener {
-//            Navigation.findNavController(it).navigate(
-//                R.id.action_homeFragment_to_ProductFragment
-//
-//            )productId = arguments?.getString(PRODUCT_ID)!!
-//        }
 
         holder.cardView.setOnClickListener {
 
@@ -181,6 +154,7 @@ class ProductsAdapter(
         val price: TextView = v.findViewById(R.id.price)
         val name: TextView = v.findViewById(R.id.name)
         val image: ImageView = v.findViewById(R.id.image)
+
         //val qty: TextView = v.findViewById(R.id.qty)
         val rating: RatingBar = v.findViewById(R.id.ratingBar2)
         val cardView: CardView = v.findViewById(R.id.lyt_container)

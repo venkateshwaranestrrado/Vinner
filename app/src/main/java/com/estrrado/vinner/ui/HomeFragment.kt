@@ -267,8 +267,6 @@ class HomeFragment : Fragment(), AlertCallback {
         super.onDestroy()
     }
 
-    //9747971820
-
     private fun timerPager(viewPager: ViewPager) {
         if (timerLoad) {
             timerLoad = false
@@ -304,13 +302,9 @@ class HomeFragment : Fragment(), AlertCallback {
         if (isSelected) {
             setCountry()
             if (Helper.isNetworkAvailable(requireContext())) {
-                if (Preferences.get(activity, CART_ID).equals("0")) {
-                    initControl()
-                    return
-                }
                 val requestModel = RequestModel()
                 requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
-                requestModel.cartId = Preferences.get(activity, CART_ID)
+                requestModel.cartId = "0"
                 progresshome.visibility = View.VISIBLE
                 vModel!!.emptyCart(requestModel).observe(requireActivity(),
                     Observer {

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
+import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.RelatedProuctsAdapter
 import com.estrrado.vinner.adapters.ReviewAdapter
 import com.estrrado.vinner.data.RegionSpinner
@@ -32,6 +33,7 @@ import com.estrrado.vinner.helper.Constants.shareLink
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -103,7 +105,6 @@ class ProductDetails : Fragment(), View.OnClickListener {
 
     private fun getProductdetail() {
 
-
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -137,7 +138,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
                         }
 
                     } else
-                        printToast(this!!.requireContext()!!, it?.message.toString())
+                        printToast(this.requireContext(), it?.message.toString())
 
                 })
         } else {
@@ -163,12 +164,16 @@ class ProductDetails : Fragment(), View.OnClickListener {
 
             vModel!!.addCart(requestModel).observe(this,
                 Observer {
+                    if (cartQty <= 0) {
+                        (activity as VinnerActivity).refreshBadgeView(1)
+                    }
                     cartQty += 1
                     if (type != null) {
                         Navigation.findNavController(requireView()).navigate(R.id.navigation_cart)
                     } else {
-                        printToast(this!!.requireContext()!!, it?.message.toString())
+                        printToast(this.requireContext(), it?.message.toString())
                     }
+                    //(activity as VinnerActivity).getCartItemCount()
                     if (it?.status.equals(SUCCESS)) {
                         progressproductdetail.visibility = View.GONE
                         setProductDetail(it!!.data!!)
@@ -222,7 +227,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
 //            Helper.setLocation(spnr_region, this!!.requireContext()!!)
             productName.text = product.productName
             productDescription.text = product.category
-            price.text = product.currency + " " + product.price
+            price.text = product.currency + " " + priceFormat(product.price)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 tvdescription.setText(
                     Html.fromHtml(

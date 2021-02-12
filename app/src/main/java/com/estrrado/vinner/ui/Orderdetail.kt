@@ -27,12 +27,14 @@ import com.estrrado.vinner.helper.Constants.ON_DELIVERY
 import com.estrrado.vinner.helper.Constants.PENDING
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_order_details.*
 
 class Orderdetail : Fragment() {
+
     var vModel: HomeVM? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +84,7 @@ class Orderdetail : Fragment() {
                     if (it?.status.equals(Constants.SUCCESS)) {
                         textView34.setText(it!!.data!!.order_date)
                         textView35.setText(it.data!!.order_id)
-                        textView36.setText(it.data.getCurrency() + " " + it.data.order_total)
+                        textView36.setText(it.data.getCurrency() + " " + priceFormat(it.data.order_total))
                         txt_orderd.setText(it.data.ordered)
                         txt_dlvrd.setText(it.data.delivered)
                         txt_pymntmthd.setText(it.data.payment_method)
@@ -98,9 +100,9 @@ class Orderdetail : Fragment() {
                         txt_ship_zip.setText(it.data.shipping_address!!.get(0)!!.s_zip)
                         txt_ship_region.setText(it.data.shipping_address!!.get(0)!!.s_country)
 
-                        txt_items.setText(it.data.getCurrency() + " " + it.data.getTotalAmount())
-                        txt_packing.setText(it.data.getCurrency() + " " + it.data.shipping_cost)
-                        txt_Orderstotal.setText(it.data.getCurrency() + " " + it.data.getGrandTotal())
+                        txt_items.setText(it.data.getCurrency() + " " + priceFormat(it.data.getTotalAmount()))
+                        txt_packing.setText(it.data.getCurrency() + " " + priceFormat(it.data.shipping_cost))
+                        txt_Orderstotal.setText(it.data.getCurrency() + " " + priceFormat(it.data.getGrandTotal()))
                         seek_bar.isEnabled = false
                         seek_bar.setMaxValue(2.0F).apply()
                         if (it.data.delivery_status.equals(PENDING))
@@ -115,7 +117,7 @@ class Orderdetail : Fragment() {
                         textView6.visibility = View.VISIBLE
                         recyclerView.layoutManager = LinearLayoutManager(
                             activity,
-                            LinearLayoutManager.HORIZONTAL,
+                            LinearLayoutManager.VERTICAL,
                             false
                         )
                         recyclerView.adapter = OrderdetailAdapter(
@@ -159,8 +161,9 @@ class Orderdetail : Fragment() {
 
             var rating = 0
 //        holder.rating.rating= dataItem?.get(position)!!.rating!!.toInt()
+            holder.qty.text = String.format("Quantity : %s", dataItem!!.get(position).qty)
             holder.name.text = dataItem!!.get(position).name
-            holder.price.text = newitem!!.getCurrency() + " " + dataItem?.get(position)!!.price
+            holder.price.text = newitem!!.getCurrency() + " " + priceFormat(dataItem?.get(position)?.price)
 
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)
@@ -174,6 +177,7 @@ class Orderdetail : Fragment() {
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+            val qty: TextView = itemView.findViewById(R.id.textView39)
             val price: TextView = itemView.findViewById(R.id.textView38)
             val name: TextView = itemView.findViewById(R.id.textView37)
             val image: ImageView = itemView.findViewById(R.id.imageView9)
