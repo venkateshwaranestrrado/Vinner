@@ -9,4 +9,6 @@
     <color name="red">#C02C21</color>
     <color name="grey">#959595</color>
     <color name="yellow">#FFB300</color>
+    <color name="white">#FFFFFF</color>
+    <color name="l_gray">#CED3ED</color>
 </resources>

@@ -10,6 +10,10 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
+    val gson = GsonBuilder()
+        .setLenient()
+        .create()
+
     var apiData = WebConfig.TEST
     var LIVE_URL = apiData.getLiveUrl()
     private var interceptor: HttpLoggingInterceptor =
@@ -25,9 +29,6 @@ object ApiClient {
 
     private fun getClient(): Retrofit? {
         if (retrofit == null) {
-            val gson = GsonBuilder()
-                .setLenient()
-                .create()
             val interceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder().addInterceptor(interceptor).build()

@@ -46,6 +46,9 @@ class OrderList : Fragment() {
     private val myCalendar = Calendar.getInstance()
     var orderIdSearch = ""
     var dateSearch = ""
+
+    var sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -79,8 +82,20 @@ class OrderList : Fragment() {
         searchlist.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 dateSearch = ""
-                orderIdSearch = searchlist.text.toString()
-                getData()
+                orderIdSearch = ""
+                if (searchlist.text.trim().toString().length > 0) {
+                    var date: Date? = null
+                    try {
+                        date = sdf.parse(searchlist.text.trim().toString())
+                    } catch (e: Exception) {
+                    }
+                    if (date != null) {
+                        dateSearch = searchlist.text.trim().toString()
+                    } else {
+                        orderIdSearch = searchlist.text.trim().toString()
+                    }
+                    getData()
+                }
                 return@OnEditorActionListener true
             }
             false
@@ -99,6 +114,7 @@ class OrderList : Fragment() {
     }
 
     private fun getData() {
+
         if (com.estrrado.vinner.helper.Helper.isNetworkAvailable(requireContext())) {
             progressorderlist.visibility = View.VISIBLE
 
@@ -114,7 +130,7 @@ class OrderList : Fragment() {
                     recy_order_list.layoutManager = LinearLayoutManager(requireContext())
                     val orders = ArrayList<OrderModel>()
                     for (i in 0..it.data!!.size - 1) {
-                        for (j in 0..it.data!![i].getProductDetails()!!.size-1) {
+                        for (j in 0..it.data!![i].getProductDetails()!!.size - 1) {
                             val ord = it.data!![i]
                             val item = it.data!![i].getProductDetails()?.get(j)
                             orders.add(
@@ -211,9 +227,10 @@ class OrderList : Fragment() {
             holder.tvOrderId.text = dataItem.get(position).order_id
 
             dataItem.get(position).order_date?.let {
-                val date = SimpleDateFormat("dd MMM yyyy",Locale.getDefault()).parse(it)
+                val date = SimpleDateFormat("dd MMM yyyy", Locale.getDefault()).parse(it)
                 date?.let {
-                    holder.tvOrderDate.text =SimpleDateFormat("dd-MM-yyyy",Locale.getDefault()).format(date)
+                    holder.tvOrderDate.text =
+                        SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
                 }
             }
 

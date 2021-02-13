@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
@@ -68,11 +69,18 @@
         <action
             android:id="@+id/action_navigation_more_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_navigation_more_to_navigation_track"
+            app:destination="@id/navigation_track" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_product"
-        android:name="com.estrrado.vinner.ui.ProductDetails" />
+        android:name="com.estrrado.vinner.ui.ProductDetails" >
+        <action
+            android:id="@+id/action_navigation_product_to_allReviews"
+            app:destination="@id/allReviews" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_cart"
         android:name="com.estrrado.vinner.ui.CartFragment">
@@ -103,7 +111,11 @@
         android:name="com.estrrado.vinner.ui.more.EditProfile" />
     <fragment
         android:id="@+id/navigation_track"
-        android:name="com.estrrado.vinner.ui.more.TrackFragment" />
+        android:name="com.estrrado.vinner.ui.more.TrackFragment" >
+        <action
+            android:id="@+id/action_navigation_track_to_trackOrderDetail"
+            app:destination="@id/trackOrderDetail" />
+    </fragment>
     <fragment
         android:id="@+id/productListFragment"
         android:name="com.estrrado.vinner.ui.ProductListFragment"
@@ -170,7 +182,11 @@
     <fragment
         android:id="@+id/orderDetail"
         android:name="com.estrrado.vinner.ui.Orderdetail"
-        android:label="OrderDetail" />
+        android:label="OrderDetail" >
+        <action
+            android:id="@+id/action_orderDetail_to_navigation_product"
+            app:destination="@id/navigation_product" />
+    </fragment>
     <fragment
         android:id="@+id/addReview"
         android:name="com.estrrado.vinner.ui.AddReview"
@@ -183,6 +199,16 @@
             android:id="@+id/action_searchFragment_to_navigation_product"
             app:destination="@id/navigation_product" />
     </fragment>
+    <fragment
+        android:id="@+id/trackOrderDetail"
+        android:name="com.estrrado.vinner.ui.more.TrackOrderDetail"
+        android:label="fragment_track_order_detail"
+        tools:layout="@layout/fragment_track_order_detail" />
+    <fragment
+        android:id="@+id/allReviews"
+        android:name="com.estrrado.vinner.ui.AllReviews"
+        android:label="fragment_all_reviews"
+        tools:layout="@layout/fragment_all_reviews" />
 
 
 </navigation>

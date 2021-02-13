@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName
 
 class Productdetails(
 
+    @field:SerializedName("id")
+    @field:JsonField(name = arrayOf("id"))
+    val id: String? = null,
+
     @field:SerializedName("name")
     @field:JsonField(name = arrayOf("name"))
     val name: String? = null,
@@ -28,4 +32,5 @@ class Productdetails(
     @field:SerializedName("subtotal")
     @field:JsonField(name = arrayOf("subtotal"))
     val subtotal: String? = null
+
 )

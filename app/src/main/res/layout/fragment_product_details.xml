@@ -29,15 +29,28 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-
-            <ImageView
-                android:id="@+id/ivProducts"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/pager"
+                style="@style/RootView"
                 android:layout_width="0dp"
-                android:layout_height="170dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                app:layout_constraintBottom_toBottomOf="@+id/pager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingStart="0dp" />
 
             <TextView
                 android:id="@+id/productName"
@@ -49,7 +62,7 @@
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toStartOf="@+id/button3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivProducts" />
+                app:layout_constraintTop_toBottomOf="@+id/pager" />
 
             <TextView
                 android:id="@+id/productDescription"
@@ -75,16 +88,55 @@
                 app:layout_constraintTop_toBottomOf="@+id/productDescription" />
 
             <TextView
-
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Description"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/price" />
 
+            <LinearLayout
+                android:id="@+id/llSpecs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="6dp"
+                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/description">
+
+                <TextView
+                    android:id="@+id/tvWeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvLength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvWidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="@dimen/_10sdp" />
+
+                <TextView
+                    android:id="@+id/tvHeight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvdescription"
@@ -94,7 +146,7 @@
                 android:textSize="@dimen/_10sdp"
                 app:layout_constraintRight_toLeftOf="@+id/barrier7"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/description" />
+                app:layout_constraintTop_toBottomOf="@+id/llSpecs" />
 
 
             <androidx.constraintlayout.widget.Barrier
@@ -176,6 +228,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:paddingTop="5dp"
+                android:paddingEnd="50dp"
+                android:paddingBottom="5dp"
                 android:text="@string/see_all_reviews"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp"
@@ -186,7 +241,10 @@
                 android:id="@+id/txt_see_all_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
+                android:paddingStart="20dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
                 android:text=">"
                 android:textSize="@dimen/_16sdp"
                 android:textStyle="bold"
@@ -242,7 +300,8 @@
                 android:layout_marginRight="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_shareed" />
+                app:srcCompat="@drawable/ic_shareed"
+                tools:ignore="VectorDrawableCompat" />
 
             <Button
                 android:id="@+id/button3"
@@ -257,7 +316,7 @@
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toTopOf="@+id/productDescription"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivProducts" />
+                app:layout_constraintTop_toBottomOf="@+id/pager" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

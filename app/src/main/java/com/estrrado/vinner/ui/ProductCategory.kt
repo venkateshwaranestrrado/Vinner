@@ -1,9 +1,12 @@
 package com.estrrado.vinner.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,10 +27,14 @@ import kotlinx.android.synthetic.main.fragment_product_category.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
 class ProductCategory : Fragment() {
+
     private var vModel: HomeVM? = null
     var productId: String = ""
     var categoryId: String = ""
     var categoryName: String = ""
+
+    var adapter: CategryList? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,6 +69,49 @@ class ProductCategory : Fragment() {
         categoryId = arguments?.getString(PRODUCT_ID)!!
         categoryName = arguments?.getString(PRODUCT_NAME)!!
         pageTitle.text = categoryName
+
+        val searchTextId: Int = searchView.getContext().getResources()
+            .getIdentifier("android:id/search_src_text", null, null)
+        val searchText = searchView.findViewById<TextView>(searchTextId)
+        if (searchText != null) {
+            searchText.setTextColor(Color.WHITE)
+            searchText.setHintTextColor(Color.WHITE)
+        }
+
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener,
+            androidx.appcompat.widget.SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                imageView8.visibility = View.VISIBLE
+                pageTitle.visibility = View.VISIBLE
+                searchView.visibility = View.GONE
+                return false
+            }
+        })
+
+        imageView8.setOnClickListener {
+            imageView8.visibility = View.GONE
+            pageTitle.visibility = View.GONE
+            searchView.visibility = View.VISIBLE
+            searchView.isIconified = false
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                adapter?.let {
+                    it.filter.filter(p0)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter?.let {
+                    it.filter.filter(p0)
+                }
+                return false
+            }
+
+        })
+
     }
 
     private fun initcontroll() {
@@ -76,8 +126,8 @@ class ProductCategory : Fragment() {
                 Observer {
                     if (it!!.data!!.size > 0) {
                         progresscategorylist.visibility = View.GONE
-
-                        recy_categry_lst.adapter = CategryList(requireActivity(), it!!.data, view)
+                        adapter = CategryList(requireActivity(), it!!.data, view)
+                        recy_categry_lst.adapter = adapter
                         recy_categry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
                     } else {

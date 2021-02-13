@@ -1,10 +1,13 @@
 package com.estrrado.vinner.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,17 +24,18 @@ import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.Validation.printToastCenter
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_product_list.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 
+
 class ProductListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
     private var vModel: HomeVM? = null
+    var adapter: ProductsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,48 @@ class ProductListFragment : Fragment() {
         recycle_products.setLayoutManager(GridLayoutManager(context, 2))
         getProductList()
 
+        val searchTextId: Int = searchView.getContext().getResources()
+            .getIdentifier("android:id/search_src_text", null, null)
+        val searchText = searchView.findViewById<TextView>(searchTextId)
+        if (searchText != null) {
+            searchText.setTextColor(Color.WHITE)
+            searchText.setHintTextColor(Color.WHITE)
+        }
+
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener,
+            androidx.appcompat.widget.SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                imageView8.visibility = View.VISIBLE
+                pageTitle.visibility = View.VISIBLE
+                searchView.visibility = View.GONE
+                return false
+            }
+        })
+
+        imageView8.setOnClickListener {
+            imageView8.visibility = View.GONE
+            pageTitle.visibility = View.GONE
+            searchView.visibility = View.VISIBLE
+            searchView.isIconified = false
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                adapter?.let {
+                    it.filter.filter(p0)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter?.let {
+                    it.filter.filter(p0)
+                }
+                return false
+            }
+
+        })
+
     }
 
     private fun getProductList() {
@@ -78,8 +124,9 @@ class ProductListFragment : Fragment() {
                 Observer {
                     progressproductlist.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
-                        recycle_products.adapter =
-                            ProductsAdapter(this!!.requireActivity()!!, null, it!!.data, view)
+                        adapter =
+                            ProductsAdapter(this.requireActivity(), null, it!!.data, view)
+                        recycle_products.adapter = adapter
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))

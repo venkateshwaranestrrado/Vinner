@@ -35,6 +35,7 @@ import kotlin.collections.ArrayList
 
 
 class RequestService : Fragment() {
+
     var vModel: HomeVM? = null
 
     var countryId: String? = null
@@ -324,6 +325,13 @@ class RequestService : Fragment() {
 
     }
 
+    private fun validation(): Boolean {
+        if (etphonenumber.length() < 7) {
+            printToast(requireContext(), "Mobile number must be atleast 7 characters in length")
+            return false
+        }
+        return true
+    }
 
     private fun getdata() {
 
@@ -331,8 +339,7 @@ class RequestService : Fragment() {
 
             if (Helper.isNetworkAvailable(requireContext())) {
 
-                if (etphonenumber.validate()
-                ) {
+                if (validation()) {
                     if (etemail.validate()
                     ) {
                         if (validate(
@@ -385,8 +392,6 @@ class RequestService : Fragment() {
                     } else {
                         printToast(requireContext()!!, "Invalid Email Address")
                     }
-                } else {
-                    printToast(requireContext()!!, "Invalid Phone number")
                 }
             } else {
                 printToast(requireContext()!!, "No network Available")

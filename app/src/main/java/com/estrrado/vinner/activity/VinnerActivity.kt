@@ -15,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.data.models.Review
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Helper
@@ -26,6 +27,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_vinner.*
+import kotlinx.android.synthetic.main.fragment_cart.*
 
 @Suppress("NAME_SHADOWING")
 class VinnerActivity : AppCompatActivity() {
@@ -35,6 +37,9 @@ class VinnerActivity : AppCompatActivity() {
 
     private var notificationBadge: View? = null
     private var cartCount = 0
+
+    var reviews: List<Review?>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_vinner)
@@ -53,6 +58,10 @@ class VinnerActivity : AppCompatActivity() {
         //setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         SetNotificationBadge()
+    }
+
+    fun getCartCount(): Int {
+        return cartCount
     }
 
     fun open() {

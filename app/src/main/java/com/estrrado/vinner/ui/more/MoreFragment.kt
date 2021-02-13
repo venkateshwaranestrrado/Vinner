@@ -32,10 +32,8 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.dialog_signout.*
-import kotlinx.android.synthetic.main.fragment_product_details.*
 import kotlinx.android.synthetic.main.moree_fragment.*
-import kotlinx.android.synthetic.main.moree_fragment.lyt_logout
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar_more.*
 
 class MoreFragment : Fragment(), View.OnClickListener {
     var vModel: HomeVM? = null
@@ -142,6 +140,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
             view.findNavController().navigate(R.id.action_navigation_more_to_searchFragment)
         }
 
+        trackOrder.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_more_to_navigation_track)
+        }
+
     }
 
     private fun signout() {
@@ -154,6 +156,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         progressmore.visibility = View.GONE
+                        Preferences.put(requireActivity(), Constants.IS_LOGIN, "Is Login")
                         startActivity(Intent(activity, LoginActivity::class.java))
                         requireActivity().finish()
                     } else {

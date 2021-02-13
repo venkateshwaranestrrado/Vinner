@@ -87,5 +87,4 @@
         app:layout_constraintStart_toEndOf="@+id/img_logo"
         app:layout_constraintTop_toTopOf="parent" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

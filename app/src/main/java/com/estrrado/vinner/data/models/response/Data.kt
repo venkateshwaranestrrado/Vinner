@@ -7,6 +7,11 @@ import com.google.gson.annotations.SerializedName
 
 
 class Data {
+
+    @SerializedName("track_order")
+    @Expose
+    var track_order: TrackOrdDetModel? = null
+
     @SerializedName("logo")
     @Expose
     var logo: String? = null
@@ -106,7 +111,6 @@ class Data {
     @SerializedName("reviews")
     @Expose
     private var reviews: List<Review?>? = null
-
 
     @SerializedName("related_products")
     @Expose

@@ -14,9 +14,10 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.Input
-import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.MOBILE
 import com.estrrado.vinner.helper.Constants.SUCCESS
+import com.estrrado.vinner.helper.Helper
+import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_CODE
 import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
@@ -93,7 +94,7 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
 
     private fun validation(): Boolean {
         if (phone.length() < 7) {
-            printToast(this, "Invalid phone number. Pls give correct phone number.")
+            printToast(this, "Mobile number must be atleast 7 characters in length")
             return false
         }
         return true

@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -18,6 +16,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.Featured
 import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.ui.ProductDetails
 import kotlinx.android.synthetic.main.item_home_product.*
@@ -27,8 +26,15 @@ class ProductsAdapter(
     private var dataList: List<Featured?>?,
     private var productList: List<Datum>?,
     private var view: View?
-) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>(), Filterable {
 
+    var dataListAll: List<Featured?>? = null
+    var productListAll: List<Datum>? = null
+
+    init {
+        dataListAll = dataList
+        productListAll = productList
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var itemView =
@@ -57,7 +63,7 @@ class ProductsAdapter(
         var productId = ""
 
         if (dataList != null) {
-            if (dataList!!.get(position)!!.current_stock == "0") {
+            if (dataList!!.get(holder.adapterPosition)!!.current_stock == "0") {
                 holder.homename.text = "OUT OF STOCK"
                 holder.homename.visibility = View.VISIBLE
                 holder.homename.setTextColor(activity.getResources().getColor(R.color.red));
@@ -70,17 +76,21 @@ class ProductsAdapter(
                 holder.cardView.setClickable(true)
             }
 
-            name = dataList?.get(position)!!.prdName!!
-            qty = dataList?.get(position)!!.unit!!
-            if (!dataList?.get(position)!!.price.equals("0"))
+            name = dataList?.get(holder.adapterPosition)!!.prdName!!
+            qty = dataList?.get(holder.adapterPosition)!!.unit!!
+            if (!dataList?.get(holder.adapterPosition)!!.price.equals("0"))
                 price =
-                    dataList?.get(position)!!.currency + " " + priceFormat(dataList?.get(position)!!.price)
+                    dataList?.get(holder.adapterPosition)!!.currency + " " + priceFormat(
+                        dataList?.get(
+                            holder.adapterPosition
+                        )!!.price
+                    )
             else price = ""
-            rating = dataList?.get(position)!!.rating!!
-            img = dataList?.get(position)!!.prdImage!!
-            productId = dataList?.get(position)!!.prdId!!
+            rating = dataList?.get(holder.adapterPosition)!!.rating!!
+            img = dataList?.get(holder.adapterPosition)!!.prdImage!!
+            productId = dataList?.get(holder.adapterPosition)!!.prdId!!
         } else {
-            if (productList!!.get(position).current_stock == "0") {
+            if (productList!!.get(holder.adapterPosition).current_stock == "0") {
 
                 holder.homename.text = "OUT OF STOCK"
                 holder.homename.visibility = View.VISIBLE
@@ -88,15 +98,19 @@ class ProductsAdapter(
                 holder.cardView.setEnabled(false)
                 holder.cardView.setClickable(false)
             }
-            name = productList?.get(position)!!.productTitle!!
-            qty = productList?.get(position)!!.unit!!
-            if (!productList?.get(position)!!.price.equals("0"))
+            name = productList?.get(holder.adapterPosition)!!.productTitle!!
+            qty = productList?.get(holder.adapterPosition)!!.unit!!
+            if (!productList?.get(holder.adapterPosition)!!.price.equals("0"))
                 price =
-                    productList?.get(position)!!.currency + " " + priceFormat(dataList?.get(position)?.price)
-            else price = ""
-            rating = productList?.get(position)!!.rating.toString()
-            img = productList?.get(position)!!.productImage!!
-            productId = productList?.get(position)!!.productId!!
+                    productList?.get(holder.adapterPosition)!!.currency + " " + priceFormat(
+                        productList?.get(
+                            holder.adapterPosition
+                        )?.price
+                    )
+            else price = productList?.get(holder.adapterPosition)!!.currency + " 0.00"
+            rating = productList?.get(holder.adapterPosition)!!.rating.toString()
+            img = productList?.get(holder.adapterPosition)!!.productImage!!
+            productId = productList?.get(holder.adapterPosition)!!.productId!!
 
         }
 
@@ -114,22 +128,21 @@ class ProductsAdapter(
             .into(holder.image)
 
         holder.cardView.setOnClickListener {
-
             val bundle = Bundle()
             val mfragment = ProductDetails()
             if (dataList != null) {
-                bundle.putString(PRODUCT_ID, productId)
-                mfragment.setArguments(bundle)
-//            val bundle = bundleOf(PRODUCT_ID to productId)
+                bundle.putString(PRODUCT_ID, dataList?.get(holder.adapterPosition)?.prdId)
+                /*mfragment.setArguments(bundle)
                 activity.getSupportFragmentManager().beginTransaction().replace(
                     R.id.nav_host_fragment,
                     mfragment
                 )
-                    .addToBackStack(null).commit()
-//                view?.findNavController()
-//                    ?.navigate(R.id.action_homeFragment_to_ProductFragment, bundle)
+                    .addToBackStack(null).commit()*/
+                view?.findNavController()
+                    ?.navigate(R.id.action_homeFragment_to_ProductFragment, bundle)
             } else {
-                val bundle = bundleOf(PRODUCT_ID to productId)
+                val bundle =
+                    bundleOf(PRODUCT_ID to productList?.get(holder.adapterPosition)?.productId)
                 view?.findNavController()
                     ?.navigate(R.id.action_productListFragment_to_navigation_product, bundle)
             }
@@ -137,18 +150,6 @@ class ProductsAdapter(
         }
 
     }
-
-    /* private fun callApi(productId: String?, flag: Boolean) {
-         if (flag) {
-             homeVM.addWishList(Input(productId = productId)).observe(activity!!, Observer {
-                 printT(activity, it!!.message!!)
-             })
-         } else {
-             homeVM.removeWishList(Input(productId = productId)).observe(activity!!, Observer {
-                 printT(activity, it!!.message!!)
-             })
-         }
-     }*/
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val price: TextView = v.findViewById(R.id.price)
@@ -176,4 +177,47 @@ class ProductsAdapter(
         activity.lyt_container.setClickable(false);
         activity.lyt_container.setEnabled(false);
     }
+
+    inner class ItemFilter : Filter() {
+
+        override fun performFiltering(p0: CharSequence?): FilterResults {
+            if (dataListAll != null) {
+                dataListAll?.let {
+                    dataList = it.filter { model ->
+                        model!!.prdName!!.toLowerCase().startsWith(p0.toString().toLowerCase())
+                    }
+                }
+            } else {
+                productListAll?.let {
+                    productList = it.filter { model ->
+                        model!!.productTitle!!.toLowerCase().startsWith(p0.toString().toLowerCase())
+                    }
+                }
+            }
+            return FilterResults()
+        }
+
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            notifyDataSetChanged()
+            if (dataListAll != null) {
+                dataList?.let {
+                    if (it.size <= 0) {
+                        Validation.printToastCenter(activity, "Product Not Found")
+                    }
+                }
+            } else {
+                productList?.let {
+                    if (it.size <= 0) {
+                        Validation.printToastCenter(activity, "Product Not Found")
+                    }
+                }
+            }
+        }
+
+    }
+
+    override fun getFilter(): Filter {
+        return ItemFilter()
+    }
+
 }

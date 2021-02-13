@@ -1,16 +1,15 @@
 package com.estrrado.vinner.ui
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,18 +26,22 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.BRAND_ID
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_industry_category.*
-import kotlinx.android.synthetic.main.fragment_product_category.*
 import kotlinx.android.synthetic.main.fragment_product_category.emptylist
 import kotlinx.android.synthetic.main.toolbar_back.*
 
 
 class Industrycategory : Fragment() {
+
     private var vModel: HomeVM? = null
     var brandId: String = ""
+
+    var adapter: IndstryList? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -68,8 +71,50 @@ class Industrycategory : Fragment() {
         super.onActivityCreated(savedInstanceState)
         progressindustrylist.visibility = View.VISIBLE
 
-        pageTitle.setText("Industry Category")
+        pageTitle.setText(arguments?.getString("BRAND_NAME"))
         initcontroll()
+
+        val searchTextId: Int = searchView.getContext().getResources()
+            .getIdentifier("android:id/search_src_text", null, null)
+        val searchText = searchView.findViewById<TextView>(searchTextId)
+        if (searchText != null) {
+            searchText.setTextColor(Color.WHITE)
+            searchText.setHintTextColor(Color.WHITE)
+        }
+
+        searchView.setOnCloseListener(object : SearchView.OnCloseListener,
+            androidx.appcompat.widget.SearchView.OnCloseListener {
+            override fun onClose(): Boolean {
+                imageView8.visibility = View.VISIBLE
+                pageTitle.visibility = View.VISIBLE
+                searchView.visibility = View.GONE
+                return false
+            }
+        })
+
+        imageView8.setOnClickListener {
+            imageView8.visibility = View.GONE
+            pageTitle.visibility = View.GONE
+            searchView.visibility = View.VISIBLE
+            searchView.isIconified = false
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                adapter?.let {
+                    it.filter.filter(p0)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                adapter?.let {
+                    it.filter.filter(p0)
+                }
+                return false
+            }
+
+        })
 
     }
 
@@ -84,8 +129,8 @@ class Industrycategory : Fragment() {
                 Observer {
                     if (it!!.data!!.size > 0) {
                         progressindustrylist.visibility = View.GONE
-
-                        recy_indstry_lst.adapter = IndstryList(requireActivity(), it!!.data, view)
+                        adapter = IndstryList(requireActivity(), it!!.data, view)
+                        recy_indstry_lst.adapter = adapter
                         recy_indstry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
                     } else {
@@ -101,9 +146,16 @@ class Industrycategory : Fragment() {
         private var activity: FragmentActivity,
         var dataItem: ArrayList<AddressList>?,
         private var view: View?
-    ) : RecyclerView.Adapter<IndstryList.ViewHolder>() {
+    ) : RecyclerView.Adapter<IndstryList.ViewHolder>(), Filterable {
 
         var productId: String = ""
+        var dataItemAll = ArrayList<AddressList>()
+
+        init {
+            dataItem?.let {
+                dataItemAll.addAll(it)
+            }
+        }
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -172,6 +224,34 @@ class Industrycategory : Fragment() {
                 activity.emptylist.visibility = View.VISIBLE
             }
 
+        }
+
+        inner class ItemFilter : Filter() {
+
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                dataItemAll?.let {
+                    dataItem?.clear()
+                    dataItem?.addAll(it.filter { model ->
+                        model!!.product_title!!.toLowerCase()
+                            .startsWith(p0.toString().toLowerCase())
+                    })
+                }
+                return FilterResults()
+            }
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                notifyDataSetChanged()
+                dataItem?.let {
+                    if (it.size <= 0) {
+                        Validation.printToastCenter(activity, "Product Not Found")
+                    }
+                }
+            }
+
+        }
+
+        override fun getFilter(): Filter {
+            return ItemFilter()
         }
 
     }

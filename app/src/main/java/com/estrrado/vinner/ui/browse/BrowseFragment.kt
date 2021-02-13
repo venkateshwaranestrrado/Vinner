@@ -36,6 +36,7 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.browse_fragment.*
+import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class BrowseFragment : Fragment(), AlertCallback {
@@ -106,10 +107,10 @@ class BrowseFragment : Fragment(), AlertCallback {
                 id: Long
             ) {
                 spnrPosition = position
-                if (regionList!!.get(spnrPosition).code != Preferences.get(
+                if ((regionList!!.get(spnrPosition).code != Preferences.get(
                         activity,
                         Preferences.REGION_CODE
-                    )
+                    )) && (requireActivity() as VinnerActivity).getCartCount() > 0
                 )
                     Helper.showAlert(
                         "If you change Region, Your cart items will be removed.",

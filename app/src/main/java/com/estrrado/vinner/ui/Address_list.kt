@@ -39,7 +39,6 @@ import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
-import com.estrrado.vinner.ui.more.AddAddress
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_address_list.*
@@ -92,7 +91,7 @@ class Address_list : Fragment() {
             getData()
         else getCheckoutAddress()
         initialiseSearch()
-        pageTitle.text = "Address List"
+        pageTitle.text = "My Delivery Address"
     }
 
     private fun initialiseSearch() {
@@ -123,8 +122,8 @@ class Address_list : Fragment() {
 
     private fun initControll() {
         const_add_new_address.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, AddAddress()).commit()
+            /*requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment, AddAddress()).commit()*/
             val bundle = bundleOf(Constants.FROM to from)
             requireView().findNavController()
                 .navigate(R.id.action_address_list_to_addAddress, bundle)
@@ -308,8 +307,8 @@ class Address_list : Fragment() {
                     if (from != null) {
                         bundle.putInt(Constants.FROM, from)
                     }
-                    activity.supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_fragment, AddAddress()).commit()
+                    /*activity.supportFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, AddAddress(), bundle, "").commit()*/
                     view?.findNavController()
                         ?.navigate(R.id.action_address_list_to_addAddress, bundle)
                 }
@@ -371,7 +370,7 @@ class Address_list : Fragment() {
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
             requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
             progressaddresslist.visibility = View.VISIBLE
-            vModel!!.getCheckoutAddressList(requestModel).observe(this,
+            vModel!!.getCheckoutAddressList(requestModel).observe(requireActivity(),
                 Observer {
                     progressaddresslist.visibility = View.GONE
                     if (it?.status.equals(Constants.SUCCESS)) {

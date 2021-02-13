@@ -12,12 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
-import com.estrrado.vinner.data.CategoryItem
-import com.estrrado.vinner.data.models.Category
 import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants.BRAND_ID
-
-import kotlinx.android.synthetic.main.toolbar.*
 
 class IndustryAdapter(
     private var activity: FragmentActivity,
@@ -34,22 +30,24 @@ class IndustryAdapter(
     }
 
     override fun getItemCount(): Int {
-            return industryList!!.size
+        return industryList!!.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            holder.name.text = industryList?.get(position)!!.getIndustryName()
-            val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
-            Glide.with(activity)
-                .load(industryList?.get(position)!!.getIndustryImage())
-                .transform(RoundedCorners(radius))
-                .thumbnail(0.1f)
-                .into(holder.image)
+        holder.name.text = industryList?.get(position)!!.getIndustryName()
+        val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
+        Glide.with(activity)
+            .load(industryList?.get(position)!!.getIndustryImage())
+            .transform(RoundedCorners(radius))
+            .thumbnail(0.1f)
+            .into(holder.image)
         holder.mView!!.setOnClickListener {
-            brandId= industryList!!.get(position).getIndustryId()!!
+            brandId = industryList!!.get(position).getIndustryId()!!
+            val brandname = industryList!!.get(position).getIndustryName()!!
 
-            val bundle = bundleOf(BRAND_ID to brandId)
-             Navigation.findNavController(it).navigate(R.id.action_navigation_browse_to_industrycategory,bundle)
+            val bundle = bundleOf(BRAND_ID to brandId, "BRAND_NAME" to brandname)
+            Navigation.findNavController(it)
+                .navigate(R.id.action_navigation_browse_to_industrycategory, bundle)
         }
     }
 

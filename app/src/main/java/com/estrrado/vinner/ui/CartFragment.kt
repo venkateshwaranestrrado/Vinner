@@ -54,8 +54,7 @@ import com.estrrado.vinner.vm.MainViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
-import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.toolbar_empty.*
+import kotlinx.android.synthetic.main.toolbar_prev.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -80,6 +79,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var landmark: String? = null
     var pincode: String? = null
     var addressType: String? = null
+    var weightMsg: String = ""
     private var cartFound: Boolean = false
     var regionList: List<RegionSpinner>? = null
 
@@ -140,27 +140,34 @@ class CartFragment : Fragment(), CartadapterCallBack {
             if (cartFound == true) {
                 if (operatorId != null) {
                     if (address != null) {
-                        if (Preferences.get(activity, REGION_FULLNAME) == addressRegion) {
-                            val bundle = bundleOf(
-                                OPERATOR_ID to operatorId,
-                                CART_ID to cartId,
-                                ADDRESS to address,
-                                PINCODE to pincode,
-                                HOUSENAME to housename,
-                                LANDMARK to landmark,
-                                ADDDRESS_TYPE to addressType,
-                                ROAD_NAME to Roadname,
-                                COUNTRY to countryName,
-                                CITY to city,
-                                NAME to name
-                            )
-                            view.findNavController()
-                                .navigate(R.id.action_navigation_cart_to_checkoutFragment, bundle)
+                        if (weightMsg == "") {
+                            if (Preferences.get(activity, REGION_FULLNAME) == addressRegion) {
+                                val bundle = bundleOf(
+                                    OPERATOR_ID to operatorId,
+                                    CART_ID to cartId,
+                                    ADDRESS to address,
+                                    PINCODE to pincode,
+                                    HOUSENAME to housename,
+                                    LANDMARK to landmark,
+                                    ADDDRESS_TYPE to addressType,
+                                    ROAD_NAME to Roadname,
+                                    COUNTRY to countryName,
+                                    CITY to city,
+                                    NAME to name
+                                )
+                                view.findNavController()
+                                    .navigate(
+                                        R.id.action_navigation_cart_to_checkoutFragment,
+                                        bundle
+                                    )
+                            } else {
+                                Helper.showSingleAlert(
+                                    "Selected country not matching with your default delivery address. Please choose correct delivery address.",
+                                    context = requireContext()
+                                )
+                            }
                         } else {
-                            Helper.showSingleAlert(
-                                "Selected country not matching with your default delivery address. Please choose correct delivery address.",
-                                context = requireContext()
-                            )
+                            printToast(requireContext(), weightMsg)
                         }
                     } else {
                         printToast(requireContext(), "Please Enter a valid Address")
@@ -188,6 +195,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             vModel!!.deliveryFee(requestModel).observe(this,
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
+                        weightMsg = ""
                         progresscart.visibility = View.GONE
                         it?.let {
                             it.data?.getDeliveryExpDate()?.let { expDate ->
@@ -216,16 +224,16 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                 it.data.getCurrency() + " " + priceFormat(it.data.getSubTotal())
                             totalAmount.text =
                                 it.data.getCurrency() + " " + priceFormat(it.data.getTotalAmount())
-                            checkout.setEnabled(true)
                         }
                     } else {
                         txt_delivery_fee.text = " 0.00"
                         deliveryFee = 0.00
+                        it?.message?.let {
+                            weightMsg = it
+                        }
                         printToast(requireContext(), it!!.message!!)
                         txt_sub_total.text = " 0.00"
                         totalAmount.text = " 0.00"
-
-                        checkout.setEnabled(false)
                     }
                 })
         } else {

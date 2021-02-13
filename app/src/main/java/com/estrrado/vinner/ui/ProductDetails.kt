@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
+import com.estrrado.vinner.adapters.ProductImageAdapter
 import com.estrrado.vinner.adapters.RelatedProuctsAdapter
 import com.estrrado.vinner.adapters.ReviewAdapter
 import com.estrrado.vinner.data.RegionSpinner
@@ -53,6 +55,8 @@ class ProductDetails : Fragment(), View.OnClickListener {
     var cartQty = 0
     var stockQty = 0
     var prod_id = ""
+    var prod_name = ""
+    var return_policy = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,9 +86,49 @@ class ProductDetails : Fragment(), View.OnClickListener {
         ).get(HomeVM::class.java)
         progressproductdetail.visibility = View.VISIBLE
         productId = arguments?.getString(PRODUCT_ID, "").toString()
+
+        Log.e("productId", productId.toString())
+
         pageTitle.setText("Product Detail")
         initControl()
         getProductdetail()
+
+        txt_see_all.setOnClickListener {
+            gotoAllReview()
+        }
+
+        txt_see_all_arrow.setOnClickListener {
+            gotoAllReview()
+        }
+
+        button3.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View) {
+                var msg = "No Return Policy available for " + prod_name
+                if (return_policy != "") {
+                    msg = return_policy
+                }
+                val alertDialog: android.app.AlertDialog? =
+                    android.app.AlertDialog.Builder(activity)
+                        .create()
+                alertDialog!!.setTitle("Return Policy")
+                alertDialog.setMessage(msg)
+                alertDialog.setButton("Cancel",
+                    DialogInterface.OnClickListener { dialog, which ->
+                        dialog.dismiss()
+                    })
+                alertDialog.show()
+            }
+        })
+
+    }
+
+    fun gotoAllReview() {
+        (requireActivity() as VinnerActivity).reviews?.let {
+            //Navigation.findNavController(requireView()).navigate(R.id.allReviews)
+            requireActivity().findNavController(R.id.nav_host_fragment)
+                .navigate(R.id.action_navigation_product_to_allReviews)
+
+        }
     }
 
     private fun initControl() {
@@ -99,6 +143,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 startActivity(Intent.createChooser(shareIntent, "Share VINNER using"))
             }
         })
+
         addcart.setOnClickListener(this)
         buy.setOnClickListener(this)
     }
@@ -109,37 +154,25 @@ class ProductDetails : Fragment(), View.OnClickListener {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
             requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
-//            requestModel.productId = productId
             requestModel.productId = productId
             vModel!!.productDetail(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         progressproductdetail.visibility = View.GONE
                         setProductDetail(it!!.data!!)
-
-                        if (it.data!!.getProduct()!!.return_policy != "") {
-                            button3.visibility = View.GONE
-                            button3.setOnClickListener(object : View.OnClickListener {
-                                override fun onClick(view: View) {
-                                    val alertDialog: android.app.AlertDialog? =
-                                        android.app.AlertDialog.Builder(activity)
-                                            .create()
-                                    alertDialog!!.setTitle("Return Policy")
-                                    alertDialog.setMessage(it.data!!.getProduct()!!.return_policy)
-                                    alertDialog.setButton("Cancel",
-                                        DialogInterface.OnClickListener { dialog, which ->
-                                            // here you can add functions
-                                        })
-                                    alertDialog.show() //<-- See This!
-                                }
-                            })
-                        } else {
-                            button3.visibility = View.GONE
+                        return_policy = ""
+                        it.data!!.getProduct()!!.return_policy?.let {
+                            if (it != "") {
+                                return_policy = it
+                            } else {
+                                printToast(
+                                    requireContext(),
+                                    "No Return Policy available for this product"
+                                )
+                            }
                         }
-
                     } else
                         printToast(this.requireContext(), it?.message.toString())
-
                 })
         } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
@@ -199,12 +232,16 @@ class ProductDetails : Fragment(), View.OnClickListener {
         if (product != null) {
             progressproductdetail.visibility = View.GONE
 
+            (requireActivity() as VinnerActivity).reviews = detail.getReviews()
+
             product.productId?.let {
                 prod_id = it
                 if (cartQty <= 0)
                     getCart()
             }
-
+            product.productName?.let {
+                prod_name = it
+            }
             if (product.current_stock != "") {
                 product.current_stock?.let {
                     stockQty = it.toInt()
@@ -219,15 +256,18 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 addcart.visibility = View.VISIBLE
                 buy.visibility = View.VISIBLE
             }
-            if (product.productImage != null)
-                Glide.with(this!!.requireActivity()!!)
-                    .load(product.productImage!!.get(0))
-                    .thumbnail(0.1f)
-                    .into(ivProducts)
-//            Helper.setLocation(spnr_region, this!!.requireContext()!!)
+            if (product.productImage != null) {
+                setProductImgs(product.productImage)
+            }
             productName.text = product.productName
             productDescription.text = product.category
             price.text = product.currency + " " + priceFormat(product.price)
+
+            tvWeight.text = "Product Weight : " + product.weight
+            tvLength.text = "Product Length : " + product.length
+            tvWidth.text = "Product Width : " + product.width
+            tvHeight.text = "Product Height : " + product.height
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 tvdescription.setText(
                     Html.fromHtml(
@@ -334,6 +374,17 @@ class ProductDetails : Fragment(), View.OnClickListener {
             progresscart.visibility = View.GONE
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun setProductImgs(images: List<String>?) {
+        pager.adapter = ProductImageAdapter(requireActivity(), images)
+        pager.setPageTransformer(false) { v, p ->
+            val position = Math.abs(Math.abs(p) - 1)
+            v.scaleX = position / 2 + 0.6f
+            v.scaleY = position / 2 + 0.5f
+        }
+        tab.setupWithViewPager(pager)
+        pager.currentItem = 0
     }
 
 }

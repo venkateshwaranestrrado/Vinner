@@ -1,10 +1,8 @@
 package com.estrrado.vinner.retrofit
 
-import android.view.Display
 import com.estrrado.vinner.data.models.response.AddressModel
-import com.estrrado.vinner.data.models.response.Model
 import com.estrrado.vinner.data.models.response.DataListModel
-
+import com.estrrado.vinner.data.models.response.Model
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -348,5 +346,12 @@ interface APIService {
 
     @GET("countries")
     fun countries(): Observable<AddressModel>
+
+    @FormUrlEncoded
+    @POST("trackOrder")
+    fun trackOrder(
+        @Field("access_token") accessToken: String?,
+        @Field("order_id") order_id: String?
+    ): Observable<Model>
 
 }

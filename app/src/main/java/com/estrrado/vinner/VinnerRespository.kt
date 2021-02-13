@@ -2,6 +2,7 @@ package com.estrrado.vinner
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.estrrado.vinner.data.models.request.Input
@@ -591,6 +592,23 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
+    fun trackOrder(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+        apiService?.trackOrder(
+            input.accessToken,
+            input.order_id
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                Log.e("Errro", it.message)
+
+            })
+        return data
+    }
+
+    @SuppressLint("CheckResult")
     fun ReqDemo(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.reqDemo(
@@ -605,7 +623,6 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.time,
             input.product_id,
             input.remarks
-
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

@@ -14,24 +14,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
-import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.helper.Validation.validate
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.ui.HomeFragment
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import kotlinx.android.synthetic.main.popup_loading.*
 import kotlinx.android.synthetic.main.request_demo.*
-
-import kotlinx.android.synthetic.main.request_demo.spCountry
-import kotlinx.android.synthetic.main.request_service.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -246,12 +240,12 @@ class RequestDemo : Fragment() {
     }
 
     private fun getdata() {
+
         btndemoSubmit.setOnClickListener {
             if (Helper.isNetworkAvailable(requireContext())) {
-                if (etdemophonenumber.validate() && etdemoDate.validate() && etdemoTime.validate()
+                if (validation() && etdemoDate.validate() && etdemoTime.validate()
                 ) {
-                    if (etdemoemail.validate()
-                    ) {
+                    if (etdemoemail.validate()) {
                         if (validate(
                                 arrayOf(
                                     etdemoName,
@@ -307,6 +301,15 @@ class RequestDemo : Fragment() {
                 .replace(R.id.nav_host_fragment, HomeFragment()).commit()
         }
     }
+
+    private fun validation(): Boolean {
+        if (etdemophonenumber.length() < 7) {
+            printToast(requireContext(), "Mobile number must be atleast 7 characters in length")
+            return false
+        }
+        return true
+    }
+
 }
 
 

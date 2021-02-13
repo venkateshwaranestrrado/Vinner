@@ -31,7 +31,6 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.NOT_SERVING_IN_THIS_REGION
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
-import com.estrrado.vinner.ui.Address_list
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.google.android.gms.common.api.ResolvableApiException
@@ -252,7 +251,7 @@ class AddAddress : Fragment(), LocationListener {
                                 progressaddress.visibility = View.GONE
                                 printToast(this.requireContext(), it!!.message.toString())
                                 if (it!!.status == "success") {
-                                    if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(
+                                    /*if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(
                                             Constants.FROM
                                         ) != 1
                                     ) {
@@ -261,7 +260,8 @@ class AddAddress : Fragment(), LocationListener {
                                             .commit()
                                     } else {
                                         requireActivity().onBackPressed()
-                                    }
+                                    }*/
+                                    requireActivity().onBackPressed()
                                 } else {
                                     if (it.message.equals("Invalid access token")) {
                                         startActivity(Intent(activity, LoginActivity::class.java))
@@ -294,7 +294,7 @@ class AddAddress : Fragment(), LocationListener {
                                 progressaddress.visibility = View.GONE
                                 printToast(this.requireContext(), it!!.message.toString())
                                 if (it!!.status == "success") {
-                                    if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(
+                                    /*if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(
                                             Constants.FROM
                                         ) != 1
                                     ) {
@@ -303,7 +303,8 @@ class AddAddress : Fragment(), LocationListener {
                                             .commit()
                                     } else {
                                         requireActivity().onBackPressed()
-                                    }
+                                    }*/
+                                    requireActivity().onBackPressed()
                                 } else {
                                     if (it.message.equals("Invalid access token")) {
                                         startActivity(Intent(activity, LoginActivity::class.java))

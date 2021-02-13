@@ -58,5 +58,20 @@ class Product {
     @Expose
     val productImage: List<String>? = null
 
+    @SerializedName("weight")
+    @Expose
+    var weight: String? = null
+
+    @SerializedName("length")
+    @Expose
+    var length: String? = null
+
+    @SerializedName("width")
+    @Expose
+    var width: String? = null
+
+    @SerializedName("height")
+    @Expose
+    var height: String? = null
 
 }

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -17,16 +15,23 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.priceFormat
 import kotlinx.android.synthetic.main.fragment_product_category.*
 
 class CategryList(
     private var activity: FragmentActivity, var dataItem: ArrayList<AddressList>?,
     private var view: View?
-) : RecyclerView.Adapter<CategryList.ViewHolder>() {
+) : RecyclerView.Adapter<CategryList.ViewHolder>(), Filterable {
 
     var productId: String = ""
+    var dataItemAll = ArrayList<AddressList>()
 
+    init {
+        dataItem?.let {
+            dataItemAll.addAll(it)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -101,6 +106,33 @@ class CategryList(
         val rating: RatingBar = itemView.findViewById(R.id.ratingBar)
         val cardView: CardView = itemView.findViewById(R.id.lyt_catgry)
 
+    }
+
+    inner class ItemFilter : Filter() {
+
+        override fun performFiltering(p0: CharSequence?): FilterResults {
+            dataItemAll?.let {
+                dataItem?.clear()
+                dataItem?.addAll(it.filter { model ->
+                    model!!.product_title!!.toLowerCase().startsWith(p0.toString().toLowerCase())
+                })
+            }
+            return FilterResults()
+        }
+
+        override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+            notifyDataSetChanged()
+            dataItem?.let {
+                if (it.size <= 0) {
+                    Validation.printToastCenter(activity, "Product Not Found")
+                }
+            }
+        }
+
+    }
+
+    override fun getFilter(): Filter {
+        return ItemFilter()
     }
 
 }

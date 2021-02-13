@@ -1,6 +1,9 @@
 package com.estrrado.vinner.helper
 
+import android.app.Activity
 import android.content.Context
+import android.view.Gravity
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -57,4 +60,28 @@ object Validation {
     fun printToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
+    fun printToastCenter(context: Context, message: String) {
+        var toast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
+    fun hideKeyboard(activity: Activity?) {
+        try {
+            activity?.let {
+                val inputManager =
+                    it.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val currentFocusedView = it.currentFocus
+                if (currentFocusedView != null) {
+                    inputManager.hideSoftInputFromWindow(
+                        currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
 }

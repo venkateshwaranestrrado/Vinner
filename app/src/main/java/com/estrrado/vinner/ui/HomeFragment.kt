@@ -47,10 +47,8 @@ import com.estrrado.vinner.helper.readFromAsset
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
-import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.view_notification_bage.*
 import java.util.*
 
 class HomeFragment : Fragment(), AlertCallback {
@@ -253,10 +251,8 @@ class HomeFragment : Fragment(), AlertCallback {
             var position = Math.abs(Math.abs(p) - 1)
             v.scaleX = position / 2 + 0.6f
             v.scaleY = position / 2 + 0.5f
-
         }
         timerPager(pager)
-
         pager.currentItem = 0
         tab.setupWithViewPager(pager)
     }

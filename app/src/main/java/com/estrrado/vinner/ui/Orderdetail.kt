@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -32,6 +33,8 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_order_details.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Orderdetail : Fragment() {
 
@@ -82,9 +85,23 @@ class Orderdetail : Fragment() {
             vModel!!.getorderdetail(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(Constants.SUCCESS)) {
-                        textView34.setText(it!!.data!!.order_date)
-                        textView35.setText(it.data!!.order_id)
-                        textView36.setText(it.data.getCurrency() + " " + priceFormat(it.data.order_total))
+
+                        textView34.setText("")
+                        it?.data?.order_date?.let {
+                            val date =
+                                SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).parse(it)
+                            date?.let {
+                                textView34.setText(
+                                    SimpleDateFormat(
+                                        "EEEE, dd MMM yyyy",
+                                        Locale.getDefault()
+                                    ).format(date)
+                                )
+                            }
+                        }
+
+                        textView35.setText(it!!.data!!.order_id)
+                        textView36.setText(it.data!!.getCurrency() + " " + priceFormat(it.data.order_total))
                         txt_orderd.setText(it.data.ordered)
                         txt_dlvrd.setText(it.data.delivered)
                         txt_pymntmthd.setText(it.data.payment_method)
@@ -125,16 +142,12 @@ class Orderdetail : Fragment() {
                             it.data,
                             it.data.product_details
                         )
-
                     }
-
                 })
-
         }
-
     }
 
-    class OrderdetailAdapter(
+    inner class OrderdetailAdapter(
         private var activity: FragmentActivity,
         var newitem: Data?,
         var dataItem: ArrayList<Productdetails>?
@@ -158,12 +171,10 @@ class Orderdetail : Fragment() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-
-            var rating = 0
-//        holder.rating.rating= dataItem?.get(position)!!.rating!!.toInt()
             holder.qty.text = String.format("Quantity : %s", dataItem!!.get(position).qty)
             holder.name.text = dataItem!!.get(position).name
-            holder.price.text = newitem!!.getCurrency() + " " + priceFormat(dataItem?.get(position)?.price)
+            holder.price.text =
+                newitem!!.getCurrency() + " " + priceFormat(dataItem?.get(position)?.price)
 
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)
@@ -172,20 +183,21 @@ class Orderdetail : Fragment() {
                 .thumbnail(0.1f)
                 .into(holder.image)
 
+            holder.itemView.setOnClickListener {
+                val bundle =
+                    bundleOf(Constants.PRODUCT_ID to dataItem!!.get(position).id)
+                requireView().findNavController()
+                    .navigate(R.id.action_orderDetail_to_navigation_product, bundle)
+            }
 
         }
 
-        class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val qty: TextView = itemView.findViewById(R.id.textView39)
             val price: TextView = itemView.findViewById(R.id.textView38)
             val name: TextView = itemView.findViewById(R.id.textView37)
             val image: ImageView = itemView.findViewById(R.id.imageView9)
-
-            val rating: RatingBar = itemView.findViewById(R.id.rating_bar)
-
         }
-
 
     }
 }

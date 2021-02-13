@@ -3,12 +3,10 @@ package com.estrrado.vinner.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,8 +16,8 @@ import com.estrrado.vinner.adapters.SearchAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
-import com.estrrado.vinner.helper.Preferences.REGION_CODE
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -56,11 +54,14 @@ class SearchFragment : Fragment() {
             )
         ).get(HomeVM::class.java)
 
-        // initcntroll()
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false)
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        editTextTextPersonName.requestFocus()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,9 +71,16 @@ class SearchFragment : Fragment() {
         recycle_search.layoutManager = gridlayoutmanager
         recycle_search.adapter = adapter
         initcntroll()
+
         button2.setOnClickListener {
-            editTextTextPersonName.setText("")
+            if (editTextTextPersonName.text.toString().length > 0) {
+                editTextTextPersonName.setText("")
+            } else {
+                Validation.hideKeyboard(requireActivity())
+                requireActivity().onBackPressed()
+            }
         }
+
         editTextTextPersonName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(
@@ -88,9 +96,12 @@ class SearchFragment : Fragment() {
             ) {
                 if (count >= 1) {
                     // isSearching = true
-
                     var filteredSong = mSearch.filter {
                         it.product_title?.toLowerCase()!!.contains(s.toString().toLowerCase())
+                    }
+
+                    if (filteredSong.size <= 0) {
+                        Validation.printToastCenter(requireContext(), "Product Not Found")
                     }
 
                     mSearchFilter.clear()
