@@ -231,7 +231,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         it?.message?.let {
                             weightMsg = it
                         }
-                        printToast(requireContext(), it!!.message!!)
+                        //printToast(requireContext(), it!!.message!!)
                         txt_sub_total.text = " 0.00"
                         totalAmount.text = " 0.00"
                     }
@@ -287,8 +287,13 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     private fun initControl() {
         cont_shop.setOnClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, HomeFragment()).commit()
+            activity?.let {
+                (activity is VinnerActivity).also {
+                    if (it) {
+                        (activity as VinnerActivity).selectMenu()
+                    }
+                }
+            }
         }
 
         layout_add_address.setOnClickListener {
@@ -310,13 +315,19 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         if ((it!!.data!!.getItemsTotal() == null) || (it.data!!.getItemsTotal() == "0")) {
-                            empty.visibility = View.VISIBLE
+                            empty?.visibility = View.VISIBLE
                         }
-                        (activity as VinnerActivity).refreshBadgeView(it.data!!.getItemsTotal())
+                        activity?.let { activity ->
+                            (activity is VinnerActivity).also { res ->
+                                if (res) {
+                                    (activity as VinnerActivity).refreshBadgeView(it.data!!.getItemsTotal())
+                                }
+                            }
+                        }
                         if (it.data!!.getAddress() != null) {
-                            cardview_deliveryaddress.visibility = View.VISIBLE
+                            cardview_deliveryaddress?.visibility = View.VISIBLE
 
-                            img_edit_address.setOnClickListener {
+                            img_edit_address?.setOnClickListener {
                                 val bundle = bundleOf(Constants.FROM to 1)
                                 Navigation.findNavController(it)
                                     .navigate(R.id.action_navigation_cart_to_address_list, bundle)
@@ -330,7 +341,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                     it.data.getAddress()!!.name + ", " + it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
                                             ", " + it.data.getAddress()!!.city + ", " + it.data.getAddress()!!.landmark + ", " + it.data.getAddress()!!.country +
                                             ", " + it.data.getAddress()!!.zip
-                                txt_address.text = address
+                                txt_address?.text = address
                                 addressRegion = it.data.getAddress()!!.country
 
                                 housename = it.data.getAddress()!!.houseFlat
@@ -344,25 +355,32 @@ class CartFragment : Fragment(), CartadapterCallBack {
                             }
 
                         } else {
-                            layout_add_address.visibility = View.VISIBLE
+                            layout_add_address?.visibility = View.VISIBLE
                         }
-                        progresscart.visibility = View.GONE
+                        progresscart?.visibility = View.GONE
                         cartItems = it.data.getCartItems()
 
                         if (cartItems != null) {
                             cartId = it.data.getCartItems()!!.get(0)!!.cartId
                             cartAdapter = CartAdapter(requireActivity(), cartItems, this)
-                            productList.adapter = cartAdapter
-                            itemCount.text = cartItems!!.size.toString() + " Items"
+                            productList?.adapter = cartAdapter
+                            itemCount?.text = cartItems!!.size.toString() + " Items"
                             cartFound = true
-                            (activity as VinnerActivity).refreshBadgeView(it.data.getItemsTotal())
+                            activity?.let { activity ->
+                                (activity is VinnerActivity).also { res ->
+                                    if (res) {
+                                        (activity as VinnerActivity).refreshBadgeView(it.data!!.getItemsTotal())
+                                    }
+                                }
+                            }
                         } else {
-                            empty.visibility = View.VISIBLE
-                            cart.visibility = View.GONE
+                            empty?.visibility = View.VISIBLE
+                            cart?.visibility = View.GONE
                             cartFound = false
                         }
-
-                        setCartDetails(it.data.getCart())
+                        view?.let { view ->
+                            setCartDetails(it.data.getCart())
+                        }
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))

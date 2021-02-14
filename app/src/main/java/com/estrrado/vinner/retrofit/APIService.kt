@@ -288,8 +288,13 @@ interface APIService {
         @Field("rating") rating: String?,
         @Field("title") title: String?,
         @Field("review") review: String?
+    ): Observable<Model>
 
-
+    @FormUrlEncoded
+    @POST("viewReview")
+    fun viewReview(
+        @Field("access_token") accessToken: String?,
+        @Field("review_id") review_id: String?
     ): Observable<Model>
 
     @FormUrlEncoded

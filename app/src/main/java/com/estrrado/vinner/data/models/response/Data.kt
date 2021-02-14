@@ -8,6 +8,10 @@ import com.google.gson.annotations.SerializedName
 
 class Data {
 
+    @SerializedName("review")
+    @Expose
+    var review: Review.MyReview? = null
+
     @SerializedName("track_order")
     @Expose
     var track_order: TrackOrdDetModel? = null

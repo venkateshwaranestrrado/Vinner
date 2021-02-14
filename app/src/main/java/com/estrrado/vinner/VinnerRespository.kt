@@ -706,6 +706,23 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
+    fun viewReview(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+        apiService?.viewReview(
+            input.accessToken,
+            input.review_id
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
+
+            })
+        return data
+    }
+
+    @SuppressLint("CheckResult")
     fun addreview(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.saveReview(

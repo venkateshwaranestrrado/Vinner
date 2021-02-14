@@ -350,4 +350,5 @@
         android:id="@+id/empty"
         layout="@layout/empty_cart"
         android:visibility="invisible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

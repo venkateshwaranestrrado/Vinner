@@ -14,7 +14,6 @@ import com.estrrado.vinner.helper.Preferences
 
 import kotlinx.android.synthetic.main.splash_page.*
 
-
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

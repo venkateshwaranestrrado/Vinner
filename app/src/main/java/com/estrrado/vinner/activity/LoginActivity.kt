@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -43,31 +42,19 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         val regionList: List<RegionSpinner> = readFromAsset()
         val regionAdapter = RegionAdapter(this, regionList)
         region_spinner.adapter = regionAdapter
-        region_spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
+
+        /*region_spinner.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
                 position: Int,
                 id: Long
             ) {
-                val gson = Gson()
-                val modelList: List<RegionSpinner> =
-                    gson.fromJson(json_string, Array<RegionSpinner>::class.java).toList()
-                val code = modelList.get(position).code
-                val name = modelList.get(position).name
-                val fullname = regionList.get(position).fullname
-                Preferences.put(this@LoginActivity, REGION_NAME, name)
-                Preferences.put(this@LoginActivity, REGION_CODE, code)
-                Preferences.put(this@LoginActivity, REGION_FULLNAME, fullname)
-                Preferences.put(
-                    this@LoginActivity,
-                    Preferences.COUNTRY_POSITION,
-                    position.toString()
-                )
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-        })
+        })*/
         tvSubmit.setOnClickListener(this)
 
         authenticateVM = ViewModelProvider(
@@ -83,14 +70,14 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         ).get(AuthVM::class.java)
     }
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         if (!Preferences.get(this, Preferences.COUNTRY_POSITION).equals("")) {
             region_spinner.setSelection(
                 Preferences.get(this, Preferences.COUNTRY_POSITION)!!.toInt()
             )
         }
-    }
+    }*/
 
     private fun validation(): Boolean {
         if (phone.length() < 7) {
@@ -104,7 +91,19 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         when (v!!.id) {
             R.id.tvSubmit -> {
                 progress.visibility = View.VISIBLE
-                val Regioncode = Preferences.get(this, REGION_CODE)
+                val modelList: List<RegionSpinner> =
+                    Gson().fromJson(json_string, Array<RegionSpinner>::class.java).toList()
+                var Regioncode = modelList.get(region_spinner.selectedItemPosition).code
+                if (!Preferences.get(
+                        this@LoginActivity,
+                        Preferences.COUNTRY_POSITION
+                    ).equals("")
+                ) {
+                    Preferences.get(this, REGION_CODE)?.let {
+                        Regioncode = it
+                    }
+                }
+
                 if ((phone.validate())) {
                     if ((validation())) {
                         if (Helper.isNetworkAvailable(this)) {
@@ -121,6 +120,35 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                                     progress.visibility = View.GONE
                                     printToast(this, it?.message.toString())
                                     if (it?.status.equals(SUCCESS)) {
+
+                                        if (Preferences.get(
+                                                this@LoginActivity,
+                                                Preferences.COUNTRY_POSITION
+                                            ).equals("")
+                                        ) {
+                                            val modelList: List<RegionSpinner> =
+                                                Gson().fromJson(
+                                                    json_string,
+                                                    Array<RegionSpinner>::class.java
+                                                ).toList()
+                                            val position = region_spinner.selectedItemPosition
+                                            val code = modelList.get(position).code
+                                            val name = modelList.get(position).name
+                                            val fullname = modelList.get(position).fullname
+                                            Preferences.put(this@LoginActivity, REGION_NAME, name)
+                                            Preferences.put(this@LoginActivity, REGION_CODE, code)
+                                            Preferences.put(
+                                                this@LoginActivity,
+                                                REGION_FULLNAME,
+                                                fullname
+                                            )
+                                            Preferences.put(
+                                                this@LoginActivity,
+                                                Preferences.COUNTRY_POSITION,
+                                                position.toString()
+                                            )
+                                        }
+
                                         Preferences.put(this, MOBILE, phoneNum)
                                         startActivity(Intent(this, OtpActivity::class.java))
                                     }

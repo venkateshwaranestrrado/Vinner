@@ -20,16 +20,31 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/tv_address_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
+            android:text="Home"
+            android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
-            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!--
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="8dp"
+                    android:text="eewewewe"
+                    android:textSize="@dimen/_12sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_address_type" />
+        -->
 
         <TextView
             android:id="@+id/tv_address1"
@@ -40,10 +55,9 @@
             android:layout_marginTop="8dp"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_address_type" />
 
-
-        <TextView
+        <!--<TextView
             android:id="@+id/tv_road_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,7 +99,7 @@
             android:layout_marginTop="8dp"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />-->
 
         <TextView
             android:id="@+id/tv_zipcode"
@@ -96,18 +110,7 @@
             android:layout_marginTop="8dp"
             android:textSize="@dimen/_12sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_country" />
-
-        <TextView
-            android:id="@+id/tv_address_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:textSize="@dimen/_12sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_zipcode" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_address1" />
 
         <TextView
             android:id="@+id/tv_number"
@@ -117,9 +120,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:textSize="@dimen/_12sdp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_address_type"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toBottomOf="@+id/tv_zipcode" />
 
         <Button
             android:id="@+id/btn_edit"

@@ -3,15 +3,12 @@ package com.estrrado.vinner.ui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -31,6 +28,7 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.DELIVERED
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -46,6 +44,7 @@ class OrderList : Fragment() {
     private val myCalendar = Calendar.getInstance()
     var orderIdSearch = ""
     var dateSearch = ""
+    var adapter: Orderliist? = null
 
     var sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
 
@@ -79,7 +78,22 @@ class OrderList : Fragment() {
 
         getData()
 
-        searchlist.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        searchlist.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                adapter?.filter?.filter(p0.toString())
+            }
+
+        })
+
+        /*searchlist.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 dateSearch = ""
                 orderIdSearch = ""
@@ -99,13 +113,13 @@ class OrderList : Fragment() {
                 return@OnEditorActionListener true
             }
             false
-        })
+        })*/
 
         txtCancel.setOnClickListener {
             searchlist.setText("")
             dateSearch = ""
             orderIdSearch = ""
-            getData()
+            //getData()
         }
 
         pageTitle.setOnClickListener {
@@ -148,8 +162,8 @@ class OrderList : Fragment() {
                             )
                         }
                     }
-                    recy_order_list.adapter =
-                        Orderliist(orders, this.requireView(), requireActivity())
+                    adapter = Orderliist(orders, this.requireView(), requireActivity())
+                    recy_order_list.adapter = adapter
                     progressorderlist.visibility = View.GONE
                 } else printToast(requireContext(), it.message.toString())
             })
@@ -162,14 +176,20 @@ class OrderList : Fragment() {
         var dataItem: ArrayList<OrderModel>,
         var view: View,
         private var activity: FragmentActivity
-    ) : RecyclerView.Adapter<Orderliist.ViewHolder>() {
+    ) : RecyclerView.Adapter<Orderliist.ViewHolder>(), Filterable {
+
+        var dataItemAll = ArrayList<OrderModel>()
+
+        init {
+            dataItemAll.addAll(dataItem)
+        }
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val delivstatus: TextView = itemView.findViewById(R.id.tv_deliv_status)
             val name: TextView = itemView.findViewById(R.id.tv_prdct_name)
             val image: ImageView = itemView.findViewById(R.id.Productimage)
-            val review: TextView = itemView.findViewById(R.id.tv_review)
-            val rating: RatingBar = itemView.findViewById(R.id.product_rating)
+
+            //val rating: RatingBar = itemView.findViewById(R.id.product_rating)
             val orderlist: CardView = itemView.findViewById(R.id.ordrlist)
             val tvreview: TextView = itemView.findViewById(R.id.tv_review)
             val tvOrderId: TextView = itemView.findViewById(R.id.tv_order_id)
@@ -186,8 +206,6 @@ class OrderList : Fragment() {
             )
         }
 
-
-        //              }
         override fun getItemCount(): Int {
             return dataItem!!.size
         }
@@ -197,24 +215,13 @@ class OrderList : Fragment() {
             var rating = 0.0
             if (dataItem.get(position).delivery_status == DELIVERED) {
                 holder.tvreview.visibility = View.VISIBLE
-                val isReviewAdded = dataItem.get(position).review_id != 0
-                /*for (i in 0 until dataItem.get(position)!!.getProductDetails()!!.size) {
-                    if (dataItem.get(position)!!.getProductDetails()!!.get(i)!!.reviewId != 0
-                    ) {
-                        rating = dataItem.get(position)!!.getProductDetails()!!
-                            .get(i)!!.rating!!.toDouble()
-                        isReviewAdded = true
-                        break
-                    }
-                }*/
-                if (!isReviewAdded)
+                if (dataItem.get(position).review_id == 0)
                     holder.tvreview.text = Constants.WRITE_A_REVIEW
                 else
                     holder.tvreview.text = Constants.VIEW_REVIEW
             } else
                 holder.tvreview.visibility = View.GONE
 
-            holder.rating.rating = rating.toFloat()
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)
                 .load(dataItem.get(position).image)
@@ -255,11 +262,36 @@ class OrderList : Fragment() {
                     PRODUCT_ID,
                     dataItem.get(position).prodid
                 )
+                bundle.putString(
+                    "REVIEW_ID",
+                    dataItem.get(position).review_id.toString()
+                )
                 view.findNavController()
                     .navigate(R.id.action_navigation_orderList_to_addReview, bundle)
             }
+        }
 
+        inner class ItemFilter : Filter() {
 
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                dataItem.clear()
+                dataItem.addAll(dataItemAll.filter { model ->
+                    (model.order_id!!.startsWith(p0.toString()) || model.order_date!!.startsWith(p0.toString()))
+                })
+                return FilterResults()
+            }
+
+            override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
+                notifyDataSetChanged()
+                if (dataItem.size <= 0) {
+                    Validation.printToastCenter(activity, "No Orders Found")
+                }
+            }
+
+        }
+
+        override fun getFilter(): Filter {
+            return ItemFilter()
         }
 
     }
@@ -270,7 +302,6 @@ class OrderList : Fragment() {
             myCalendar[Calendar.MONTH],
             myCalendar[Calendar.DAY_OF_MONTH]
         )
-//        datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
         datePickerDialog.show()
     }
 

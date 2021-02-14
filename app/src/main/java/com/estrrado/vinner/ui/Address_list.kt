@@ -176,14 +176,15 @@ class Address_list : Fragment() {
         }
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val name = itemView.findViewById<TextView?>(R.id.tv_name)
+            //val name = itemView.findViewById<TextView?>(R.id.tv_name)
             val address1 = itemView.findViewById<TextView?>(R.id.tv_address1)
             val number = itemView.findViewById<TextView?>(R.id.tv_number)
             val starimage = itemView.findViewById<ImageView?>(R.id.img_star)
-            val txtRoadName = itemView.findViewById<TextView?>(R.id.tv_road_name)
-            val txtCity = itemView.findViewById<TextView?>(R.id.tv_city)
-            val txtCountry = itemView.findViewById<TextView?>(R.id.tv_country)
-            val txtLandMark = itemView.findViewById<TextView?>(R.id.tv_landmark)
+
+            //val txtRoadName = itemView.findViewById<TextView?>(R.id.tv_road_name)
+            //val txtCity = itemView.findViewById<TextView?>(R.id.tv_city)
+            //val txtCountry = itemView.findViewById<TextView?>(R.id.tv_country)
+            //val txtLandMark = itemView.findViewById<TextView?>(R.id.tv_landmark)
             val txtAddressType = itemView.findViewById<TextView?>(R.id.tv_address_type)
             val txtZip = itemView.findViewById<TextView?>(R.id.tv_zipcode)
             val constContainer = itemView.findViewById<ConstraintLayout?>(R.id.const_container)
@@ -271,17 +272,13 @@ class Address_list : Fragment() {
 
             if (addressFilterList != null) {
                 val item = addressFilterList!![holder.adapterPosition] as AddressList
-                holder.name?.text = addressFilterList?.get(position)!!.name
-                holder.address1?.text = addressFilterList!!.get(
-                    position
-                )!!.house_flat
-                holder.txtRoadName?.text = addressFilterList?.get(position)!!.road_name
-                holder.txtZip?.text = addressFilterList?.get(position)!!.zip
-                holder.txtCity?.text = addressFilterList?.get(position)!!.city
-                holder.txtCountry?.text = addressFilterList?.get(position)!!.country
-                holder.txtLandMark?.text = addressFilterList?.get(position)!!.landmark
                 holder.txtAddressType?.text = addressFilterList?.get(position)!!.address_type
-//                holder.number?.text = categoriesFilterList?.get(position)!!.p
+                holder.txtZip?.text = addressFilterList?.get(position)!!.zip
+
+                val model = addressFilterList!!.get(position)
+                var address =
+                    model?.name + ", " + model?.house_flat + ", " + model?.road_name + ", " + model?.city + ", " + model?.country + ", " + model?.landmark
+                holder.address1?.text = address
                 if (addressFilterList!!.get(position)!!.default == "1") {
                     holder.starimage!!.visibility = View.VISIBLE
                 } else {

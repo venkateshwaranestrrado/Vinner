@@ -40,7 +40,8 @@ class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun getreqdemo(input: RequestModel) = respo.ReqDemo(input)
     fun getsearch(input: RequestModel) = respo.Search(input)
     fun getorderdetail(input: RequestModel) = respo.Oderdtl(input)
-    fun getreviewadd(input: RequestModel) = respo.addreview(input)
+    fun saveReview(input: RequestModel) = respo.addreview(input)
+    fun viewReview(input: RequestModel) = respo.viewReview(input)
     fun trackOrder(input: RequestModel) = respo.trackOrder(input)
 
     val getAddress: MutableLiveData<AddressList> by lazy {

@@ -90,6 +90,9 @@
         <action
             android:id="@+id/action_navigation_cart_to_address_list"
             app:destination="@id/address_list" />
+        <action
+            android:id="@+id/action_navigation_cart_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment

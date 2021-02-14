@@ -2,6 +2,7 @@ package com.estrrado.vinner.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +61,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
     var pincode: String? = null
     var addressType: String? = null
     var regionList: List<RegionSpinner>? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -158,7 +160,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
     private fun payFort() {
         val bundle = Bundle()
         bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
-        bundle.putString(TOTAL_PAYABLE, totalPayable)
+        bundle.putString(TOTAL_PAYABLE, totalPayable?.toDouble()?.toInt().toString())
         bundle.putString(OPERATOR_ID, operatorId)
         bundle.putString(ADDRESS, address)
         bundle.putString(HOUSENAME, housename)
@@ -169,6 +171,9 @@ class CheckoutFragment : Fragment(), AlertCallback {
         bundle.putString(CITY, arguments?.getString(CITY))
         bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
         bundle.putString(NAME, arguments?.getString(NAME))
+
+        Log.e("bundle ", bundle.toString())
+
         val intent = Intent(activity, PayFortActivity::class.java)
         intent.putExtras(bundle)
         startActivityForResult(intent, reqCode)
