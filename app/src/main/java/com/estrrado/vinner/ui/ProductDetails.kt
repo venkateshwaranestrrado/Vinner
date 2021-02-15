@@ -35,6 +35,7 @@ import com.estrrado.vinner.helper.Constants.shareLink
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.Validation.printToastCenter
 import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -124,15 +125,16 @@ class ProductDetails : Fragment(), View.OnClickListener {
 
     fun gotoAllReview() {
         (requireActivity() as VinnerActivity).reviews?.let {
-            //Navigation.findNavController(requireView()).navigate(R.id.allReviews)
-            requireActivity().findNavController(R.id.nav_host_fragment)
-                .navigate(R.id.action_navigation_product_to_allReviews)
-
+            if (it.size > 0) {
+                requireActivity().findNavController(R.id.nav_host_fragment)
+                    .navigate(R.id.action_navigation_product_to_allReviews)
+            } else {
+                printToastCenter(requireContext(), "No Reviews Found.")
+            }
         }
     }
 
     private fun initControl() {
-
         imageView14.setOnClickListener(object : ClickListener() {
             override fun onOneClick(v: View) {
                 val shareIntent = Intent(Intent.ACTION_SEND)
@@ -143,7 +145,6 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 startActivity(Intent.createChooser(shareIntent, "Share VINNER using"))
             }
         })
-
         addcart.setOnClickListener(this)
         buy.setOnClickListener(this)
     }

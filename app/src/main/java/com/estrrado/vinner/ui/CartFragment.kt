@@ -32,6 +32,7 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
 import com.estrrado.vinner.helper.Constants.CART_ID
+import com.estrrado.vinner.helper.Constants.CCURRENCY
 import com.estrrado.vinner.helper.Constants.CITY
 import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.HOUSENAME
@@ -153,7 +154,8 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                     ROAD_NAME to Roadname,
                                     COUNTRY to countryName,
                                     CITY to city,
-                                    NAME to name
+                                    NAME to name,
+                                    CCURRENCY to currency
                                 )
                                 view.findNavController()
                                     .navigate(

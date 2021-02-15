@@ -76,7 +76,7 @@ class AddReview : Fragment() {
         tv_prd_image_name.setText(productName)
 
         if (arguments?.getString("REVIEW_ID")?.toInt() != 0) {
-            pageTitle.text = "Review"
+            pageTitle.text = "View Review"
             btn_submitt.visibility = View.GONE
             editTextTextPersonName2.isEnabled = false
             editTextTextPersonName3.isEnabled = false
@@ -120,7 +120,6 @@ class AddReview : Fragment() {
             )
         ).observe(requireActivity(), Observer {
             progress_review.visibility = View.GONE
-            printToast(this.requireContext(), it?.message.toString())
             if (it?.status.equals(Constants.SUCCESS)) {
                 it?.data?.review?.let {
                     editTextTextPersonName2.setText(it.review)

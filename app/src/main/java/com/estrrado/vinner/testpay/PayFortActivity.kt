@@ -1,6 +1,6 @@
 package com.estrrado.vinner.testpay
 
-import android.R.id.message
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +12,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.CART_ID
@@ -26,7 +27,6 @@ import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.STATUS
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
-import com.estrrado.vinner.helper.Constants.reqCode
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
@@ -153,11 +153,19 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 //        getHashString.put("command", "PURCHASE")
         hash.put("command", "AUTHORIZATION")
         hash.put("customer_email", "m.salem@clickapps.co")
-        hash.put("currency", "AED")
+        hash.put("currency", intent.getStringExtra(Constants.CCURRENCY)!!)
         /**
         = 10000 => 100, should be multi by some value depending on your currency, check payfort Docs fore more detail
          */
-        hash.put("amount", getIntent().getExtras()!!.getString(TOTAL_PAYABLE)!!)
+
+        var amount = getIntent().getExtras()!!.getString(TOTAL_PAYABLE)!!.toDouble()
+        if (intent.getStringExtra(Constants.CCURRENCY) == "BHD") {
+            amount = amount * 1000
+        } else {
+            amount = amount * 100
+        }
+
+        hash.put("amount", amount.toInt().toString())
         hash.put("language", "en")
         /**
          * merchant_reference represented purchase id, it should be unique
@@ -174,6 +182,8 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 //        getHashString.put("eci", "ECOMMERCE")
 //        getHashString.put("order_description", "DESCRIPTION")
         hash.put("sdk_token", sign)
+        hash.put("token_name", "8A70320AF209")
+        hash.put("payment_option", "VISA")
 
 
         model.requestMap = hash.toMap()
@@ -218,7 +228,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                 if (it?.status.equals(SUCCESS)) {
                                     val intent = Intent()
                                     intent.putExtra(STATUS, SUCCESS)
-                                    setResult(reqCode, intent)
+                                    setResult(Activity.RESULT_OK, intent)
                                     finish()
                                 } else {
                                     if (it?.message.equals("Invalid access token")) {
@@ -234,7 +244,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                     }
                                     printToast(applicationContext, it?.message.toString())
                                 }
-                                finish()
                             })
                         Log.d(TAG, "onSuccess")
                         Log.d(TAG, p0.toString())
@@ -276,7 +285,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         fortCallback!!.onActivityResult(requestCode, resultCode, data);
     }
 

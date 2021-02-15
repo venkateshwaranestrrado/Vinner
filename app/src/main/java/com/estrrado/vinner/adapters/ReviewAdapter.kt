@@ -17,7 +17,6 @@ class ReviewAdapter(
 ) :
     RecyclerView.Adapter<ReviewAdapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView =
             LayoutInflater.from(activity).inflate(R.layout.item_review, parent, false)

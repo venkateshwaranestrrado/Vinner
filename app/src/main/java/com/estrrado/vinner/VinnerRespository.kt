@@ -558,7 +558,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
                 data.value = it
             }, {
                 it.printStackTrace()
-
+                Log.e("Errro Msg ", it.message)
             })
         return data
     }

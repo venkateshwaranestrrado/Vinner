@@ -24,7 +24,6 @@ import com.estrrado.vinner.adapters.IndustryAdapter
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.logo
@@ -119,6 +118,9 @@ class BrowseFragment : Fragment(), AlertCallback {
                         context = requireContext()
                     )
                 else {
+                    /*if ((requireActivity() as VinnerActivity).getCartCount() <= 0 && spnrSelected > 0) {
+                        clearCart()
+                    }*/
                     setCountry()
                     initControl()
                 }
@@ -241,6 +243,24 @@ class BrowseFragment : Fragment(), AlertCallback {
                 spnr_region.setSelection(
                     Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
                 )
+        }
+    }
+
+    fun clearCart() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.cartId = "0"
+            progressbrowse.visibility = View.VISIBLE
+            vModel!!.emptyCart(requestModel).observe(requireActivity(),
+                Observer {
+                    progressbrowse.visibility = View.GONE
+                    (activity as VinnerActivity).refreshBadgeView("0")
+                }
+            )
+        } else {
+            progressbrowse.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
     }
 

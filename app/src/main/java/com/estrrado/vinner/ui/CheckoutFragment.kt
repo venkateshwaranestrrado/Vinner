@@ -17,6 +17,7 @@ import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
@@ -160,7 +161,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
     private fun payFort() {
         val bundle = Bundle()
         bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
-        bundle.putString(TOTAL_PAYABLE, totalPayable?.toDouble()?.toInt().toString())
+        bundle.putString(TOTAL_PAYABLE, totalPayable)
         bundle.putString(OPERATOR_ID, operatorId)
         bundle.putString(ADDRESS, address)
         bundle.putString(HOUSENAME, housename)
@@ -171,12 +172,13 @@ class CheckoutFragment : Fragment(), AlertCallback {
         bundle.putString(CITY, arguments?.getString(CITY))
         bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
         bundle.putString(NAME, arguments?.getString(NAME))
+        bundle.putString(Constants.CCURRENCY, arguments?.getString(Constants.CCURRENCY))
 
         Log.e("bundle ", bundle.toString())
 
         val intent = Intent(activity, PayFortActivity::class.java)
         intent.putExtras(bundle)
-        startActivityForResult(intent, reqCode)
+        requireActivity().startActivityForResult(intent, reqCode)
     }
 
     private fun cod() {

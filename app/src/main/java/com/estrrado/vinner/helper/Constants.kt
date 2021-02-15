@@ -30,6 +30,7 @@ object Constants {
     const val ADDDRESS_TYPE = "ADDDRESS_TYPE"
     const val LANDMARK = "LANDMARK"
     const val NAME = "NAME"
+    const val CCURRENCY = "CCURRENCY"
     const val CITY = "CITY"
     const val COUNTRY = "COUNTRY"
     const val PHONE = "PHONE"

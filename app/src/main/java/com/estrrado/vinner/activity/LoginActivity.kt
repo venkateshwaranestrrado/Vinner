@@ -50,11 +50,32 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                 position: Int,
                 id: Long
             ) {
+                val modelList: List<RegionSpinner> =
+                    Gson().fromJson(
+                        json_string,
+                        Array<RegionSpinner>::class.java
+                    ).toList()
+                val code = modelList.get(position).code
+                val name = modelList.get(position).name
+                val fullname = modelList.get(position).fullname
+                Preferences.put(this@LoginActivity, REGION_NAME, name)
+                Preferences.put(this@LoginActivity, REGION_CODE, code)
+                Preferences.put(
+                    this@LoginActivity,
+                    REGION_FULLNAME,
+                    fullname
+                )
+                Preferences.put(
+                    this@LoginActivity,
+                    Preferences.COUNTRY_POSITION,
+                    position.toString()
+                )
 
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         })*/
+
         tvSubmit.setOnClickListener(this)
 
         authenticateVM = ViewModelProvider(
@@ -72,11 +93,7 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
 
     /*override fun onResume() {
         super.onResume()
-        if (!Preferences.get(this, Preferences.COUNTRY_POSITION).equals("")) {
-            region_spinner.setSelection(
-                Preferences.get(this, Preferences.COUNTRY_POSITION)!!.toInt()
-            )
-        }
+        region_spinner.setSelection(0)
     }*/
 
     private fun validation(): Boolean {
@@ -91,23 +108,26 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
         when (v!!.id) {
             R.id.tvSubmit -> {
                 progress.visibility = View.VISIBLE
+                var phoneNum = phone.text.toString()
                 val modelList: List<RegionSpinner> =
                     Gson().fromJson(json_string, Array<RegionSpinner>::class.java).toList()
                 var Regioncode = modelList.get(region_spinner.selectedItemPosition).code
-                if (!Preferences.get(
+                if ((!Preferences.get(
                         this@LoginActivity,
                         Preferences.COUNTRY_POSITION
                     ).equals("")
+                            ) && Preferences.get(
+                        this@LoginActivity,
+                        MOBILE
+                    ) == phoneNum
                 ) {
                     Preferences.get(this, REGION_CODE)?.let {
                         Regioncode = it
                     }
                 }
-
                 if ((phone.validate())) {
                     if ((validation())) {
                         if (Helper.isNetworkAvailable(this)) {
-                            var phoneNum = phone.text.toString()
                             phoneNum = phoneNum
                             authenticateVM!!.login(
                                 Input(
@@ -121,10 +141,14 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                                     printToast(this, it?.message.toString())
                                     if (it?.status.equals(SUCCESS)) {
 
-                                        if (Preferences.get(
+                                        if ((Preferences.get(
                                                 this@LoginActivity,
                                                 Preferences.COUNTRY_POSITION
                                             ).equals("")
+                                                    ) || Preferences.get(
+                                                this@LoginActivity,
+                                                MOBILE
+                                            ) != phoneNum
                                         ) {
                                             val modelList: List<RegionSpinner> =
                                                 Gson().fromJson(

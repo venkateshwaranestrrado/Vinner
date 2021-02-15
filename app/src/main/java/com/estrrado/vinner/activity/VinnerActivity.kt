@@ -1,6 +1,9 @@
 package com.estrrado.vinner.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -11,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.estrrado.vinner.R
 import com.estrrado.vinner.data.models.Review
+import com.estrrado.vinner.helper.Constants
 import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -102,6 +106,13 @@ class VinnerActivity : AppCompatActivity() {
             cartCount = count.toInt()
             notificationBadge!!.visibility = View.VISIBLE
             notificationBadgeTextView!!.text = count
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.reqCode && resultCode == Activity.RESULT_OK) {
+            selectMenu()
         }
     }
 

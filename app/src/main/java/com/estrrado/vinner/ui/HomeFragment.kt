@@ -40,6 +40,7 @@ import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Helper.showAlert
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.COUNTRY_POSITION
+import com.estrrado.vinner.helper.Preferences.REGION_CODE
 import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
@@ -84,6 +85,7 @@ class HomeFragment : Fragment(), AlertCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as VinnerActivity).open()
+        cartCount = 0
 
         searchtool.setOnClickListener {
             view.findNavController().navigate(R.id.action_navigation_home_to_searchFragment)
@@ -91,7 +93,7 @@ class HomeFragment : Fragment(), AlertCallback {
 
         spnr_region.visibility = View.VISIBLE
         regionList = readFromAsset(requireActivity())
-        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
+        val regionAdapter = RegionAdapter(requireContext(), regionList!!)
         spnr_region.adapter = regionAdapter
 
         spnr_region.setOnItemSelectedListener(object :
@@ -115,6 +117,9 @@ class HomeFragment : Fragment(), AlertCallback {
                         context = requireContext()
                     )
                 else {
+                    /*if (cartCount <= 0 && spnrSelected > 0) {
+                        clearCart()
+                    }*/
                     setCountry()
                     initControl()
                 }
@@ -172,6 +177,8 @@ class HomeFragment : Fragment(), AlertCallback {
                     progresshome.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
 
+                        //checkCartRegion()
+
                         if (it!!.data!!.cartid != null)
                             Preferences.put(activity, CART_ID, it.data!!.cartid.toString())
                         else
@@ -223,13 +230,18 @@ class HomeFragment : Fragment(), AlertCallback {
                         for (i in 0 until regionList!!.size) {
                             if (it!!.data!!.getCart()!!.currency.toString().contains(
                                     regionList!!.get(i).name,
-
                                     true
                                 )
                             ) {
-                                if (i != spnr_region.selectedItemPosition)
-                                    spnrSelected = 0
-                                spnr_region.setSelection(i)
+                                if (regionList!!.get(i).code != Preferences.get(
+                                        activity,
+                                        REGION_CODE
+                                    )
+                                ) {
+                                    spnrPosition = i
+                                    setCountry()
+                                    spnr_region.setSelection(i)
+                                }
                             }
                         }
                     }
@@ -318,6 +330,24 @@ class HomeFragment : Fragment(), AlertCallback {
             spnrSelected = 0
             if (!Preferences.get(activity, COUNTRY_POSITION).equals(""))
                 spnr_region.setSelection(Preferences.get(activity, COUNTRY_POSITION)!!.toInt())
+        }
+    }
+
+    fun clearCart() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.cartId = "0"
+            progresshome.visibility = View.VISIBLE
+            vModel!!.emptyCart(requestModel).observe(requireActivity(),
+                Observer {
+                    progresshome.visibility = View.GONE
+                    (activity as VinnerActivity).refreshBadgeView("0")
+                }
+            )
+        } else {
+            progresshome.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
         }
     }
 
