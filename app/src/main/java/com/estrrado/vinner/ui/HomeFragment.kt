@@ -91,6 +91,10 @@ class HomeFragment : Fragment(), AlertCallback {
             view.findNavController().navigate(R.id.action_navigation_home_to_searchFragment)
         }
 
+        notifyView.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_home_to_allNotification)
+        }
+
         spnr_region.visibility = View.VISIBLE
         regionList = readFromAsset(requireActivity())
         val regionAdapter = RegionAdapter(requireContext(), regionList!!)
@@ -107,7 +111,7 @@ class HomeFragment : Fragment(), AlertCallback {
                 spnrPosition = position
                 if ((regionList!!.get(spnrPosition).code != Preferences.get(
                         activity,
-                        Preferences.REGION_CODE
+                        REGION_CODE
                     )) && cartCount > 0
                 )
                     showAlert(
@@ -166,6 +170,7 @@ class HomeFragment : Fragment(), AlertCallback {
     private fun getHome() {
 
         Log.e("sdsd", Preferences.get(activity, ACCESS_TOKEN))
+        Log.e("sdsd", Preferences.get(activity, REGION_NAME))
 
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
@@ -176,8 +181,6 @@ class HomeFragment : Fragment(), AlertCallback {
                 Observer {
                     progresshome.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
-
-                        //checkCartRegion()
 
                         if (it!!.data!!.cartid != null)
                             Preferences.put(activity, CART_ID, it.data!!.cartid.toString())
@@ -195,6 +198,9 @@ class HomeFragment : Fragment(), AlertCallback {
                             if (it.data.cartcount!!.toInt() > 0 && FROM_LOGIN == 1) {
                                 FROM_LOGIN = 0
                                 checkCartRegion()
+                            } else if (it.data.cartcount!!.toInt() <= 0) {
+                                FROM_LOGIN = 0
+                                clearCart()
                             }
                         }
                         Glide.with(this!!.requireActivity()!!)
@@ -320,7 +326,6 @@ class HomeFragment : Fragment(), AlertCallback {
                         printToast(requireContext(), it?.message!!)
                         initControl()
                     }
-
                 )
             } else {
                 progresshome.visibility = View.GONE

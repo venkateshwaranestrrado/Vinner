@@ -602,8 +602,23 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             .subscribe({
                 data.value = it
             }, {
-                Log.e("Errro", it.message)
+                it.printStackTrace()
 
+            })
+        return data
+    }
+
+    @SuppressLint("CheckResult")
+    fun notifications(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+        apiService?.notifications(
+            input.accessToken
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
             })
         return data
     }

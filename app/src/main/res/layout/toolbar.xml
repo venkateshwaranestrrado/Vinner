@@ -10,11 +10,11 @@
     tools:targetApi="p">
 
     <ImageView
-        android:id="@+id/cartView"
-        android:layout_width="25dp"
-        android:layout_height="50dp"
+        android:id="@+id/notifyView"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/_14sdp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -25,14 +25,15 @@
 
     <ImageView
         android:id="@+id/searchtool"
-        android:layout_width="25dp"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cartView"
+        app:layout_constraintEnd_toStartOf="@+id/notifyView"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_search"
         tools:ignore="VectorDrawableCompat" />
@@ -49,7 +50,6 @@
         app:layout_constraintEnd_toStartOf="@+id/searchtool"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/cartCount"
         android:layout_width="13dp"
@@ -59,11 +59,12 @@
         android:text="0"
         android:textColor="@color/colorPrimary"
         android:textSize="7sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cartView"
-        app:layout_constraintEnd_toEndOf="@+id/cartView"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/notifyView"
+        app:layout_constraintEnd_toEndOf="@+id/notifyView"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/cartView"
-        app:layout_constraintTop_toTopOf="@+id/cartView"
+        app:layout_constraintStart_toStartOf="@+id/notifyView"
+        app:layout_constraintTop_toTopOf="@+id/notifyView"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="VectorDrawableCompat" />
 

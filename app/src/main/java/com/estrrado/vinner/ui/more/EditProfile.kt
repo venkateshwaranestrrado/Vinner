@@ -32,11 +32,8 @@ import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.github.dhaval2404.imagepicker.ImagePicker
 import kotlinx.android.synthetic.main.edit_profile.*
-import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.android.synthetic.main.toolbar.textView5
 import kotlinx.android.synthetic.main.toolbar_prev.*
 import okhttp3.MultipartBody
-import java.io.*
 
 class EditProfile : Fragment() {
     var vModel: HomeVM? = null
@@ -69,11 +66,7 @@ class EditProfile : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val root = inflater.inflate(R.layout.edit_profile, container, false)
-        // val textView: TextView = root.findViewById(R.id.text_home)
-
-
         return root
     }
 
@@ -147,7 +140,6 @@ class EditProfile : Fragment() {
             }
         })
     }
-
 
     private fun getProfile() {
         if (Helper.isNetworkAvailable(requireContext())) {

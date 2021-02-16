@@ -111,8 +111,8 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                 var phoneNum = phone.text.toString()
                 val modelList: List<RegionSpinner> =
                     Gson().fromJson(json_string, Array<RegionSpinner>::class.java).toList()
-                var Regioncode = modelList.get(region_spinner.selectedItemPosition).code
-                if ((!Preferences.get(
+                val Regioncode = modelList.get(region_spinner.selectedItemPosition).code
+                /*if ((!Preferences.get(
                         this@LoginActivity,
                         Preferences.COUNTRY_POSITION
                     ).equals("")
@@ -124,7 +124,7 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                     Preferences.get(this, REGION_CODE)?.let {
                         Regioncode = it
                     }
-                }
+                }*/
                 if ((phone.validate())) {
                     if ((validation())) {
                         if (Helper.isNetworkAvailable(this)) {

@@ -55,6 +55,7 @@ import com.estrrado.vinner.vm.MainViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_prev.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -233,7 +234,6 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         it?.message?.let {
                             weightMsg = it
                         }
-                        //printToast(requireContext(), it!!.message!!)
                         txt_sub_total.text = " 0.00"
                         totalAmount.text = " 0.00"
                     }
@@ -259,10 +259,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
-                        } else {
-//                        printToast   (requireContext(), it?.message!!)
                         }
-//                    printToast(this.requireContext(), it?.message.toString())
                     }
                 })
         } else {
@@ -376,6 +373,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                 }
                             }
                         } else {
+                            clearCart()
                             empty?.visibility = View.VISIBLE
                             cart?.visibility = View.GONE
                             cartFound = false
@@ -515,7 +513,27 @@ class CartFragment : Fragment(), CartadapterCallBack {
         addressSelected = null
 //        })
     }
+
+    fun clearCart() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.cartId = "0"
+            progresscart.visibility = View.VISIBLE
+            vModel!!.emptyCart(requestModel).observe(requireActivity(),
+                Observer {
+                    progresscart.visibility = View.GONE
+                }
+            )
+        } else {
+            progresscart.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 }
+
 
 interface CartadapterCallBack {
     fun productUpdated(productId: String, count: String, position: Int)

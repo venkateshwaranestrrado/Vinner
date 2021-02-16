@@ -126,10 +126,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
                     signout()
                     malertDialog.cancel()
                 }
-
             })
             malertDialog?.no?.setOnClickListener(object : View.OnClickListener {
                 override fun onClick(p0: View?) {
+                    progressmore.visibility = View.GONE
                     malertDialog.cancel()
                 }
 
@@ -138,6 +138,10 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
         searchtool.setOnClickListener {
             view.findNavController().navigate(R.id.action_navigation_more_to_searchFragment)
+        }
+
+        notifyView.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_more_to_allNotification)
         }
 
         trackOrder.setOnClickListener {

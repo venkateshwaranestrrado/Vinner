@@ -8,6 +8,10 @@ import com.google.gson.annotations.SerializedName
 
 class Data {
 
+    @SerializedName("notifications")
+    @Expose
+    var notifications: List<Notification>? = null
+
     @SerializedName("review")
     @Expose
     var review: Review.MyReview? = null
@@ -533,6 +537,5 @@ class Data {
     @field:SerializedName("payment_status")
     @field:JsonField(name = arrayOf("payment_status"))
     val payment_status: ArrayList<payment_status?>? = null
-
 
 }

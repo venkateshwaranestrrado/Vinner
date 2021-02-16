@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_navigation_home_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_allNotification"
+            app:destination="@id/allNotification" />
 
     </fragment>
     <dialog
@@ -55,6 +58,9 @@
         <action
             android:id="@+id/action_navigation_browse_to_searchFragment"
             app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_navigation_browse_to_allNotification"
+            app:destination="@id/allNotification" />
     </fragment>
     <fragment
         android:id="@+id/navigation_more"
@@ -72,6 +78,9 @@
         <action
             android:id="@+id/action_navigation_more_to_navigation_track"
             app:destination="@id/navigation_track" />
+        <action
+            android:id="@+id/action_navigation_more_to_allNotification"
+            app:destination="@id/allNotification" />
     </fragment>
 
     <fragment
@@ -212,6 +221,10 @@
         android:name="com.estrrado.vinner.ui.AllReviews"
         android:label="fragment_all_reviews"
         tools:layout="@layout/fragment_all_reviews" />
+    <fragment
+        android:id="@+id/allNotification"
+        android:name="com.estrrado.vinner.ui.AllNotification"
+        android:label="AllNotification" />
 
 
 </navigation>

@@ -83,6 +83,10 @@ class BrowseFragment : Fragment(), AlertCallback {
             view.findNavController().navigate(R.id.action_navigation_browse_to_searchFragment)
         }
 
+        notifyView.setOnClickListener {
+            view.findNavController().navigate(R.id.action_navigation_browse_to_allNotification)
+        }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

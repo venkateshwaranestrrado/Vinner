@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -58,6 +59,8 @@ class ProductDetails : Fragment(), View.OnClickListener {
     var prod_id = ""
     var prod_name = ""
     var return_policy = ""
+    var ratingcount = ""
+    var ratingtotal = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,8 +129,13 @@ class ProductDetails : Fragment(), View.OnClickListener {
     fun gotoAllReview() {
         (requireActivity() as VinnerActivity).reviews?.let {
             if (it.size > 0) {
+                val bundle = bundleOf(
+                    "rating_total" to rating_total.rating.toString(),
+                    "txt_rating_total" to ratingtotal,
+                    "txt_rating_count" to ratingcount
+                )
                 requireActivity().findNavController(R.id.nav_host_fragment)
-                    .navigate(R.id.action_navigation_product_to_allReviews)
+                    .navigate(R.id.action_navigation_product_to_allReviews, bundle)
             } else {
                 printToastCenter(requireContext(), "No Reviews Found.")
             }
@@ -275,7 +283,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
                         product.description.toString(),
                         Html.FROM_HTML_MODE_COMPACT
                     )
-                );
+                )
             } else {
                 tvdescription.setText(Html.fromHtml(product.description.toString()));
             }
@@ -283,11 +291,13 @@ class ProductDetails : Fragment(), View.OnClickListener {
             //if (detail.getReviews()!!.size > 0) {
             ratingBar2.rating = product.rating!!.toFloat()
             rating_total.rating = product.rating!!.toFloat()
-            txt_rating_count.text = product.reatedCustomers + " " + "Customer ratings"
+            txt_rating_count.text = ""
+            txt_rating_total.text = ""
+            ratingcount = product.reatedCustomers + " Customer ratings"
             product.rating?.let {
                 if (it != "") {
                     it.toDouble().also {
-                        txt_rating_total.text =
+                        ratingtotal =
                             (if (it > it.toInt()) String.format(
                                 "%s",
                                 it

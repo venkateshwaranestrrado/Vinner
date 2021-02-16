@@ -359,4 +359,10 @@ interface APIService {
         @Field("order_id") order_id: String?
     ): Observable<Model>
 
+    @FormUrlEncoded
+    @POST("notifications")
+    fun notifications(
+        @Field("access_token") accessToken: String?
+    ): Observable<Model>
+
 }
