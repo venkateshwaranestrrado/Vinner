@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -109,9 +108,6 @@ class EditProfile : Fragment() {
                             multiImg = getMultipartImage(fileUri, "profile_pic", activity)
                         }
 
-                        Log.e("token", Preferences.get(activity, ACCESS_TOKEN))
-                        Log.e("token", mobileNum)
-
                         progressprofile.visibility = View.VISIBLE
                         vModel?.getUpdatedProfile(
                             RequestModel(
@@ -128,10 +124,10 @@ class EditProfile : Fragment() {
                             )
                         )?.observe(viewLifecycleOwner, Observer {
                             progressprofile.visibility = View.GONE
-                            Log.e("message ", it!!.message.toString())
                             Validation.printToast(requireContext(), it!!.message.toString())
                             if (it.status.equals(SUCCESS)) {
-                                getProfile()
+                                //getProfile()
+                                requireActivity().onBackPressed()
                             }
                         })
                     }

@@ -284,13 +284,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_related_products" />
 
-            <include
-                android:id="@+id/progressproductdetail"
-                layout="@layout/item_progress_sheet"
-                android:layout_width="411dp"
-                android:layout_height="726dp"
-                android:visibility="invisible" />
-
             <ImageView
                 android:id="@+id/imageView14"
                 android:layout_width="@dimen/_20sdp"
@@ -321,5 +314,11 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <include
+        android:id="@+id/progressproductdetail"
+        layout="@layout/item_progress_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

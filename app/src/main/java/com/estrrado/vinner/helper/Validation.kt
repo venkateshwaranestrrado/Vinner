@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import java.util.regex.Pattern
 
+
 object Validation {
     val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
     fun EditText.validate(): Boolean {
@@ -78,6 +79,18 @@ object Validation {
                         currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS
                     )
                 }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun openKeyboard(activity: Activity?) {
+        try {
+            activity?.let {
+                val imm =
+                    activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                imm!!.showSoftInput(it.currentFocus, InputMethodManager.SHOW_IMPLICIT)
             }
         } catch (e: Exception) {
             e.printStackTrace()

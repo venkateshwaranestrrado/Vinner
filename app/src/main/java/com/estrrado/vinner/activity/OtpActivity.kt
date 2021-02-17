@@ -20,7 +20,6 @@ import com.estrrado.vinner.helper.Constants.TRUE
 import com.estrrado.vinner.helper.Constants.VERIFIED
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Preferences.REGION_CODE
 import com.estrrado.vinner.helper.Validation.hasText
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
@@ -31,10 +30,12 @@ import kotlinx.android.synthetic.main.fragment_login_otp.*
 class OtpActivity : AppCompatActivity(), View.OnClickListener {
 
     var authenticateVM: AuthVM? = null
+    var code = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login_otp)
+        code = intent.getStringExtra("code")
         initControl()
     }
 
@@ -59,11 +60,6 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
 
-            R.id.etOtp -> {
-
-
-            }
-
             R.id.btotpSubmit -> {
                 progressotp!!.visibility = View.VISIBLE
                 if (Helper.isNetworkAvailable(this)) {
@@ -72,7 +68,7 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                         val requestModel = RequestModel()
                         requestModel.otp = otp
                         requestModel.phoneNumber = Preferences.get(this, MOBILE)
-                        requestModel.countryCode = Preferences.get(this, REGION_CODE)
+                        requestModel.countryCode = code
                         requestModel.os = "android"
                         requestModel.deviceId = "abcdefghijklmnoqrstuvwxyz"
 
@@ -83,7 +79,6 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                                 printToast(this, it?.message.toString())
                                 progressotp!!.visibility = View.GONE
                                 if (it?.status.equals(SUCCESS)) {
-
                                     if (it?.userstatus.equals(VERIFIED)) {
                                         Preferences.put(
                                             this,

@@ -30,6 +30,10 @@ class Product {
     @Expose
     var unit: String? = null
 
+    @SerializedName("product_url")
+    @Expose
+    var product_url: String? = null
+
     @SerializedName("rating")
     @Expose
     var rating: String? = null

@@ -118,21 +118,28 @@ class AllNotification : Fragment() {
             holder.txtTitle.text = notifyist?.get(position)?.title
             holder.txtDesc.text = notifyist?.get(position)?.desc
 
-            if (notifyist?.get(position)?.notify_type == "delivery_status") {
-                holder.imgView.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        holder.itemView.context,
-                        R.drawable.ic_delivery_truck
-                    )
-                )
-            } else {
-                holder.imgView.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        holder.itemView.context,
-                        R.drawable.ic_cart
-                    )
-                )
+            var draw = 0
+            when (notifyist?.get(position)?.notify_type) {
+                "review_status" -> {
+                    draw = R.drawable.star
+                }
+                "delivery_status" -> {
+                    draw = R.drawable.truck
+                }
+                "payment_status" -> {
+                    draw = R.drawable.money
+                }
+                else -> {
+                    draw = R.drawable.cart
+                }
             }
+
+            holder.imgView.setImageDrawable(
+                ContextCompat.getDrawable(
+                    holder.itemView.context,
+                    draw
+                )
+            )
 
         }
 

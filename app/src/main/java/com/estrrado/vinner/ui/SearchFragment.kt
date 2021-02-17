@@ -62,6 +62,7 @@ class SearchFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         editTextTextPersonName.requestFocus()
+        Validation.openKeyboard(activity)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

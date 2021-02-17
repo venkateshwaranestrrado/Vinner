@@ -3,11 +3,10 @@ package com.estrrado.vinner.ui
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -28,7 +27,6 @@ import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.DELIVERED
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -78,7 +76,7 @@ class OrderList : Fragment() {
 
         getData()
 
-        searchlist.addTextChangedListener(object : TextWatcher {
+        /*searchlist.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -91,35 +89,27 @@ class OrderList : Fragment() {
                 adapter?.filter?.filter(p0.toString())
             }
 
-        })
+        })*/
 
-        /*searchlist.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        imgCalendar.setOnClickListener {
+            showCalender()
+        }
+
+        searchlist.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 dateSearch = ""
-                orderIdSearch = ""
-                if (searchlist.text.trim().toString().length > 0) {
-                    var date: Date? = null
-                    try {
-                        date = sdf.parse(searchlist.text.trim().toString())
-                    } catch (e: Exception) {
-                    }
-                    if (date != null) {
-                        dateSearch = searchlist.text.trim().toString()
-                    } else {
-                        orderIdSearch = searchlist.text.trim().toString()
-                    }
-                    getData()
-                }
+                orderIdSearch = searchlist.text.trim().toString()
+                getData()
                 return@OnEditorActionListener true
             }
             false
-        })*/
+        })
 
-        txtCancel.setOnClickListener {
+        imgClose.setOnClickListener {
             searchlist.setText("")
             dateSearch = ""
             orderIdSearch = ""
-            //getData()
+            getData()
         }
 
         pageTitle.setOnClickListener {
@@ -131,6 +121,9 @@ class OrderList : Fragment() {
 
         if (com.estrrado.vinner.helper.Helper.isNetworkAvailable(requireContext())) {
             progressorderlist.visibility = View.VISIBLE
+
+            adapter = Orderliist(ArrayList(), this.requireView(), requireActivity())
+            recy_order_list.adapter = adapter
 
             vModel!!.getOrderList(
                 RequestModel(
@@ -283,9 +276,9 @@ class OrderList : Fragment() {
 
             override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
                 notifyDataSetChanged()
-                if (dataItem.size <= 0) {
+                /*if (dataItem.size <= 0) {
                     Validation.printToastCenter(activity, "No Orders Found")
-                }
+                }*/
             }
 
         }
@@ -302,6 +295,7 @@ class OrderList : Fragment() {
             myCalendar[Calendar.MONTH],
             myCalendar[Calendar.DAY_OF_MONTH]
         )
+        datePickerDialog.datePicker.maxDate = Date().time
         datePickerDialog.show()
     }
 
@@ -315,12 +309,12 @@ class OrderList : Fragment() {
         }
 
     private fun updateDate() {
-        val myFormat = "yyyy-MM-dd" //In which you need put here
-        val sdf =
-            SimpleDateFormat(myFormat, Locale.getDefault())
-        searchlist!!.setText(sdf.format(myCalendar.getTime()))
+        dateSearch =
+            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(myCalendar.getTime())
         orderIdSearch = ""
-        dateSearch = searchlist.text.toString()
+        searchlist!!.setText(
+            sdf.format(myCalendar.getTime())
+        )
         getData()
     }
 

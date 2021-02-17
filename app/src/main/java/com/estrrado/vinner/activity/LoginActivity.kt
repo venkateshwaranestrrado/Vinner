@@ -112,6 +112,11 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                 val modelList: List<RegionSpinner> =
                     Gson().fromJson(json_string, Array<RegionSpinner>::class.java).toList()
                 val Regioncode = modelList.get(region_spinner.selectedItemPosition).code
+                /*Preferences.put(
+                    this@LoginActivity,
+                    REGION_CODE,
+                    modelList.get(region_spinner.selectedItemPosition).code
+                )*/
                 /*if ((!Preferences.get(
                         this@LoginActivity,
                         Preferences.COUNTRY_POSITION
@@ -172,9 +177,10 @@ class LoginActivity : AppCompatActivity(), OnClickListener {
                                                 position.toString()
                                             )
                                         }
-
                                         Preferences.put(this, MOBILE, phoneNum)
-                                        startActivity(Intent(this, OtpActivity::class.java))
+                                        val intent = Intent(this, OtpActivity::class.java)
+                                        intent.putExtra("code", Regioncode)
+                                        startActivity(intent)
                                     }
                                 })
                         } else {

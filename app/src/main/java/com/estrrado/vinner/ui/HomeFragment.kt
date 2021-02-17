@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +22,7 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
+import com.estrrado.vinner.activity.VinnerActivity.Companion.shareProdId
 import com.estrrado.vinner.adapters.CategoryAdapter
 import com.estrrado.vinner.adapters.ProductsAdapter
 import com.estrrado.vinner.adapters.RegionAdapter
@@ -30,6 +32,7 @@ import com.estrrado.vinner.data.models.BannerSlider
 import com.estrrado.vinner.data.models.Category
 import com.estrrado.vinner.data.models.Featured
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.FROM_LOGIN
@@ -121,9 +124,6 @@ class HomeFragment : Fragment(), AlertCallback {
                         context = requireContext()
                     )
                 else {
-                    /*if (cartCount <= 0 && spnrSelected > 0) {
-                        clearCart()
-                    }*/
                     setCountry()
                     initControl()
                 }
@@ -201,6 +201,9 @@ class HomeFragment : Fragment(), AlertCallback {
                             } else if (it.data.cartcount!!.toInt() <= 0) {
                                 FROM_LOGIN = 0
                                 clearCart()
+                                gotoShareProduct()
+                            } else {
+                                gotoShareProduct()
                             }
                         }
                         Glide.with(this!!.requireActivity()!!)
@@ -226,6 +229,16 @@ class HomeFragment : Fragment(), AlertCallback {
         }
     }
 
+    fun gotoShareProduct() {
+        if (shareProdId != "") {
+            view?.findNavController()
+                ?.navigate(
+                    R.id.action_homeFragment_to_ProductFragment,
+                    bundleOf(Constants.PRODUCT_ID to shareProdId)
+                )
+        }
+    }
+
     private fun checkCartRegion() {
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
@@ -233,7 +246,28 @@ class HomeFragment : Fragment(), AlertCallback {
             vModel!!.getCartPage(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-                        for (i in 0 until regionList!!.size) {
+
+                        it?.data?.getCart()?.currency?.let { currency ->
+                            val indx =
+                                regionList?.indexOfFirst { model -> currency.contains(model.name) }
+                            indx?.let { ind ->
+                                if (ind >= -1) {
+                                    if (regionList!!.get(ind).code != Preferences.get(
+                                            activity,
+                                            REGION_CODE
+                                        )
+                                    ) {
+                                        spnrPosition = ind
+                                        setCountry()
+                                        spnr_region.setSelection(ind)
+                                    } else {
+                                        gotoShareProduct()
+                                    }
+                                }
+                            }
+                        }
+
+                        /*for (i in 0 until regionList!!.size) {
                             if (it!!.data!!.getCart()!!.currency.toString().contains(
                                     regionList!!.get(i).name,
                                     true
@@ -249,7 +283,7 @@ class HomeFragment : Fragment(), AlertCallback {
                                     spnr_region.setSelection(i)
                                 }
                             }
-                        }
+                        }*/
                     }
                 })
         }

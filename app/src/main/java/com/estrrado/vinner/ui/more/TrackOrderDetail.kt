@@ -39,22 +39,20 @@ class TrackOrderDetail : Fragment() {
 
         txtOrderId.text = "Order ID : " + dataModel.order_id
         txtOrdDate.text = "Order Date : " + dataModel.order_date
-        txtExpDate.text = "Expected Delivery : " + dataModel.expt_from + " to " + dataModel.expt_to
+        //txtExpDate.text = "Expected Delivery : " + dataModel.expt_from + " to " + dataModel.expt_to
         txtShipOp.text = "Shipping Operator : " + dataModel.ship_operator
-        txtStatus.text = dataModel.d_status
+        txtStatus.text = dataModel.d_status?.replace("_", " ")
+        txtExpDate.visibility = View.GONE
 
         when (dataModel.d_status) {
             "pending" -> {
-                txtExpDate.visibility = View.VISIBLE
-                txtStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.dark_blue))
+                txtStatus.text = "Pending"
             }
             "delivered" -> {
-                txtExpDate.visibility = View.GONE
-                txtStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.green))
+                txtStatus.text = "Delivered"
             }
             else -> {
-                txtExpDate.visibility = View.GONE
-                txtStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+                txtStatus.text = "On delivery"
             }
         }
 

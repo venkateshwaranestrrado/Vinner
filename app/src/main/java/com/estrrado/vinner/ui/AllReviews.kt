@@ -35,8 +35,8 @@ class AllReviews : Fragment() {
         pageTitle.text = "Customer Reviews"
 
         rating_total.rating = arguments?.getString("rating_total")!!.toFloat()
-        txt_rating_total.text = arguments?.getString("txt_rating_total")
-        txt_rating_count.text = arguments?.getString("txt_rating_count")
+        //txt_rating_total.text = arguments?.getString("txt_rating_total")
+        //txt_rating_count.text = arguments?.getString("txt_rating_count")
 
         rvReviews.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)

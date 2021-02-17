@@ -3,7 +3,6 @@ package com.estrrado.vinner.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -22,6 +21,10 @@ import kotlinx.android.synthetic.main.activity_vinner.*
 
 @Suppress("NAME_SHADOWING")
 class VinnerActivity : AppCompatActivity() {
+
+    companion object {
+        var shareProdId = ""
+    }
 
     var notificationBadgeTextView: TextView? = null
     private var bottomNavigationView: BottomNavigationView? = null

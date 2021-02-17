@@ -29,7 +29,8 @@
             android:text="@string/customer_reviews"
             android:textColor="@color/black"
             android:textSize="@dimen/_12sdp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,7 +55,8 @@
                 android:layout_marginStart="10dp"
                 android:text="sdsdsdsd"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -64,7 +66,8 @@
             android:layout_height="wrap_content"
             android:text="sdsdsdsd"
             android:textColor="@color/black_50"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvReviews"

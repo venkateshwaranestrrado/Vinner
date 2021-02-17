@@ -4,6 +4,7 @@ import com.estrrado.vinner.data.models.Region
 import com.estrrado.vinner.data.models.response.AddressList
 
 object Constants {
+
     const val FROM = "FROM"
     const val HOME = "Home"
     const val WORK = "work"

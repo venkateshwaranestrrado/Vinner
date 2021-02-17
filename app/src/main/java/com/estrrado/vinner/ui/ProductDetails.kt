@@ -32,7 +32,6 @@ import com.estrrado.vinner.helper.ClickListener
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
 import com.estrrado.vinner.helper.Constants.SUCCESS
-import com.estrrado.vinner.helper.Constants.shareLink
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
@@ -58,6 +57,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
     var stockQty = 0
     var prod_id = ""
     var prod_name = ""
+    var product_url = ""
     var return_policy = ""
     var ratingcount = ""
     var ratingtotal = ""
@@ -77,6 +77,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        VinnerActivity.shareProdId = ""
         vModel = ViewModelProvider(
             this,
             MainViewModel(
@@ -145,12 +146,14 @@ class ProductDetails : Fragment(), View.OnClickListener {
     private fun initControl() {
         imageView14.setOnClickListener(object : ClickListener() {
             override fun onOneClick(v: View) {
-                val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.type = "text/plain"
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "VINNER")
-                val shareMessage = "$shareLink"
-                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-                startActivity(Intent.createChooser(shareIntent, "Share VINNER using"))
+                if (product_url != "") {
+                    val shareIntent = Intent(Intent.ACTION_SEND)
+                    shareIntent.type = "text/plain"
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "VINNER")
+                    val shareMessage = product_url
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+                    startActivity(Intent.createChooser(shareIntent, "Share VINNER Product using"))
+                }
             }
         })
         addcart.setOnClickListener(this)
@@ -250,6 +253,9 @@ class ProductDetails : Fragment(), View.OnClickListener {
             }
             product.productName?.let {
                 prod_name = it
+            }
+            product.product_url?.let {
+                product_url = it
             }
             if (product.current_stock != "") {
                 product.current_stock?.let {

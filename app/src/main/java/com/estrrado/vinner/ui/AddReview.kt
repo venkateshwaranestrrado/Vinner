@@ -15,6 +15,7 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
+import com.estrrado.vinner.helper.Validation.validate
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -90,22 +91,24 @@ class AddReview : Fragment() {
 
         btn_submitt.setOnClickListener {
 
-            progress_review.visibility = View.VISIBLE
-            vModel!!.saveReview(
-                RequestModel(
-                    accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN),
-                    productId = productId,
-                    review = editTextTextPersonName2.text.toString(),
-                    rating = txtRatingValue,
-                    title = editTextTextPersonName3.text.toString()
-                )
-            ).observe(requireActivity(), Observer {
-                progress_review.visibility = View.GONE
-                printToast(this.requireContext(), it?.message.toString())
-                if (it?.status.equals(Constants.SUCCESS)) {
-                    requireActivity().onBackPressed()
-                }
-            })
+            if (editTextTextPersonName3.validate()) {
+                progress_review.visibility = View.VISIBLE
+                vModel!!.saveReview(
+                    RequestModel(
+                        accessToken = Preferences.get(activity, Constants.ACCESS_TOKEN),
+                        productId = productId,
+                        review = editTextTextPersonName2.text.toString(),
+                        rating = txtRatingValue,
+                        title = editTextTextPersonName3.text.toString()
+                    )
+                ).observe(requireActivity(), Observer {
+                    progress_review.visibility = View.GONE
+                    printToast(this.requireContext(), it?.message.toString())
+                    if (it?.status.equals(Constants.SUCCESS)) {
+                        requireActivity().onBackPressed()
+                    }
+                })
+            }
 
         }
 
