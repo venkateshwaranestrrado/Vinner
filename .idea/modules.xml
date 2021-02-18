@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Vinner.iml" filepath="$PROJECT_DIR$/.idea/modules/Vinner.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FORTSDKv1.7/Vinner.FORTSDKv1.7.iml" filepath="$PROJECT_DIR$/.idea/modules/FORTSDKv1.7/Vinner.FORTSDKv1.7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FORTSDKv1.8/Vinner.FORTSDKv1.8.iml" filepath="$PROJECT_DIR$/.idea/modules/FORTSDKv1.8/Vinner.FORTSDKv1.8.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Vinner.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Vinner.app.iml" />
     </modules>
   </component>

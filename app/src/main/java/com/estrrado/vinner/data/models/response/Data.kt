@@ -40,6 +40,10 @@ class Data {
     @Expose
     var regions: List<Region>? = null
 
+    @SerializedName("profiledata")
+    @Expose
+    var profiledata: Profiledata? = null
+
     @SerializedName("access_token")
     @Expose
     private var accessToken: String? = null
@@ -63,6 +67,10 @@ class Data {
     @SerializedName("cartcount")
     @Expose
     var cartcount: String? = null
+
+    @SerializedName("notify_count")
+    @Expose
+    var notify_count: Int = 0
 
     @SerializedName("cartid")
     @Expose

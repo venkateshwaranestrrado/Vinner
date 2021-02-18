@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 
 class Profiledata {
+
     @SerializedName("name")
     @Expose
     var name: String? = null

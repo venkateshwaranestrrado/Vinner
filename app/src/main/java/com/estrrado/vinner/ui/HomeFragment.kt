@@ -22,6 +22,7 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
+import com.estrrado.vinner.activity.VinnerActivity.Companion.notify_count
 import com.estrrado.vinner.activity.VinnerActivity.Companion.shareProdId
 import com.estrrado.vinner.adapters.CategoryAdapter
 import com.estrrado.vinner.adapters.ProductsAdapter
@@ -36,6 +37,8 @@ import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.FROM_LOGIN
+import com.estrrado.vinner.helper.Constants.PROFILENAME
+import com.estrrado.vinner.helper.Constants.PROFILE_IMAGE
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.logo
 import com.estrrado.vinner.helper.Constants.regions
@@ -186,6 +189,18 @@ class HomeFragment : Fragment(), AlertCallback {
                             Preferences.put(activity, CART_ID, it.data!!.cartid.toString())
                         else
                             Preferences.put(activity, CART_ID, "0")
+
+                        Preferences.put(activity, PROFILE_IMAGE, "")
+                        Preferences.put(activity, PROFILENAME, "")
+                        it.data?.profiledata?.let { profiledata ->
+                            profiledata.image?.let {
+                                Preferences.put(activity, PROFILE_IMAGE, it)
+                            }
+                            profiledata.name?.let {
+                                Preferences.put(activity, PROFILENAME, it)
+                            }
+                        }
+
                         (activity as VinnerActivity).refreshBadgeView(it.data!!.cartcount)
                         progresshome.visibility = View.GONE
                         regions = it!!.data!!.regions!!
@@ -210,6 +225,15 @@ class HomeFragment : Fragment(), AlertCallback {
                             .load(logo)
                             .thumbnail(0.1f)
                             .into(img_logo)
+
+                        notify_count = it.data.notify_count
+                        if (notify_count > 0) {
+                            notifyCount.visibility = View.VISIBLE
+                            notifyCount.text = notify_count.toString()
+                        } else {
+                            notifyCount.visibility = View.GONE
+                        }
+
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             progresshome.visibility = View.GONE

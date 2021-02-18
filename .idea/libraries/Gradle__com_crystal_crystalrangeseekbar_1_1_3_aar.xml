@@ -1,17 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.crystal:crystalrangeseekbar:1.1.3@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a6e250661a44fcecd7ac79febb6503a4/jetified-crystalrangeseekbar-1.1.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a6e250661a44fcecd7ac79febb6503a4/jetified-crystalrangeseekbar-1.1.3/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f567daf127ef462d512bad9cefbe3702/jetified-crystalrangeseekbar-1.1.3/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f567daf127ef462d512bad9cefbe3702/jetified-crystalrangeseekbar-1.1.3/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f567daf127ef462d512bad9cefbe3702/jetified-crystalrangeseekbar-1.1.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c883c6cd3fe90b5fa09310dc05076a17/jetified-crystalrangeseekbar-1.1.3/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c883c6cd3fe90b5fa09310dc05076a17/jetified-crystalrangeseekbar-1.1.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c883c6cd3fe90b5fa09310dc05076a17/jetified-crystalrangeseekbar-1.1.3/res" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1cd68b7d7ba22f52f78cce0eb377f36/jetified-crystalrangeseekbar-1.1.3/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1cd68b7d7ba22f52f78cce0eb377f36/jetified-crystalrangeseekbar-1.1.3/AndroidManifest.xml" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b1cd68b7d7ba22f52f78cce0eb377f36/jetified-crystalrangeseekbar-1.1.3/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47bf3d56082b34588a3fb74a41abe71f/jetified-crystalrangeseekbar-1.1.3/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47bf3d56082b34588a3fb74a41abe71f/jetified-crystalrangeseekbar-1.1.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47bf3d56082b34588a3fb74a41abe71f/jetified-crystalrangeseekbar-1.1.3/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.crystal/crystalrangeseekbar/1.1.3/ef177cc678032843ea4b18b1d3a4d60ad8f45ccb/crystalrangeseekbar-1.1.3-javadoc.jar!/" />

@@ -24,6 +24,7 @@ class VinnerActivity : AppCompatActivity() {
 
     companion object {
         var shareProdId = ""
+        var notify_count = 0
     }
 
     var notificationBadgeTextView: TextView? = null
@@ -114,9 +115,9 @@ class VinnerActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.reqCode && resultCode == Activity.RESULT_OK) {
+        /*if (requestCode == Constants.reqCode && resultCode == Activity.RESULT_OK) {
             selectMenu()
-        }
+        }*/
     }
 
 }

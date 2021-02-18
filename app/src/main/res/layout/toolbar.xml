@@ -51,9 +51,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/cartCount"
-        android:layout_width="13dp"
-        android:layout_height="13dp"
+        android:id="@+id/notifyCount"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:background="@drawable/notification_background"
         android:gravity="center"
         android:text="0"

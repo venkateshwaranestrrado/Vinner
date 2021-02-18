@@ -13,8 +13,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 4
-        versionName "1.1.1.5"
+        versionCode 5
+        versionName "1.1.1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,8 +46,9 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':FORTSDKv1.7')
-//    implementation project(path: ':tedbottompicker')
+
+    implementation project(path: ':FORTSDKv1.8')
+
     def nav_version = "2.3.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

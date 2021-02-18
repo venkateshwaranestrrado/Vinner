@@ -5,6 +5,9 @@ import com.estrrado.vinner.data.models.response.AddressList
 
 object Constants {
 
+    const val PROFILE_IMAGE = "IMAGE"
+    const val PROFILENAME = "PROFILENAME"
+
     const val FROM = "FROM"
     const val HOME = "Home"
     const val WORK = "work"
@@ -48,7 +51,7 @@ object Constants {
     const val WRITE_A_REVIEW = "Write a Review"
     const val PENDING = "pending"
     const val ON_DELIVERY = "on-delivery"
-    const val shareLink = "https://vinshopify.com/share"
+    const val shareLink = "https://vinshopify.com/"
     var addressSelected: AddressList? = null
     val reqCode: Int = 1
     val DO_YOU_CONFIRM_TO_CHECK_OUT: String = "Do you confirm to check out the items?"

@@ -40,7 +40,6 @@ import webconnect.com.webconnect.WebConnect
 import webconnect.com.webconnect.listener.OnWebCallback
 import java.security.MessageDigest
 
-
 /**
  * this activity is PayFort Demo
  * you need to download FORTSDK and add dependencies
@@ -76,7 +75,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
             )
         ).get(HomeVM::class.java)
         deviceId = FortSdk.getDeviceId(this)
-//        deviceId = "sdjabdgvhgchkahsbdausiydfhuscnjihoiuhodivoduih"
 
         initFortCallback()
 
@@ -204,8 +202,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         p0: MutableMap<String, Any>?,
                         p1: MutableMap<String, Any>?
                     ) {
-
-
                         vModel!!.PaymentStatus(
                             RequestModel(
                                 accessToken = Preferences.get(this@PayFortActivity, ACCESS_TOKEN),
@@ -219,7 +215,10 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                 operatorId = getIntent().getExtras()!!.getString(OPERATOR_ID),
                                 country = getIntent().getExtras()!!.getString(COUNTRY),
                                 city = getIntent().getExtras()!!.getString(CITY),
-                                name = getIntent().getExtras()!!.getString(NAME)
+                                name = getIntent().getExtras()!!.getString(NAME),
+                                payment_details = "Payfort ID:" + p1?.get("fort_id")
+                                    .toString() + " Payment Option:" + p1?.get("payment_option")
+                                    .toString()
 
                             )
                         ).observe(this@PayFortActivity,

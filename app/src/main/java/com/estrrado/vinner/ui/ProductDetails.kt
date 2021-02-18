@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,7 +91,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
         progressproductdetail.visibility = View.VISIBLE
         productId = arguments?.getString(PRODUCT_ID, "").toString()
 
-        Log.e("productId", productId.toString())
+        //Log.e("productId", productId.toString())
 
         pageTitle.setText("Product Detail")
         initControl()
@@ -278,10 +277,10 @@ class ProductDetails : Fragment(), View.OnClickListener {
             productDescription.text = product.category
             price.text = product.currency + " " + priceFormat(product.price)
 
-            tvWeight.text = "Product Weight : " + product.weight
-            tvLength.text = "Product Length : " + product.length
-            tvWidth.text = "Product Width : " + product.width
-            tvHeight.text = "Product Height : " + product.height
+            tvWeight.text = "Product Weight : " + product.weight + " " + product.weight_unit
+            tvLength.text = "Product Length : " + product.length + " " + product.dim_unit
+            tvWidth.text = "Product Width : " + product.width + " " + product.dim_unit
+            tvHeight.text = "Product Height : " + product.height + " " + product.dim_unit
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 tvdescription.setText(

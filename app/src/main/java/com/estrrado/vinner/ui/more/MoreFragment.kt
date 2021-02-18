@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,10 +24,11 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.ClickListener
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Constants.PROFILENAME
+import com.estrrado.vinner.helper.Constants.PROFILE_IMAGE
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Preferences.PROFILEIMAGE
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -67,14 +69,23 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initControl()
         textView5.text = "Settings"
         (activity as VinnerActivity).open()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        vModel!!.getProfile(
+
+        initControl()
+
+        if (VinnerActivity.notify_count > 0) {
+            notifyCount.visibility = View.VISIBLE
+            notifyCount.text = VinnerActivity.notify_count.toString()
+        } else {
+            notifyCount.visibility = View.GONE
+        }
+
+        /*vModel!!.getProfile(
             RequestModel(accessToken = Preferences.get(activity, ACCESS_TOKEN))
 
         ).observe(requireActivity(),
@@ -82,6 +93,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
                 if (it!!.status == "success") {
                     Glide.with(this)
                         .load(it.data!!.path)
+                        .placeholder(R.drawable.profile)
                         .thumbnail(0.1f)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -89,7 +101,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
                     tvProfileName.setText(it.data!!.name)
 
                 }
-            })
+            })*/
 
         terms.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -181,10 +193,14 @@ class MoreFragment : Fragment(), View.OnClickListener {
     }
 
     private fun initControl() {
-        Glide.with(this.requireActivity())
-            .load(Preferences.get(activity, PROFILEIMAGE))
+        Glide.with(this)
+            .load(Preferences.get(activity, PROFILE_IMAGE))
+            .placeholder(R.drawable.profile)
             .thumbnail(0.1f)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(ivprofilemorephoto)
+        tvProfileName.setText(Preferences.get(activity, PROFILENAME))
         profilelyt.setOnClickListener(this)
         myorderslyt.setOnClickListener(this)
         deliveryaddressfragment.setOnClickListener(this)

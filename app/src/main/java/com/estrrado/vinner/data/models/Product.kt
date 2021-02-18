@@ -78,4 +78,12 @@ class Product {
     @Expose
     var height: String? = null
 
+    @SerializedName("weight_unit")
+    @Expose
+    var weight_unit: String? = null
+
+    @SerializedName("dim_unit")
+    @Expose
+    var dim_unit: String? = null
+
 }

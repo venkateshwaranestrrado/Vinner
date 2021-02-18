@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: artifacts:FORTSDKv1.8:unspecified">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/FORTSDKv1.8/build/.transforms/3e9171b74ab585e4be42d25e3228a493/jetified-FORTSDKv1.8/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/FORTSDKv1.8/build/.transforms/3e9171b74ab585e4be42d25e3228a493/jetified-FORTSDKv1.8/res" />
+      <root url="file://$PROJECT_DIR$/FORTSDKv1.8/build/.transforms/3e9171b74ab585e4be42d25e3228a493/jetified-FORTSDKv1.8/AndroidManifest.xml" />
+      <root url="jar://$PROJECT_DIR$/FORTSDKv1.8/build/.transforms/3e9171b74ab585e4be42d25e3228a493/jetified-FORTSDKv1.8/jars/libs/fort_android_sdk_dependancies_v5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

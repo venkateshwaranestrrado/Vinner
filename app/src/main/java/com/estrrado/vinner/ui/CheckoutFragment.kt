@@ -1,8 +1,8 @@
 package com.estrrado.vinner.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +31,6 @@ import com.estrrado.vinner.helper.Constants.NAME
 import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
-import com.estrrado.vinner.helper.Constants.STATUS
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
 import com.estrrado.vinner.helper.Constants.reqCode
@@ -79,7 +78,6 @@ class CheckoutFragment : Fragment(), AlertCallback {
                 )
             )
         ).get(HomeVM::class.java)
-
 
         val root = inflater.inflate(R.layout.fragment_checkout, container, false)
         operatorId = arguments?.getString(OPERATOR_ID)!!
@@ -140,12 +138,10 @@ class CheckoutFragment : Fragment(), AlertCallback {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (data != null && data.getStringArrayExtra(STATUS) != null) {
-            val message = data.getStringExtra(STATUS)
-            if (message.equals(SUCCESS))
-                requireView().findNavController()
-                    .navigate(R.id.action_checkoutFragment_to_order_list)
+        (activity as VinnerActivity).refreshBadgeView("0")
+        if (requestCode == reqCode && resultCode == Activity.RESULT_OK) {
+            requireView().findNavController()
+                .navigate(R.id.action_checkoutFragment_to_order_list)
         }
     }
 
@@ -173,12 +169,9 @@ class CheckoutFragment : Fragment(), AlertCallback {
         bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
         bundle.putString(NAME, arguments?.getString(NAME))
         bundle.putString(Constants.CCURRENCY, arguments?.getString(Constants.CCURRENCY))
-
-        Log.e("bundle ", bundle.toString())
-
         val intent = Intent(activity, PayFortActivity::class.java)
         intent.putExtras(bundle)
-        requireActivity().startActivityForResult(intent, reqCode)
+        startActivityForResult(intent, reqCode)
     }
 
     private fun cod() {
@@ -223,5 +216,6 @@ class CheckoutFragment : Fragment(), AlertCallback {
 
             })
     }
+
 
 }

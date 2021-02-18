@@ -1,2 +1,8 @@
 alias: vinner
 password: vinVinner
+
+
+Certificate fingerprints:
+SHA1: 46:6D:8B:8C:7C:66:3F:C1:E9:6A:E3:40:EC:A3:00:5D:67:33:27:97
+SHA256: D9:BA:57:21:E2:F7:24:F8:A9:95:EF:23:0E:AD:2D:F3:BD:1C:E6:19:65:D6:95:31:59:5E:63:5F:E3:42:75:90
+Signature algorithm name: SHA256withRSA

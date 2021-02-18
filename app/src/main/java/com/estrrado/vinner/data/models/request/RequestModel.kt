@@ -1,7 +1,6 @@
 package com.estrrado.vinner.data.models.request
 
 import okhttp3.MultipartBody
-import retrofit2.http.Field
 
 class RequestModel(
     var phoneNumber: String? = null,
@@ -59,13 +58,13 @@ class RequestModel(
     var access_token: String? = null,
     var type_detail: String? = null,
     var product_id: Int? = null,
+    var payment_details: String? = null,
 
     var order_id: String? = null,
     var rating: String? = null,
     var title: String? = null,
     var review: String? = null,
     var review_id: String? = null
-
 
 
 )

@@ -45,7 +45,6 @@ class BrowseFragment : Fragment(), AlertCallback {
     var spnrSelected: Int = 0
     var spnrPosition: Int = 0
 
-
     companion object {
         fun newInstance() = BrowseFragment()
     }
@@ -75,6 +74,13 @@ class BrowseFragment : Fragment(), AlertCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (VinnerActivity.notify_count > 0) {
+            notifyCount.visibility = View.VISIBLE
+            notifyCount.text = VinnerActivity.notify_count.toString()
+        } else {
+            notifyCount.visibility = View.GONE
+        }
 
         recycle_cat.setLayoutManager(GridLayoutManager(context, 4))
         recycle_industry.setLayoutManager(GridLayoutManager(context, 3))

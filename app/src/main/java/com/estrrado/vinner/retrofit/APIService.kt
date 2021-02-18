@@ -311,7 +311,8 @@ interface APIService {
         @Field("operator_id") operator_id: String?,
         @Field("country_name") country_name: String?,
         @Field("city") city: String?,
-        @Field("name") name: String?
+        @Field("name") name: String?,
+        @Field("payment_details") payment_details: String?
     ): Observable<Model>
 
     @FormUrlEncoded

@@ -155,6 +155,9 @@
         android:id="@+id/addAddress"
         android:name="com.estrrado.vinner.ui.more.AddAddress">
 
+        <action
+            android:id="@+id/action_addAddress_to_GMapFragment"
+            app:destination="@id/GMapFragment" />
     </fragment>
     <fragment
         android:id="@+id/address_list"
@@ -225,6 +228,11 @@
         android:id="@+id/allNotification"
         android:name="com.estrrado.vinner.ui.AllNotification"
         android:label="AllNotification" />
+    <fragment
+        android:id="@+id/GMapFragment"
+        android:name="com.estrrado.vinner.ui.GMapFragment"
+        android:label="fragment_g_map"
+        tools:layout="@layout/fragment_g_map" />
 
 
 </navigation>

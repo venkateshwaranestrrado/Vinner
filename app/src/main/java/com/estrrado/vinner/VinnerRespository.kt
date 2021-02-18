@@ -551,7 +551,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.operatorId,
             input.country,
             input.city,
-            input.name
+            input.name,
+            input.payment_details
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

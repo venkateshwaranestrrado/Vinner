@@ -126,8 +126,36 @@ class EditProfile : Fragment() {
                             progressprofile.visibility = View.GONE
                             Validation.printToast(requireContext(), it!!.message.toString())
                             if (it.status.equals(SUCCESS)) {
-                                //getProfile()
-                                requireActivity().onBackPressed()
+                                vModel!!.getProfile(
+                                    RequestModel(
+                                        accessToken = Preferences.get(
+                                            activity,
+                                            ACCESS_TOKEN
+                                        )
+                                    )
+                                ).observe(requireActivity(),
+                                    Observer {
+                                        if (it!!.status == "success") {
+                                            it.data?.let {
+                                                it.path?.let {
+                                                    Preferences.put(
+                                                        activity,
+                                                        Constants.PROFILE_IMAGE,
+                                                        it
+                                                    )
+                                                }
+                                                it.name?.let {
+                                                    Preferences.put(
+                                                        activity,
+                                                        Constants.PROFILENAME,
+                                                        it
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        requireActivity().onBackPressed()
+                                    })
+
                             }
                         })
                     }
@@ -149,6 +177,7 @@ class EditProfile : Fragment() {
                         Glide.with(this)
                             .load(it.data!!.path)
                             .thumbnail(0.1f)
+                            .placeholder(R.drawable.profile)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(ivprofilephoto)
@@ -218,10 +247,9 @@ class EditProfile : Fragment() {
         ) {
             ImagePicker.with(this)
                 .crop()                    //Crop image(Optional), Check Customization for more option
-                .compress(1024)            //Final image size will be less than 1 MB(Optional)
+                .compress(256)            //Final image size will be less than 1 MB(Optional)
 //                .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
                 .start()
-
         } else {
             ActivityCompat.requestPermissions(requireActivity(), neededPermissions, 10003)
         }

@@ -1,6 +1,7 @@
 package com.estrrado.vinner.ui.more
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.IntentSender
@@ -22,13 +23,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.activity.GMapActivity
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
-import com.estrrado.vinner.helper.Constants.NOT_SERVING_IN_THIS_REGION
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
@@ -41,7 +42,6 @@ import kotlinx.android.synthetic.main.toolbar_back.*
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 class AddAddress : Fragment(), LocationListener {
     var vModel: HomeVM? = null
@@ -92,6 +92,7 @@ class AddAddress : Fragment(), LocationListener {
             initialiseEdit()
         } else
             pageTitle.text = "Add Address"
+
         locationRequest = LocationRequest().apply {
             // Sets the desired interval for active location updates. This interval is inexact. You
             // may not receive updates at all if no location sources are available, or you may
@@ -119,14 +120,11 @@ class AddAddress : Fragment(), LocationListener {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
-
-//                        if (locationResult?.lastLocation != null) {
-
-                // Normally, you want to save a new location to a database. We are simplifying
-                // things a bit and just saving it as a local variable, as we only need it again
-                // if a Notification is created (when user navigates away from app).
-//                            currentLocation = locationResult.lastLocation
-//                        }
+                locationResult?.let {
+                    if (it.locations.isNotEmpty()) {
+                        getAddress(it.locations.last().latitude, it.locations.last().longitude)
+                    }
+                }
             }
         }
 
@@ -147,11 +145,11 @@ class AddAddress : Fragment(), LocationListener {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        fusedLocationClient.requestLocationUpdates(
+        /*fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
             Looper.myLooper()
-        )
+        )*/
     }
 
     private fun initialiseEdit() {
@@ -422,9 +420,16 @@ class AddAddress : Fragment(), LocationListener {
                     .addOnSuccessListener { location: Location? ->
                         if (location != null) {
                             getAddress(location.latitude, location.longitude)
-                        } else printToast(requireContext(), "Location not available")
+                        } else {
+                            fusedLocationClient.requestLocationUpdates(
+                                locationRequest,
+                                locationCallback,
+                                Looper.myLooper()
+                            )
+                        }
                     }
                 fusedLocationClient.lastLocation
+
             }
         } else isGPSEnabled()
     }
@@ -471,12 +476,20 @@ class AddAddress : Fragment(), LocationListener {
         val geocoder = Geocoder(context, Locale.getDefault())
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1)
-            edt_city.setText(addresses[0].locality)
-            val state = addresses[0].adminArea
-            txt_country.setText(addresses[0].countryCode)
-            tv_zipcode.setText(addresses[0].postalCode)
-            tv_roadname.setText(addresses[0].featureName)
-            validateRegion(addresses[0].countryCode)
+            //edt_city.setText(addresses[0].locality)
+            //txt_country.setText(addresses[0].countryCode)
+            //tv_zipcode.setText(addresses[0].postalCode)
+            //tv_roadname.setText(addresses[0].featureName)
+            //validateRegion(addresses[0].countryCode)
+            val intent = Intent(requireActivity(), GMapActivity::class.java)
+            intent.putExtra("latitude", addresses[0].latitude)
+            intent.putExtra("longitude", addresses[0].longitude)
+            intent.putExtra("city", addresses[0].locality)
+            intent.putExtra("country", addresses[0].countryCode)
+            intent.putExtra("zipcode", addresses[0].postalCode)
+            intent.putExtra("roadname", addresses[0].featureName)
+            intent.putExtra("validateRegion", validateRegion(addresses[0].countryCode))
+            startActivityForResult(intent, 1021)
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -494,6 +507,13 @@ class AddAddress : Fragment(), LocationListener {
                     getLocation()
                 }
             }, 1500)
+        } else if (requestCode == 1021) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                edt_city.setText(data.getStringExtra("city"))
+                txt_country.setText(data.getStringExtra("country"))
+                tv_zipcode.setText(data.getStringExtra("zipcode"))
+                tv_roadname.setText(data.getStringExtra("roadname"))
+            }
         }
     }
 
@@ -512,7 +532,6 @@ class AddAddress : Fragment(), LocationListener {
                 }
             }
         }
-        printToast(requireContext(), NOT_SERVING_IN_THIS_REGION)
         return false
     }
 

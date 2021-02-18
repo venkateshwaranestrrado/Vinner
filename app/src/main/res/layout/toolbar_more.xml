@@ -9,19 +9,38 @@
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     tools:targetApi="p">
 
-    <ImageView
-        android:id="@+id/notifyView"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="@dimen/_14sdp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+    <RelativeLayout
+        android:id="@+id/llnotify"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_notification"
-        tools:ignore="VectorDrawableCompat" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/notifyView"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="@dimen/_14sdp"
+            app:srcCompat="@drawable/ic_notification"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/notifyCount"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/notification_background"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/colorPrimary"
+            android:textSize="7sp"
+            android:visibility="gone"
+            tools:ignore="VectorDrawableCompat" />
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/searchtool"
@@ -33,7 +52,7 @@
         android:layout_marginBottom="8dp"
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/notifyView"
+        app:layout_constraintEnd_toStartOf="@+id/llnotify"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_search"
         tools:ignore="VectorDrawableCompat" />
@@ -48,11 +67,11 @@
         android:textColor="@color/colorPrimary"
         android:textSize="7sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/notifyView"
-        app:layout_constraintEnd_toEndOf="@+id/notifyView"
+        app:layout_constraintBottom_toBottomOf="@+id/llnotify"
+        app:layout_constraintEnd_toEndOf="@+id/llnotify"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/notifyView"
-        app:layout_constraintTop_toTopOf="@+id/notifyView"
+        app:layout_constraintStart_toStartOf="@+id/llnotify"
+        app:layout_constraintTop_toTopOf="@+id/llnotify"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="VectorDrawableCompat" />
 

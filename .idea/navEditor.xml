@@ -8,6 +8,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="GMapFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1793" />
+                            <option name="y" value="-61" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="addAddress">
                     <value>
                       <LayoutPositions>
@@ -49,6 +61,30 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="allNotification">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1445" />
+                            <option name="y" value="1273" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="allReviews">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -106,12 +142,22 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_navigation_browse_to_allNotification">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_navigation_browse_to_industrycategory">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="action_navigation_browse_to_productCategory">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigation_browse_to_searchFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -138,6 +184,11 @@
                               </value>
                             </entry>
                             <entry key="action_navigation_cart_to_checkoutFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigation_cart_to_navigation_home">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -208,12 +259,22 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_navigation_home_to_allNotification">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_navigation_home_to_productCategory">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
                             <entry key="action_navigation_home_to_productListFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigation_home_to_searchFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -239,7 +300,22 @@
                                 <LayoutPositions />
                               </value>
                             </entry>
+                            <entry key="action_navigation_more_to_allNotification">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigation_more_to_navigation_track">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_navigation_more_to_orderList">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_navigation_more_to_searchFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -279,6 +355,15 @@
                             <option name="y" value="1856" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigation_product_to_allReviews">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -317,6 +402,15 @@
                             <option name="y" value="12" />
                           </Point>
                         </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_navigation_track_to_trackOrderDetail">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
+                        </option>
                       </LayoutPositions>
                     </value>
                   </entry>
@@ -328,6 +422,15 @@
                             <option name="x" value="1720" />
                             <option name="y" value="368" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_orderDetail_to_navigation_product">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -429,6 +532,18 @@
                               </value>
                             </entry>
                           </map>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="trackOrderDetail">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
+                          </Point>
                         </option>
                       </LayoutPositions>
                     </value>
