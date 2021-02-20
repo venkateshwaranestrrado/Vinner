@@ -476,11 +476,6 @@ class AddAddress : Fragment(), LocationListener {
         val geocoder = Geocoder(context, Locale.getDefault())
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1)
-            //edt_city.setText(addresses[0].locality)
-            //txt_country.setText(addresses[0].countryCode)
-            //tv_zipcode.setText(addresses[0].postalCode)
-            //tv_roadname.setText(addresses[0].featureName)
-            //validateRegion(addresses[0].countryCode)
             val intent = Intent(requireActivity(), GMapActivity::class.java)
             intent.putExtra("latitude", addresses[0].latitude)
             intent.putExtra("longitude", addresses[0].longitude)

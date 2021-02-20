@@ -25,7 +25,7 @@
         android:id="@+id/txtError"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true"
         android:background="#99000000"
         android:gravity="center"
         android:text="Currently we are not serving in this region"
@@ -44,5 +44,29 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/imgMark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/circle_map"
+        android:padding="60dp"
+        android:src="@drawable/ic_round_location_on"
+        app:tint="@color/yellow"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/txtCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/imgMark"
+        android:layout_alignTop="@id/imgMark"
+        android:layout_alignEnd="@id/imgMark"
+        android:layout_marginTop="36dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

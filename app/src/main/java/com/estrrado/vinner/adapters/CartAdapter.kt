@@ -44,6 +44,7 @@ class CartAdapter(
             .load(dataList?.get(position)!!.productImage)
             .thumbnail(0.1f)
             .into(holder.image)
+
         holder.txtPlus.setOnClickListener {
             dataList?.get(position)?.let {
                 if (it.productQuantity!!.toInt() >= it.current_stock!!) {
@@ -61,12 +62,16 @@ class CartAdapter(
         }
 
         holder.txtMinus.setOnClickListener {
-            changeQty(
-                dataList?.get(position)!!.productId.toString(),
-                false,
-                holder.txtQty,
-                position
-            )
+            dataList?.get(position)!!.productQuantity?.let {
+                if (it.toInt() > 1) {
+                    changeQty(
+                        dataList?.get(position)!!.productId.toString(),
+                        false,
+                        holder.txtQty,
+                        position
+                    )
+                }
+            }
         }
 
         holder.txtRemove.setOnClickListener {
