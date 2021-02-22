@@ -44,6 +44,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class AddAddress : Fragment(), LocationListener {
+
     var vModel: HomeVM? = null
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest

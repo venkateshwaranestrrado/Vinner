@@ -148,7 +148,7 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 if (product_url != "") {
                     val shareIntent = Intent(Intent.ACTION_SEND)
                     shareIntent.type = "text/plain"
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "VINNER")
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vinshopify")
                     val shareMessage = product_url
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
                     startActivity(Intent.createChooser(shareIntent, "Share VINNER Product using"))
@@ -293,15 +293,14 @@ class ProductDetails : Fragment(), View.OnClickListener {
                 tvdescription.setText(Html.fromHtml(product.description.toString()));
             }
 
-            //if (detail.getReviews()!!.size > 0) {
-            ratingBar2.rating = product.rating!!.toFloat()
-            rating_total.rating = product.rating!!.toFloat()
             txt_rating_count.text = ""
             txt_rating_total.text = ""
             ratingcount = product.reatedCustomers + " Customer ratings"
             product.rating?.let {
                 if (it != "") {
                     it.toDouble().also {
+                        ratingBar2.rating = it.toFloat()
+                        rating_total.rating = it.toFloat()
                         ratingtotal =
                             (if (it > it.toInt()) String.format(
                                 "%s",

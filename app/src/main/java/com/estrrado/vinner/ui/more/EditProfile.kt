@@ -177,7 +177,6 @@ class EditProfile : Fragment() {
                         Glide.with(this)
                             .load(it.data!!.path)
                             .thumbnail(0.1f)
-                            .placeholder(R.drawable.profile)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .into(ivprofilephoto)

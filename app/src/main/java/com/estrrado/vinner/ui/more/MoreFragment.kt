@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,12 +114,17 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
         share.setOnClickListener(object : ClickListener() {
             override fun onOneClick(v: View) {
-                val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.type = "text/plain"
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "VINNER")
-                val shareMessage = "${Constants.shareLink}"
-                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
-                startActivity(Intent.createChooser(shareIntent, "Share VINNER using"))
+                try {
+                    val shareIntent = Intent(Intent.ACTION_SEND)
+                    shareIntent.type = "text/plain"
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vinshopify")
+                    val shareMessage =
+                        "https://vinshopify.page.link/N8fh"
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
+                    startActivity(Intent.createChooser(shareIntent, "choose one"))
+                } catch (e: Exception) {
+                    //e.toString();
+                }
             }
         })
 
@@ -195,9 +199,7 @@ class MoreFragment : Fragment(), View.OnClickListener {
     private fun initControl() {
         Glide.with(this)
             .load(Preferences.get(activity, PROFILE_IMAGE))
-            .placeholder(R.drawable.profile)
             .thumbnail(0.1f)
-            .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(ivprofilemorephoto)
         tvProfileName.setText(Preferences.get(activity, PROFILENAME))
@@ -206,30 +208,18 @@ class MoreFragment : Fragment(), View.OnClickListener {
         deliveryaddressfragment.setOnClickListener(this)
     }
 
-
     override fun onClick(v: View?) {
-
         when (v!!.id) {
-
             R.id.profilelyt -> {
-
                 Navigation.findNavController(v).navigate(R.id.navigation_editprofile)
-
             }
             R.id.myorderslyt -> {
-
                 Navigation.findNavController(v).navigate(R.id.orderList)
-
             }
             R.id.deliveryaddressfragment -> {
                 Navigation.findNavController(v).navigate(R.id.address_list)
-
             }
-
-
         }
-
-
     }
 
 
