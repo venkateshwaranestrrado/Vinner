@@ -24,7 +24,7 @@
     <string name="related_products">Related Products</string>
     <string name="debit_credit_card">Debit / Credit Card</string>
     <string name="visa_card">Visa Card</string>
-    <string name="paypal">Payfort</string>
+    <string name="paypal">Credit / Debit</string>
     <string name="hint_resource">Products</string>
     <string-array name="city">
         <item>City</item>

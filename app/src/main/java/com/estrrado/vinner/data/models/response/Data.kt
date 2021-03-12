@@ -5,7 +5,6 @@ import com.estrrado.vinner.data.models.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-
 class Data {
 
     @SerializedName("notifications")

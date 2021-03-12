@@ -1,12 +1,13 @@
 package com.estrrado.vinner.retrofit
 
 enum class WebConfigPayFort {
-    PUBLISH{
+
+    PUBLISH {
         override fun getLiveUrl() = "https://paymentservices.payfort.com/"
-    },TEST{
+    },
+    TEST {
         override fun getLiveUrl() = "https://sbpaymentservices.payfort.com/"
     };
 
-
-    abstract fun getLiveUrl()  : String
+    abstract fun getLiveUrl(): String
 }

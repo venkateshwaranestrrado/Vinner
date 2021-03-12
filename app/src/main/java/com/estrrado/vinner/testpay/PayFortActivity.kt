@@ -60,6 +60,20 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     val TAG = "payTag"
     lateinit var deviceId: String
 
+    //Demo
+//    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
+//    val merchant_identifier = "879b45fb"
+//    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
+//    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
+//    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
+
+    //Live
+    val access_code = "6lUbMI3TtImE92epfeJ1"
+    val merchant_identifier = "WaGobKuL"
+    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
+    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
+    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -94,40 +108,36 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
         val param = linkedMapOf<String, String>()
 
-        param.put("access_code", "WGG6Avj6KSL4SX4zfWGQ")
+        param.put("access_code", access_code)
         param.put("device_id", deviceId)
         param.put("language", "en")
         /**
          * you should get 'merchant_identifier' from your payfort account
          * */
-        param.put("merchant_identifier", "879b45fb")
+        param.put("merchant_identifier", merchant_identifier)
         param.put("service_command", "SDK_TOKEN")
-
 
         val sb = StringBuilder()
         /**
          * change 'Hello' by what you got from payFort.
         you will find it in your account*/
-        sb.append("27aVEaXzC8qDf5aHJhze6o?}")
+        sb.append(signature1)
         param.forEach { (k, v) ->
             sb.append("$k=$v")
-//            sb.append(k)
-//            sb.append("=")
-//            sb.append(v)
         }
-        sb.append("27aVEaXzC8qDf5aHJhze6o?}")
+        sb.append(signature2)
         param.put("signature", getHashString(sb.toString()))
-
         /**
          * calling api https://sbpaymentservices.payfort.com/FortAPI/paymentApi
          *
          * */
+        Log.e("param", param.toString())
         WebConnect.with(this, "paymentApi")
             .post()
             /**
              * put url depending on the Environment you targeting
              * */
-            .baseUrl("https://sbpaymentservices.payfort.com/FortAPI/")
+            .baseUrl(baseUrl)
             .bodyParam(param)
             .taskId(11)
             .callback(WebCallback(this, this), ResponsePay::class.java, ErrorModel::class.java)
@@ -183,9 +193,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         hash.put("token_name", "8A70320AF209")
         hash.put("payment_option", "VISA")
 
-
         model.requestMap = hash.toMap()
-
 
         /**
          * start SDK
@@ -196,7 +204,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         FortSdk
             .getInstance()
             .registerCallback(this, model,
-                FortSdk.ENVIRONMENT.TEST, 5,
+                FortSdk.ENVIRONMENT.PRODUCTION, 5,
                 fortCallback, true, object : FortInterfaces.OnTnxProcessed {
                     override fun onSuccess(
                         p0: MutableMap<String, Any>?,
@@ -223,7 +231,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                             )
                         ).observe(this@PayFortActivity,
                             Observer {
-                                printToast(applicationContext, it!!.message.toString())
+                                printToast(applicationContext, "1 = " + it!!.message.toString())
                                 if (it?.status.equals(SUCCESS)) {
                                     val intent = Intent()
                                     intent.putExtra(STATUS, SUCCESS)
@@ -239,9 +247,9 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                         )
                                         this@PayFortActivity.finish()
                                     } else {
-                                        printToast(this@PayFortActivity, it?.message!!)
+                                        printToast(this@PayFortActivity, "2 = " + it?.message!!)
                                     }
-                                    printToast(applicationContext, it?.message.toString())
+                                    printToast(applicationContext, "3 = " + it?.message.toString())
                                 }
                             })
                         Log.d(TAG, "onSuccess")
@@ -287,13 +295,13 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         fortCallback!!.onActivityResult(requestCode, resultCode, data);
     }
 
-
     //region apis callback
     override fun <T : Any?> onSuccess(`object`: T?, taskId: Int) {
 //        textOne.text = "TRY"
 
         if (`object` is ResponsePay) {
             if (`object`.sdk_token.isEmpty()) {
+                Log.e("123", `object`.response_message)
                 Toast.makeText(this, "Error: ${`object`.response_message}", Toast.LENGTH_LONG)
                     .show()
             } else {
@@ -305,9 +313,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     }
 
     override fun <T : Any?> onError(`object`: T?, error: String?, taskId: Int) {
-//        textOne.text = "TRY"
-        Toast.makeText(this, "onError $error", Toast.LENGTH_SHORT).show()
-
+        Toast.makeText(this, "onError is $error", Toast.LENGTH_SHORT).show()
     }
 
     //endregion

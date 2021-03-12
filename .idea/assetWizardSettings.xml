@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../sdk/icons/material/materialiconsround/arrow_back_ios/round_arrow_back_ios_24.xml" />
+                                      <entry key="url" value="file:/$PROJECT_DIR$/../../../sdk/icons/material/materialiconsround/arrow_forward_ios/round_arrow_forward_ios_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -29,7 +29,7 @@
                         <option name="values">
                           <map>
                             <entry key="color" value="797575" />
-                            <entry key="outputName" value="ic_round_arrow_back" />
+                            <entry key="outputName" value="ic_round_arrow_forward" />
                             <entry key="sourceFile" value="D:\Venkateshwaran\Estrrado\Vinner" />
                           </map>
                         </option>
