@@ -7,6 +7,7 @@ object Constants {
 
     const val PROFILE_IMAGE = "IMAGE"
     const val PROFILENAME = "PROFILENAME"
+    const val PROFILEMAIL = "PROFILEMAIL"
 
     const val FROM = "FROM"
     const val HOME = "Home"
@@ -34,6 +35,7 @@ object Constants {
     const val ADDDRESS_TYPE = "ADDDRESS_TYPE"
     const val LANDMARK = "LANDMARK"
     const val NAME = "NAME"
+    const val EMAIL = "EMAIL"
     const val CCURRENCY = "CCURRENCY"
     const val CITY = "CITY"
     const val COUNTRY = "COUNTRY"

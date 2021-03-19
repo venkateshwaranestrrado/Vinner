@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,7 @@ import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.CITY
 import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.DO_YOU_CONFIRM_TO_CHECK_OUT
+import com.estrrado.vinner.helper.Constants.EMAIL
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
@@ -148,7 +150,11 @@ class CheckoutFragment : Fragment(), AlertCallback {
     override fun alertSelected(isSelected: Boolean, from: Int) {
         if (isSelected) {
             if (from == 1)
-                payFort()
+                if (Preferences.get(activity, Constants.PROFILEMAIL) != "") {
+                    payFort()
+                } else {
+                    Toast.makeText(requireContext(), "Please update email address in profile.", Toast.LENGTH_LONG).show()
+                }
             if (from == 2)
                 cod()
         }
@@ -168,6 +174,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
         bundle.putString(CITY, arguments?.getString(CITY))
         bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
         bundle.putString(NAME, arguments?.getString(NAME))
+        bundle.putString(EMAIL, Preferences.get(activity, Constants.PROFILEMAIL))
         bundle.putString(Constants.CCURRENCY, arguments?.getString(Constants.CCURRENCY))
         val intent = Intent(activity, PayFortActivity::class.java)
         intent.putExtras(bundle)

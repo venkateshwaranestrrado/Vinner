@@ -66,13 +66,15 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 //    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
 //    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
 //    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
+//    val environment = FortSdk.ENVIRONMENT.TEST
 
     //Live
     val access_code = "6lUbMI3TtImE92epfeJ1"
     val merchant_identifier = "WaGobKuL"
     val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
     val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
-    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"
+    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
+    val environment = FortSdk.ENVIRONMENT.PRODUCTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,6 +134,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          *
          * */
         Log.e("param", param.toString())
+        //Log.e("EMAIL : ", intent.getStringExtra(Constants.EMAIL)!!)
         WebConnect.with(this, "paymentApi")
             .post()
             /**
@@ -158,9 +161,9 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         val hash = hashMapOf<String, String>()
         val tsLong = System.currentTimeMillis() / 1000
         val ts = tsLong.toString()
-//        getHashString.put("command", "PURCHASE")
-        hash.put("command", "AUTHORIZATION")
-        hash.put("customer_email", "m.salem@clickapps.co")
+        hash.put("command", "PURCHASE")
+        //hash.put("command", "AUTHORIZATION")
+        hash.put("customer_email", intent.getStringExtra(Constants.EMAIL)!!)
         hash.put("currency", intent.getStringExtra(Constants.CCURRENCY)!!)
         /**
         = 10000 => 100, should be multi by some value depending on your currency, check payfort Docs fore more detail
@@ -204,7 +207,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         FortSdk
             .getInstance()
             .registerCallback(this, model,
-                FortSdk.ENVIRONMENT.PRODUCTION, 5,
+                environment, 5,
                 fortCallback, true, object : FortInterfaces.OnTnxProcessed {
                     override fun onSuccess(
                         p0: MutableMap<String, Any>?,
@@ -297,8 +300,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
     //region apis callback
     override fun <T : Any?> onSuccess(`object`: T?, taskId: Int) {
-//        textOne.text = "TRY"
-
         if (`object` is ResponsePay) {
             if (`object`.sdk_token.isEmpty()) {
                 Log.e("123", `object`.response_message)
@@ -308,8 +309,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                 startPayFortSdk(`object`.sdk_token)
             }
         }
-
-
     }
 
     override fun <T : Any?> onError(`object`: T?, error: String?, taskId: Int) {

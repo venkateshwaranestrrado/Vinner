@@ -37,6 +37,7 @@ import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.FROM_LOGIN
+import com.estrrado.vinner.helper.Constants.PROFILEMAIL
 import com.estrrado.vinner.helper.Constants.PROFILENAME
 import com.estrrado.vinner.helper.Constants.PROFILE_IMAGE
 import com.estrrado.vinner.helper.Constants.SUCCESS
@@ -190,6 +191,7 @@ class HomeFragment : Fragment(), AlertCallback {
                         else
                             Preferences.put(activity, CART_ID, "0")
 
+                        Preferences.put(activity, PROFILEMAIL, "")
                         Preferences.put(activity, PROFILE_IMAGE, "")
                         Preferences.put(activity, PROFILENAME, "")
                         it.data?.profiledata?.let { profiledata ->
@@ -198,6 +200,9 @@ class HomeFragment : Fragment(), AlertCallback {
                             }
                             profiledata.name?.let {
                                 Preferences.put(activity, PROFILENAME, it)
+                            }
+                            profiledata.email?.let {
+                                Preferences.put(activity, PROFILEMAIL, it)
                             }
                         }
 

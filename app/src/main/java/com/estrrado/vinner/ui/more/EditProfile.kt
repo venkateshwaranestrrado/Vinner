@@ -151,6 +151,13 @@ class EditProfile : Fragment() {
                                                         it
                                                     )
                                                 }
+                                                it.email?.let {
+                                                    Preferences.put(
+                                                        activity,
+                                                        Constants.PROFILEMAIL,
+                                                        it
+                                                    )
+                                                }
                                             }
                                         }
                                         requireActivity().onBackPressed()
