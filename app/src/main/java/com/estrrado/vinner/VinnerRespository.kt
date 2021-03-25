@@ -757,4 +757,21 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             })
         return data
     }
+
+    @SuppressLint("CheckResult")
+    fun getsdktoken(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+        apiService?.getsdktoken(
+            input.accessToken,
+            input.device_id
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
+            })
+        return data
+    }
+
 }

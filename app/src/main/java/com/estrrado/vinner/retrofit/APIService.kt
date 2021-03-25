@@ -349,7 +349,6 @@ interface APIService {
         @Field("remarks") remarks: String?
     ): Observable<Model>
 
-
     @GET("countries")
     fun countries(): Observable<AddressModel>
 
@@ -364,6 +363,13 @@ interface APIService {
     @POST("notifications")
     fun notifications(
         @Field("access_token") accessToken: String?
+    ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("payfotr/sdkToken")
+    fun getsdktoken(
+        @Field("access_token") access_token: String?,
+        @Field("device_id") device_id: String?
     ): Observable<Model>
 
 }

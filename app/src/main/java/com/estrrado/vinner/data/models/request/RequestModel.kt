@@ -64,7 +64,8 @@ class RequestModel(
     var rating: String? = null,
     var title: String? = null,
     var review: String? = null,
-    var review_id: String? = null
+    var review_id: String? = null,
+    var device_id: String? = null
 
 
 )

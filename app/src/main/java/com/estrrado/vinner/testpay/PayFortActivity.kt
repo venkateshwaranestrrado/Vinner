@@ -28,7 +28,6 @@ import com.estrrado.vinner.helper.Constants.STATUS
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
 import com.estrrado.vinner.helper.Preferences
-import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -61,24 +60,25 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     lateinit var deviceId: String
 
     //Demo
-//    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
-//    val merchant_identifier = "879b45fb"
-//    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
-//    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
-//    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
-//    val environment = FortSdk.ENVIRONMENT.TEST
+    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
+    val merchant_identifier = "879b45fb"
+    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
+    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
+    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
+    val environment = FortSdk.ENVIRONMENT.TEST
 
     //Live
-    val access_code = "6lUbMI3TtImE92epfeJ1"
-    val merchant_identifier = "WaGobKuL"
-    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
-    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
-    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
-    val environment = FortSdk.ENVIRONMENT.PRODUCTION
+//    val access_code = "6lUbMI3TtImE92epfeJ1"
+//    val merchant_identifier = "WaGobKuL"
+//    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
+//    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
+//    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
+    //   val environment = FortSdk.ENVIRONMENT.PRODUCTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         vModel = ViewModelProvider(
             this,
             MainViewModel(
@@ -90,12 +90,14 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                 )
             )
         ).get(HomeVM::class.java)
+
         deviceId = FortSdk.getDeviceId(this)
 
         initFortCallback()
 
-        getToknSdk()
-//        }
+        getSdkTokenFromApi()
+        //getToknSdk()
+
     }
 
     fun getHashString(t: String): String {
@@ -104,6 +106,34 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         val digest = md.digest(bytes)
         val hashSt = digest.fold("", { str, it -> str + "%02x".format(it) })
         return hashSt
+    }
+
+    private fun getSdkTokenFromApi() {
+
+        val requestModel = RequestModel()
+        requestModel.accessToken = Preferences.get(this, ACCESS_TOKEN)
+        requestModel.device_id = deviceId
+        vModel?.getsdktoken(requestModel)?.observe(
+            this,
+            Observer {
+                it?.let {
+                    if (it.status == "success") {
+                        it.data?.sdk_token?.let {
+                            if (it.sdk_token != "") {
+                                it.sdk_token?.let {
+                                    startPayFortSdk(it)
+                                }
+                            } else {
+                                Toast.makeText(this, it.response_message, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+                        finish()
+                    }
+                }
+            })
+
     }
 
     private fun getToknSdk() {
@@ -234,7 +264,6 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                             )
                         ).observe(this@PayFortActivity,
                             Observer {
-                                printToast(applicationContext, "1 = " + it!!.message.toString())
                                 if (it?.status.equals(SUCCESS)) {
                                     val intent = Intent()
                                     intent.putExtra(STATUS, SUCCESS)
@@ -249,10 +278,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                             )
                                         )
                                         this@PayFortActivity.finish()
-                                    } else {
-                                        printToast(this@PayFortActivity, "2 = " + it?.message!!)
                                     }
-                                    printToast(applicationContext, "3 = " + it?.message.toString())
                                 }
                             })
                         Log.d(TAG, "onSuccess")

@@ -532,7 +532,6 @@ class Data {
     @field:JsonField(name = arrayOf("tax"))
     val tax: String? = null
 
-
     @field:SerializedName("billing_address")
     @field:JsonField(name = arrayOf("billing_address"))
     val billing_address: ArrayList<Billingaddress?>? = null
@@ -544,5 +543,25 @@ class Data {
     @field:SerializedName("payment_status")
     @field:JsonField(name = arrayOf("payment_status"))
     val payment_status: ArrayList<payment_status?>? = null
+
+    @SerializedName("sdk_token")
+    @Expose
+    var sdk_token: SdkToken? = null
+
+    class SdkToken {
+
+        @SerializedName("sdk_token")
+        @Expose
+        var sdk_token: String? = ""
+
+        @SerializedName("signature")
+        @Expose
+        var signature: String? = null
+
+        @SerializedName("response_message")
+        @Expose
+        var response_message: String? = null
+
+    }
 
 }
