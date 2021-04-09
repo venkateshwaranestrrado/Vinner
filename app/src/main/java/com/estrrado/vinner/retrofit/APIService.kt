@@ -366,10 +366,41 @@ interface APIService {
     ): Observable<Model>
 
     @FormUrlEncoded
-    @POST("payfotr/sdkToken")
+    @POST("payfort/sdkToken")
     fun getsdktoken(
         @Field("access_token") access_token: String?,
-        @Field("device_id") device_id: String?
+        @Field("device_id") device_id: String?,
+        @Field("address_type") address_type: String?,
+        @Field("housename") housename: String?,
+        @Field("roadname") roadname: String?,
+        @Field("landmark") landmark: String?,
+        @Field("pincode") pincode: String?,
+        @Field("payment_status") payment_status: String?,
+        @Field("payment_method") payment_method: String?,
+        @Field("country_name") country_name: String?,
+        @Field("city") city: String?,
+        @Field("name") name: String?,
+        @Field("operator_id") operator_id: String?
     ): Observable<Model>
+
+    @FormUrlEncoded
+    @POST("paymentResponse")
+    fun paymentResponse(
+        @Field("access_token") accessToken: String?,
+        @Field("address_type") address_type: String?,
+        @Field("housename") housename: String?,
+        @Field("roadname") roadname: String?,
+        @Field("landmark") landmark: String?,
+        @Field("pincode") pincode: String?,
+        @Field("payment_status") payment_status: String?,
+        @Field("payment_method") payment_method: String?,
+        @Field("operator_id") operator_id: String?,
+        @Field("country_name") country_name: String?,
+        @Field("city") city: String?,
+        @Field("name") name: String?,
+        @Field("merchant_reference") merchant_reference: String?,
+        @Field("payment_details") payment_details: String?
+    ): Observable<Model>
+
 
 }

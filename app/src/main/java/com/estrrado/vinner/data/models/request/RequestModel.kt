@@ -65,7 +65,12 @@ class RequestModel(
     var title: String? = null,
     var review: String? = null,
     var review_id: String? = null,
-    var device_id: String? = null
+    var device_id: String? = null,
+
+    var roadname: String? = null,
+    var country_name: String? = null,
+    var operator_id: String? = null,
+    var merchant_reference: String? = null
 
 
 )

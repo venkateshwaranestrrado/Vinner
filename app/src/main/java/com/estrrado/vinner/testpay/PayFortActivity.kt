@@ -15,7 +15,6 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
-import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.CITY
 import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.HOUSENAME
@@ -47,14 +46,18 @@ import java.security.MessageDigest
  * */
 class PayFortActivity : AppCompatActivity(), OnWebCallback {
     var vModel: HomeVM? = null
-    var operatorId: String? = null
-    var address: String? = null
-    var totalPayable: String? = null
-    var housename: String? = null
-    var Roadname: String? = null
-    var landmark: String? = null
-    var pincode: String? = null
-    var addressType: String? = null
+
+    var address_type: String? = ""
+    var housename: String? = ""
+    var roadname: String? = ""
+    var landmark: String? = ""
+    var pincode: String? = ""
+    var country_name: String? = ""
+    var city: String? = ""
+    var name: String? = ""
+    var operator_id: String? = ""
+    var merchant_reference = ""
+
     var fortCallback: FortCallBackManager? = null
     val TAG = "payTag"
     lateinit var deviceId: String
@@ -78,6 +81,16 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        address_type = getIntent().getExtras()!!.getString(ADDDRESS_TYPE)
+        housename = getIntent().getExtras()!!.getString(HOUSENAME)
+        roadname = getIntent().getExtras()!!.getString(ROAD_NAME)
+        landmark = getIntent().getExtras()!!.getString(LANDMARK)
+        pincode = getIntent().getExtras()!!.getString(PINCODE)
+        country_name = getIntent().getExtras()!!.getString(COUNTRY)
+        city = getIntent().getExtras()!!.getString(CITY)
+        name = getIntent().getExtras()!!.getString(NAME)
+        operator_id = getIntent().getExtras()!!.getString(OPERATOR_ID)
 
         vModel = ViewModelProvider(
             this,
@@ -113,6 +126,18 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(this, ACCESS_TOKEN)
         requestModel.device_id = deviceId
+        requestModel.address_type = address_type
+        requestModel.housename = housename
+        requestModel.roadname = roadname
+        requestModel.landmark = landmark
+        requestModel.pincode = pincode
+        requestModel.payment_status = "due"
+        requestModel.payment_method = "Payfort"
+        requestModel.country_name = country_name
+        requestModel.city = city
+        requestModel.name = name
+        requestModel.operator_id = operator_id
+
         vModel?.getsdktoken(requestModel)?.observe(
             this,
             Observer {
@@ -120,6 +145,9 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                     if (it.status == "success") {
                         it.data?.sdk_token?.let {
                             if (it.sdk_token != "") {
+                                it.merchant_reference?.let {
+                                    merchant_reference = it
+                                }
                                 it.sdk_token?.let {
                                     startPayFortSdk(it)
                                 }
@@ -213,7 +241,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
          * here we let user to entered as our test requirement.
          * */
 //        val x = editOne.text.toString()
-        hash.put("merchant_reference", ts + getIntent().getExtras()!!.getString(CART_ID)!!)
+        hash.put("merchant_reference", merchant_reference)
         /**
          * you can also add any option key-value pairs
          * */
@@ -243,7 +271,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         p0: MutableMap<String, Any>?,
                         p1: MutableMap<String, Any>?
                     ) {
-                        vModel!!.PaymentStatus(
+                        vModel!!.PaymentResponse(
                             RequestModel(
                                 accessToken = Preferences.get(this@PayFortActivity, ACCESS_TOKEN),
                                 address_type = getIntent().getExtras()!!.getString(ADDDRESS_TYPE),
@@ -257,6 +285,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                 country = getIntent().getExtras()!!.getString(COUNTRY),
                                 city = getIntent().getExtras()!!.getString(CITY),
                                 name = getIntent().getExtras()!!.getString(NAME),
+                                merchant_reference = merchant_reference,
                                 payment_details = "Payfort ID:" + p1?.get("fort_id")
                                     .toString() + " Payment Option:" + p1?.get("payment_option")
                                     .toString()

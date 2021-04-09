@@ -565,6 +565,35 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
+    fun PaymentResponse(input: RequestModel): MutableLiveData<Model?> {
+        val data = MutableLiveData<Model?>()
+        apiService?.paymentResponse(
+            input.accessToken,
+            input.address_type,
+            input.housename,
+            input.road_name,
+            input.landmark,
+            input.pincode,
+            input.payment_status,
+            input.payment_method,
+            input.operatorId,
+            input.country,
+            input.city,
+            input.name,
+            input.merchant_reference,
+            input.payment_details
+        )!!.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                data.value = it
+            }, {
+                it.printStackTrace()
+                Log.e("Errro Msg ", it.message)
+            })
+        return data
+    }
+
+    @SuppressLint("CheckResult")
     fun ReqService(input: RequestModel): MutableLiveData<Model?> {
         val data = MutableLiveData<Model?>()
         apiService?.reqService(
@@ -763,7 +792,18 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         val data = MutableLiveData<Model?>()
         apiService?.getsdktoken(
             input.accessToken,
-            input.device_id
+            input.device_id,
+            input.address_type,
+            input.housename,
+            input.roadname,
+            input.landmark,
+            input.pincode,
+            input.payment_status,
+            input.payment_method,
+            input.country_name,
+            input.city,
+            input.name,
+            input.operator_id
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

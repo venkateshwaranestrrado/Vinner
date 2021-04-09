@@ -45,6 +45,7 @@ class HomeVM(var respo: VinnerRespository) : ViewModel() {
     fun trackOrder(input: RequestModel) = respo.trackOrder(input)
     fun notifications(input: RequestModel) = respo.notifications(input)
     fun getsdktoken(input: RequestModel) = respo.getsdktoken(input)
+    fun PaymentResponse(input: RequestModel) = respo.PaymentResponse(input)
 
     val getAddress: MutableLiveData<AddressList> by lazy {
         MutableLiveData<AddressList>()

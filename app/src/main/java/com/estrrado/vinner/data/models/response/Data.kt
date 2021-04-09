@@ -554,6 +554,10 @@ class Data {
         @Expose
         var sdk_token: String? = ""
 
+        @SerializedName("merchant_reference")
+        @Expose
+        var merchant_reference: String? = ""
+
         @SerializedName("signature")
         @Expose
         var signature: String? = null
