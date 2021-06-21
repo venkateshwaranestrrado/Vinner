@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "977379184010",
+    "project_id": "vinner-6a560",
+    "storage_bucket": "vinner-6a560.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:977379184010:android:bb82bf984ce1b821780c73",
+        "android_client_info": {
+          "package_name": "com.estrrado.vinner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "977379184010-gj1hidl1ehft2eo50s1bgss2a1c20qta.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtd41I_S-wsHco-rrDADHIDsfXYexjEpU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "977379184010-gj1hidl1ehft2eo50s1bgss2a1c20qta.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
