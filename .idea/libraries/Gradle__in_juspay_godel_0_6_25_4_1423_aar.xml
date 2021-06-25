@@ -3,6 +3,7 @@
     <ANNOTATIONS>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6deb863c900a294c35b1c43f574a0c82/jetified-godel-0.6.25.4.1423/annotations.zip!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef70eab493b8669143636a2bb11115fc/jetified-godel-0.6.25.4.1423/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/38da91a522c08a75df5dec7cde4d7bfc/jetified-godel-0.6.25.4.1423/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/6deb863c900a294c35b1c43f574a0c82/jetified-godel-0.6.25.4.1423/jars/classes.jar!/" />
@@ -11,6 +12,9 @@
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef70eab493b8669143636a2bb11115fc/jetified-godel-0.6.25.4.1423/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef70eab493b8669143636a2bb11115fc/jetified-godel-0.6.25.4.1423/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ef70eab493b8669143636a2bb11115fc/jetified-godel-0.6.25.4.1423/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/38da91a522c08a75df5dec7cde4d7bfc/jetified-godel-0.6.25.4.1423/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/38da91a522c08a75df5dec7cde4d7bfc/jetified-godel-0.6.25.4.1423/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/38da91a522c08a75df5dec7cde4d7bfc/jetified-godel-0.6.25.4.1423/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

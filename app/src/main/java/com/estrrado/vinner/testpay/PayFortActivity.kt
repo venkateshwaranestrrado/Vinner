@@ -63,20 +63,20 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     lateinit var deviceId: String
 
     //Demo
-    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
-    val merchant_identifier = "879b45fb"
-    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
-    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
-    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
-    val environment = FortSdk.ENVIRONMENT.TEST
+//    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
+//    val merchant_identifier = "879b45fb"
+//    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
+//    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
+//    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
+//    val environment = FortSdk.ENVIRONMENT.TEST
 
     //Live
-//    val access_code = "6lUbMI3TtImE92epfeJ1"
-//    val merchant_identifier = "WaGobKuL"
-//    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
-//    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
-//    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
-    //   val environment = FortSdk.ENVIRONMENT.PRODUCTION
+    val access_code = "6lUbMI3TtImE92epfeJ1"
+    val merchant_identifier = "WaGobKuL"
+    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
+    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
+    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
+    val environment = FortSdk.ENVIRONMENT.PRODUCTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -251,8 +251,8 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 //        getHashString.put("eci", "ECOMMERCE")
 //        getHashString.put("order_description", "DESCRIPTION")
         hash.put("sdk_token", sign)
-        hash.put("token_name", "8A70320AF209")
-        hash.put("payment_option", "VISA")
+        //hash.put("token_name", "8A70320AF209")
+        //hash.put("payment_option", "VISA")
 
         model.requestMap = hash.toMap()
 

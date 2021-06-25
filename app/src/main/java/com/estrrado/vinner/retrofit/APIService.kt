@@ -366,7 +366,7 @@ interface APIService {
     ): Observable<Model>
 
     @FormUrlEncoded
-    @POST("payfort/sdkToken")
+    @POST("payfortSdkToken")
     fun getsdktoken(
         @Field("access_token") access_token: String?,
         @Field("device_id") device_id: String?,
