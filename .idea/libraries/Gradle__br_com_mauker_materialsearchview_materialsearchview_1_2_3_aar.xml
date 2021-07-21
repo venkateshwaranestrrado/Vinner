@@ -10,6 +10,9 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fba1897c343ab88a7bb32c64cf21d937/jetified-materialsearchview-1.2.3/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fba1897c343ab88a7bb32c64cf21d937/jetified-materialsearchview-1.2.3/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/fba1897c343ab88a7bb32c64cf21d937/jetified-materialsearchview-1.2.3/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/017c87a1626e3283e4abe4dbb6717d78/jetified-materialsearchview-1.2.3/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/017c87a1626e3283e4abe4dbb6717d78/jetified-materialsearchview-1.2.3/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/017c87a1626e3283e4abe4dbb6717d78/jetified-materialsearchview-1.2.3/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/br.com.mauker.materialsearchview/materialsearchview/1.2.3/6d22680f2e09fa7785d4074779aacac2f8f61090/materialsearchview-1.2.3-javadoc.jar!/" />
