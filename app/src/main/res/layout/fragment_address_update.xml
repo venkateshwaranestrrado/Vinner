@@ -90,9 +90,9 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
+                android:digits="@string/characters"
                 android:gravity="center|left"
                 android:hint="Name"
-                android:digits="@string/characters"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
@@ -130,7 +130,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/edt_name" />
 
             <EditText
-                android:id="@+id/tv_roadname"
+                android:id="@+id/tv_buildname"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
@@ -140,7 +140,7 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
-                android:hint="Road Name"
+                android:hint="Building Name"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:paddingLeft="8dp"
@@ -153,7 +153,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvaddress" />
 
             <EditText
-                android:id="@+id/edt_city"
+                android:id="@+id/tv_roadname"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
@@ -163,8 +163,78 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
-                android:hint="City"
+                android:hint="Road Name / No."
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_buildname" />
+
+            <EditText
+                android:id="@+id/tv_email"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="Email"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_roadname" />
+
+            <EditText
+                android:id="@+id/tv_contactno"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
+                android:gravity="center|left"
+                android:hint="Contact Number"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLength="12"
+                android:paddingLeft="8dp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="#37000000"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_email" />
+
+            <EditText
+                android:id="@+id/edt_city"
+                android:layout_width="0dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/new_blue_background"
                 android:digits="@string/characters"
+                android:gravity="center|left"
+                android:hint="City"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLines="1"
@@ -175,7 +245,7 @@
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_roadname" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_contactno" />
 
             <EditText
                 android:id="@+id/tv_landmark"
@@ -225,6 +295,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_landmark" />
 
+            <ImageView
+                android:id="@+id/imgDropdown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/ic_down"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/txt_country"
+                app:layout_constraintEnd_toEndOf="@id/txt_country"
+                app:layout_constraintTop_toTopOf="@id/txt_country"
+                tools:ignore="ContentDescription" />
+
             <EditText
                 android:id="@+id/tv_zipcode"
                 android:layout_width="0dp"
@@ -236,7 +318,7 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/new_blue_background"
                 android:gravity="center|left"
-                android:hint="Zipcode"
+                android:hint="PO Box"
                 android:imeOptions="actionNext"
                 android:inputType="number"
                 android:paddingLeft="8dp"
@@ -325,6 +407,6 @@
     <include
         android:id="@+id/progressaddress"
         layout="@layout/item_progress_sheet"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -30,7 +30,11 @@ object Constants {
     var regions: List<Region> = ArrayList<Region>()
     var logo = ""
     var BRAND_ID = ""
-    var ADDRESS = ""
+    var ADDRESS = "ADDRESS"
+
+    const val CONTACTNO = "CONTACTNO"
+    const val BUILDINGNAME = "BUILDINGNAME"
+
     const val ROAD_NAME = "ROAD_NAME"
     const val ADDDRESS_TYPE = "ADDDRESS_TYPE"
     const val LANDMARK = "LANDMARK"
@@ -55,6 +59,21 @@ object Constants {
     const val ON_DELIVERY = "on-delivery"
     const val shareLink = "https://vinshopify.com/"
     var addressSelected: AddressList? = null
+    var shipAddressSelected: AddressList? = null
     val reqCode: Int = 1
     val DO_YOU_CONFIRM_TO_CHECK_OUT: String = "Do you confirm to check out the items?"
+
+    var S_ADDRESS = "S_ADDRESS"
+    var S_PINCODE = "S_PINCODE"
+    var S_HOUSENAME = "S_HOUSENAME"
+    var S_LANDMARK = "S_LANDMARK"
+    var S_ADDDRESS_TYPE = "S_ADDDRESSTYPE"
+    var S_ROAD_NAME = "S_ROADNAME"
+    var S_COUNTRY = "S_COUNTRY"
+    var S_CITY = "S_CITY"
+    var S_NAME = "S_NAME"
+    var S_EMAIL = "S_EMAIL"
+    var S_CONTACTNO = "S_CONTACTNO"
+    var S_BUILDINGNAME = "S_BUILDINGNAME"
+
 }

@@ -31,10 +31,13 @@ import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
+import com.estrrado.vinner.helper.Constants.BUILDINGNAME
 import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.CCURRENCY
 import com.estrrado.vinner.helper.Constants.CITY
+import com.estrrado.vinner.helper.Constants.CONTACTNO
 import com.estrrado.vinner.helper.Constants.COUNTRY
+import com.estrrado.vinner.helper.Constants.EMAIL
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.LANDMARK
 import com.estrrado.vinner.helper.Constants.NAME
@@ -42,7 +45,20 @@ import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
+import com.estrrado.vinner.helper.Constants.S_ADDDRESS_TYPE
+import com.estrrado.vinner.helper.Constants.S_ADDRESS
+import com.estrrado.vinner.helper.Constants.S_BUILDINGNAME
+import com.estrrado.vinner.helper.Constants.S_CITY
+import com.estrrado.vinner.helper.Constants.S_CONTACTNO
+import com.estrrado.vinner.helper.Constants.S_COUNTRY
+import com.estrrado.vinner.helper.Constants.S_EMAIL
+import com.estrrado.vinner.helper.Constants.S_HOUSENAME
+import com.estrrado.vinner.helper.Constants.S_LANDMARK
+import com.estrrado.vinner.helper.Constants.S_NAME
+import com.estrrado.vinner.helper.Constants.S_PINCODE
+import com.estrrado.vinner.helper.Constants.S_ROAD_NAME
 import com.estrrado.vinner.helper.Constants.addressSelected
+import com.estrrado.vinner.helper.Constants.shipAddressSelected
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_FULLNAME
@@ -70,17 +86,38 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var currency: String? = null
     var operators: List<Datum>? = null
     var operatorId: String? = null
+
+    //billing Address
     var address: String? = null
     var addressRegion: String? = null
     var housename: String? = null
     var Roadname: String? = null
     var countryName: String? = null
     var city: String? = null
-    var deliveryFee: Double = 0.00
     var name: String? = null
     var landmark: String? = null
     var pincode: String? = null
     var addressType: String? = null
+    var email: String? = null
+    var phone: String? = null
+    var building: String? = null
+
+    //shipping Address
+    var s_address: String? = null
+    var s_addressRegion: String? = null
+    var s_housename: String? = null
+    var s_Roadname: String? = null
+    var s_countryName: String? = null
+    var s_city: String? = null
+    var s_name: String? = null
+    var s_landmark: String? = null
+    var s_pincode: String? = null
+    var s_addressType: String? = null
+    var s_email: String? = null
+    var s_phone: String? = null
+    var s_building: String? = null
+
+    var deliveryFee: Double = 0.00
     var weightMsg: String = ""
     private var cartFound: Boolean = false
     var regionList: List<RegionSpinner>? = null
@@ -141,9 +178,16 @@ class CartFragment : Fragment(), CartadapterCallBack {
         checkout.setOnClickListener {
             if (cartFound == true) {
                 if (operatorId != null) {
-                    if (address != null) {
+                    if (address != null && s_address != null) {
                         if (weightMsg == "") {
-                            if (Preferences.get(activity, REGION_FULLNAME) == addressRegion) {
+                            if (Preferences.get(
+                                    activity,
+                                    REGION_FULLNAME
+                                ) == addressRegion && Preferences.get(
+                                    activity,
+                                    REGION_FULLNAME
+                                ) == s_addressRegion
+                            ) {
                                 val bundle = bundleOf(
                                     OPERATOR_ID to operatorId,
                                     CART_ID to cartId,
@@ -156,6 +200,21 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                     COUNTRY to countryName,
                                     CITY to city,
                                     NAME to name,
+                                    CONTACTNO to phone,
+                                    EMAIL to email,
+                                    BUILDINGNAME to building,
+                                    S_ADDRESS to s_address,
+                                    S_PINCODE to s_pincode,
+                                    S_HOUSENAME to s_housename,
+                                    S_LANDMARK to s_landmark,
+                                    S_ADDDRESS_TYPE to s_addressType,
+                                    S_ROAD_NAME to s_Roadname,
+                                    S_COUNTRY to s_countryName,
+                                    S_CITY to s_city,
+                                    S_NAME to s_name,
+                                    S_CONTACTNO to s_phone,
+                                    S_EMAIL to s_email,
+                                    S_BUILDINGNAME to s_building,
                                     CCURRENCY to currency
                                 )
                                 view.findNavController()
@@ -165,7 +224,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                     )
                             } else {
                                 Helper.showSingleAlert(
-                                    "Selected country not matching with your default delivery address. Please choose correct delivery address.",
+                                    "Selected country not matching with your Billing/Shipping address. Please choose correct Billing/Shipping address.",
                                     context = requireContext()
                                 )
                             }
@@ -332,12 +391,18 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                     .navigate(R.id.action_navigation_cart_to_address_list, bundle)
                             }
 
+                            img_edit_shipaddress?.setOnClickListener {
+                                val bundle = bundleOf(Constants.FROM to 2)
+                                Navigation.findNavController(it)
+                                    .navigate(R.id.action_navigation_cart_to_address_list, bundle)
+                            }
+
                             if (addressSelected != null) {
                                 setAddressSelected()
                             } else {
-
                                 address =
-                                    it.data.getAddress()!!.name + ", " + it.data.getAddress()!!.houseFlat + ", " + it.data.getAddress()!!.roadName +
+                                    it.data.getAddress()!!.name + ", " + it.data.getAddress()!!.email + ", " + it.data.getAddress()!!.phone + ", " + it.data.getAddress()!!.houseFlat +
+                                            ", " + it.data.getAddress()!!.building + ", " + it.data.getAddress()!!.roadName +
                                             ", " + it.data.getAddress()!!.city + ", " + it.data.getAddress()!!.landmark + ", " + it.data.getAddress()!!.country +
                                             ", " + it.data.getAddress()!!.zip
                                 txt_address?.text = address
@@ -351,6 +416,33 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                 countryName = it.data.getAddress()!!.country
                                 city = it.data.getAddress()!!.city
                                 name = it.data.getAddress()!!.name
+                                phone = it.data.getAddress()!!.phone
+                                email = it.data.getAddress()!!.email
+                                building = it.data.getAddress()!!.building
+                            }
+
+                            if (shipAddressSelected != null) {
+                                setShipAddressSelected()
+                            } else {
+                                s_address =
+                                    it.data.getAddress()!!.name + ", " + it.data.getAddress()!!.email + ", " + it.data.getAddress()!!.phone + ", " + it.data.getAddress()!!.houseFlat +
+                                            ", " + it.data.getAddress()!!.building + ", " + it.data.getAddress()!!.roadName +
+                                            ", " + it.data.getAddress()!!.city + ", " + it.data.getAddress()!!.landmark + ", " + it.data.getAddress()!!.country +
+                                            ", " + it.data.getAddress()!!.zip
+                                txt_shipaddress?.text = s_address
+                                s_addressRegion = it.data.getAddress()!!.country
+
+                                s_housename = it.data.getAddress()!!.houseFlat
+                                s_Roadname = it.data.getAddress()!!.roadName
+                                s_pincode = it.data.getAddress()!!.zip
+                                s_addressType = it.data.getAddress()!!.addressType
+                                s_landmark = it.data.getAddress()!!.landmark
+                                s_countryName = it.data.getAddress()!!.country
+                                s_city = it.data.getAddress()!!.city
+                                s_name = it.data.getAddress()!!.name
+                                s_phone = it.data.getAddress()!!.phone
+                                s_email = it.data.getAddress()!!.email
+                                s_building = it.data.getAddress()!!.building
                             }
 
                         } else {
@@ -493,12 +585,34 @@ class CartFragment : Fragment(), CartadapterCallBack {
         return modelList
     }
 
+    private fun setShipAddressSelected() {
+        s_address =
+            shipAddressSelected!!.name + ", " + shipAddressSelected!!.email + ", " + shipAddressSelected!!.phone + ", " +
+                    shipAddressSelected!!.house_flat + ", " + shipAddressSelected!!.building + ", " + shipAddressSelected!!.road_name +
+                    ", " + shipAddressSelected!!.city + ", " + shipAddressSelected!!.landmark +
+                    ", " + shipAddressSelected!!.country + ", " + shipAddressSelected!!.zip
+        txt_shipaddress.text = s_address
+        s_addressRegion = shipAddressSelected!!.country
+
+        s_housename = shipAddressSelected!!.house_flat
+        s_Roadname = shipAddressSelected!!.road_name
+        s_pincode = shipAddressSelected!!.zip
+        s_addressType = shipAddressSelected!!.address_type
+        s_landmark = shipAddressSelected!!.landmark
+        s_countryName = shipAddressSelected!!.country
+        s_city = shipAddressSelected!!.city
+        s_name = shipAddressSelected!!.name
+        s_phone = shipAddressSelected!!.phone
+        s_email = shipAddressSelected!!.email
+        s_building = shipAddressSelected!!.building
+    }
+
     private fun setAddressSelected() {
-//        vModel!!.getAddress.observe(this, Observer { addressSelected ->
-        address = addressSelected!!.name + ", " +
-                addressSelected!!.house_flat + ", " + addressSelected!!.road_name +
-                ", " + addressSelected!!.city + ", " + addressSelected!!.landmark +
-                ", " + addressSelected!!.country + ", " + addressSelected!!.zip
+        address =
+            addressSelected!!.name + ", " + addressSelected!!.email + ", " + addressSelected!!.phone + ", " +
+                    addressSelected!!.house_flat + ", " + addressSelected!!.building + ", " + addressSelected!!.road_name +
+                    ", " + addressSelected!!.city + ", " + addressSelected!!.landmark +
+                    ", " + addressSelected!!.country + ", " + addressSelected!!.zip
         txt_address.text = address
         addressRegion = addressSelected!!.country
 
@@ -510,8 +624,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
         countryName = addressSelected!!.country
         city = addressSelected!!.city
         name = addressSelected!!.name
-        addressSelected = null
-//        })
+        phone = addressSelected!!.phone
+        email = addressSelected!!.email
+        building = addressSelected!!.building
     }
 
     fun clearCart() {

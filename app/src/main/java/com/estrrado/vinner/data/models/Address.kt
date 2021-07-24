@@ -1,6 +1,5 @@
 package com.estrrado.vinner.data.models
 
-import com.bluelinelabs.logansquare.annotation.JsonField
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
@@ -45,5 +44,17 @@ class Address {
     @SerializedName("country")
     @Expose
     val country: String? = null
+
+    @SerializedName("phone")
+    @Expose
+    val phone: String? = null
+
+    @SerializedName("email")
+    @Expose
+    val email: String? = null
+
+    @SerializedName("building")
+    @Expose
+    val building: String? = null
 
 }

@@ -1,7 +1,10 @@
 package com.estrrado.vinner.activity
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -31,11 +34,18 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
 
     var authenticateVM: AuthVM? = null
     var code = ""
+    var deviceId = ""
+    var deviceName = ""
 
+    @SuppressLint("HardwareIds")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_login_otp)
-        code = intent.getStringExtra("code")
+        code = intent.getStringExtra("code") ?: ""
+
+        deviceId = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+        deviceName = Build.MANUFACTURER + " " + Build.MODEL
+
         initControl()
     }
 
@@ -70,7 +80,9 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                         requestModel.phoneNumber = Preferences.get(this, MOBILE)
                         requestModel.countryCode = code
                         requestModel.os = "android"
-                        requestModel.deviceId = "abcdefghijklmnoqrstuvwxyz"
+                        requestModel.device_token = "abcdefghijklmnoqrstuvwxyz"
+                        requestModel.deviceId = deviceId
+                        requestModel.deviceName = deviceName
 
                         authenticateVM!!.verifyOTP(
                             requestModel

@@ -14,7 +14,7 @@ object ApiClient {
         .setLenient()
         .create()
 
-    var apiData = WebConfig.PUBLISH
+    var apiData = WebConfig.TEST
     var LIVE_URL = apiData.getLiveUrl()
     private var interceptor: HttpLoggingInterceptor =
         HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

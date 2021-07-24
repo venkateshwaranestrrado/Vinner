@@ -36,7 +36,7 @@ object Helper {
     fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return if (connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo.isConnected) {
+        return if (connectivityManager.activeNetworkInfo != null && connectivityManager.activeNetworkInfo!!.isConnected) {
             // CheckInternet().execute().get()true
             true
         } else {
@@ -251,7 +251,6 @@ object Helper {
             override fun onClick(p0: View?) {
                 malertDialog.cancel()
             }
-
         })
     }
 

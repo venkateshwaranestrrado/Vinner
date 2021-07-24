@@ -35,9 +35,11 @@ import kotlinx.android.synthetic.main.toolbar_prev.*
 import okhttp3.MultipartBody
 
 class EditProfile : Fragment() {
+
     var vModel: HomeVM? = null
     private var imageUri: Uri? = null
     private var mobileNum: String = ""
+
     val neededPermissions = arrayOf(
         Manifest.permission.CAMERA,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,

@@ -76,7 +76,9 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.phoneNumber,
             input.otp,
             input.countryCode,
+            input.device_token,
             input.deviceId,
+            input.deviceName,
             input.os
         )?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
@@ -335,16 +337,10 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     fun addAddress(input: RequestModel): MutableLiveData<DataListModel?> {
         val data = MutableLiveData<DataListModel?>()
         apiService?.addAddress(
-            input.accessToken,
-            input.address_type,
-            input.house_flat,
-            input.zipcode,
-            input.road_name,
-            input.landmark,
-            input.default,
-            input.country,
-            input.city,
-            input.name
+            input.accessToken, input.address_type, input.house_flat,
+            input.zipcode, input.road_name, input.landmark,
+            input.default, input.country, input.city,
+            input.name, input.contactNumber, input.email, input.buildingName
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -362,15 +358,9 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         apiService?.addressedit(
             input.accessToken,
             input.address_type,
-            input.address_id,
-            input.house_flat,
-            input.zipcode,
-            input.road_name,
-            input.landmark,
-            input.default,
-            input.country,
-            input.city,
-            input.name
+            input.address_id, input.house_flat, input.zipcode, input.road_name,
+            input.landmark, input.default, input.country, input.city,
+            input.name, input.contactNumber, input.email, input.buildingName
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -541,17 +531,31 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         val data = MutableLiveData<Model?>()
         apiService?.payment(
             input.accessToken,
+            input.payment_status,
+            input.payment_method,
+            input.operatorId,
             input.address_type,
             input.housename,
             input.road_name,
             input.landmark,
             input.pincode,
-            input.payment_status,
-            input.payment_method,
-            input.operatorId,
             input.country,
             input.city,
             input.name,
+            input.phone,
+            input.email,
+            input.building,
+            input.s_address_type,
+            input.s_housename,
+            input.s_road_name,
+            input.s_landmark,
+            input.s_pincode,
+            input.s_country,
+            input.s_city,
+            input.s_name,
+            input.s_phone,
+            input.s_email,
+            input.s_building,
             input.payment_details
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -559,7 +563,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
                 data.value = it
             }, {
                 it.printStackTrace()
-                Log.e("Errro Msg ", it.message)
+                Log.e("Errro Msg ", it?.message ?: "")
             })
         return data
     }
@@ -569,17 +573,31 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         val data = MutableLiveData<Model?>()
         apiService?.paymentResponse(
             input.accessToken,
+            input.payment_status,
+            input.payment_method,
+            input.operatorId,
             input.address_type,
             input.housename,
             input.road_name,
             input.landmark,
             input.pincode,
-            input.payment_status,
-            input.payment_method,
-            input.operatorId,
             input.country,
             input.city,
             input.name,
+            input.phone,
+            input.email,
+            input.building,
+            input.s_address_type,
+            input.s_housename,
+            input.s_road_name,
+            input.s_landmark,
+            input.s_pincode,
+            input.s_country,
+            input.s_city,
+            input.s_name,
+            input.s_phone,
+            input.s_email,
+            input.s_building,
             input.merchant_reference,
             input.payment_details
         )!!.subscribeOn(Schedulers.io())
@@ -588,7 +606,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
                 data.value = it
             }, {
                 it.printStackTrace()
-                Log.e("Errro Msg ", it.message)
+                Log.e("Errro Msg ", it?.message ?: "")
             })
         return data
     }
@@ -793,16 +811,30 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         apiService?.getsdktoken(
             input.accessToken,
             input.device_id,
-            input.address_type,
-            input.housename,
-            input.roadname,
-            input.landmark,
-            input.pincode,
             input.payment_status,
             input.payment_method,
-            input.country_name,
+            input.address_type,
+            input.housename,
+            input.road_name,
+            input.landmark,
+            input.pincode,
+            input.country,
             input.city,
             input.name,
+            input.phone,
+            input.email,
+            input.building,
+            input.s_address_type,
+            input.s_housename,
+            input.s_road_name,
+            input.s_landmark,
+            input.s_pincode,
+            input.s_country,
+            input.s_city,
+            input.s_name,
+            input.s_phone,
+            input.s_email,
+            input.s_building,
             input.operator_id
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

@@ -2,6 +2,7 @@ package com.estrrado.vinner.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -24,8 +25,11 @@ import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDRESS_ID
+import com.estrrado.vinner.helper.Constants.BUILDINGNAME
 import com.estrrado.vinner.helper.Constants.CITY
+import com.estrrado.vinner.helper.Constants.CONTACTNO
 import com.estrrado.vinner.helper.Constants.COUNTRY
+import com.estrrado.vinner.helper.Constants.EMAIL
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.IS_DEFAULT
 import com.estrrado.vinner.helper.Constants.IS_EDIT
@@ -35,6 +39,7 @@ import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.addressSelected
+import com.estrrado.vinner.helper.Constants.shipAddressSelected
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
@@ -86,9 +91,11 @@ class Address_list : Fragment() {
             )
         ).get(HomeVM::class.java)
         initControll()
-        from = arguments?.getInt(Constants.FROM)
-        if (arguments?.getInt(Constants.FROM) == null || arguments?.getInt(Constants.FROM) != 1)
-            getData()
+        from = 0
+        arguments?.let {
+            from = it.getInt(Constants.FROM, 0)
+        }
+        if (from == 0) getData()
         else getCheckoutAddress()
         initialiseSearch()
         pageTitle.text = "My Delivery Address"
@@ -300,6 +307,9 @@ class Address_list : Fragment() {
                     bundle.putString(CITY, addressFilterList!!.get(position)!!.city)
                     bundle.putString(COUNTRY, addressFilterList!!.get(position)!!.country_code)
                     bundle.putString(IS_DEFAULT, addressFilterList!!.get(position)!!.default)
+                    bundle.putString(CONTACTNO, addressFilterList!!.get(position)!!.phone)
+                    bundle.putString(EMAIL, addressFilterList!!.get(position)!!.email)
+                    bundle.putString(BUILDINGNAME, addressFilterList!!.get(position)!!.building)
                     bundle.putBoolean(IS_EDIT, true)
                     if (from != null) {
                         bundle.putInt(Constants.FROM, from)
@@ -326,8 +336,11 @@ class Address_list : Fragment() {
 
                 holder.constContainer!!.setOnClickListener {
                     vModel.getAddress.value = item
-                    if (from != null && from == 1) {
+                    if (from == 1) {
                         addressSelected = item
+                        activity.onBackPressed()
+                    } else if (from == 2) {
+                        shipAddressSelected = item
                         activity.onBackPressed()
                     }
                 }

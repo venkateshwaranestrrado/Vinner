@@ -115,6 +115,8 @@ class HomeFragment : Fragment(), AlertCallback {
                 position: Int,
                 id: Long
             ) {
+                Constants.addressSelected = null
+                Constants.shipAddressSelected = null
                 spnrPosition = position
                 if ((regionList!!.get(spnrPosition).code != Preferences.get(
                         activity,
@@ -172,9 +174,6 @@ class HomeFragment : Fragment(), AlertCallback {
     }
 
     private fun getHome() {
-
-        Log.e("sdsd", Preferences.get(activity, ACCESS_TOKEN))
-        Log.e("sdsd", Preferences.get(activity, REGION_NAME))
 
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()

@@ -16,7 +16,7 @@ class RequestModel(
     var accessCode: String? = null,
     var merchantIdentifier: String? = null,
     var language: String? = null,
-    var deviceId: String? = null,
+    var device_token: String? = null,
     var os: String? = null,
     var signature: String? = null,
     var limit: Int? = 0,
@@ -37,6 +37,8 @@ class RequestModel(
     var payment_status: String? = null,
     var payment_method: String? = null,
     var name: String? = null,
+    var building: String? = null,
+    var phone: String? = null,
     var address1: String? = null,
     var address2: String? = null,
     var post: String? = null,
@@ -67,11 +69,25 @@ class RequestModel(
     var review_id: String? = null,
     var device_id: String? = null,
 
-    var roadname: String? = null,
-    var country_name: String? = null,
     var operator_id: String? = null,
-    var merchant_reference: String? = null
+    var merchant_reference: String? = null,
+    var deviceId: String = "",
+    var deviceName: String = "",
 
+    var buildingName: String = "",
+    var contactNumber: String = "",
+
+    var s_building: String? = "",
+    var s_email: String? = "",
+    var s_phone: String? = "",
+    var s_name: String? = "",
+    var s_city: String? = "",
+    var s_country: String? = "",
+    var s_pincode: String? = "",
+    var s_landmark: String? = "",
+    var s_road_name: String? = "",
+    var s_housename: String? = "",
+    var s_address_type: String? = ""
 
 )
 

@@ -18,6 +18,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -164,6 +165,10 @@ class AddAddress : Fragment(), LocationListener {
         tv_roadname.setText(arguments?.getString(Constants.ROAD_NAME, "").toString())
         tv_landmark.setText(arguments?.getString(Constants.LANDMARK, "").toString())
         edt_city.setText(arguments?.getString(Constants.CITY, "").toString())
+        tv_contactno.setText(arguments?.getString(Constants.CONTACTNO, "").toString())
+        tv_email.setText(arguments?.getString(Constants.EMAIL, "").toString())
+        tv_buildname.setText(arguments?.getString(Constants.BUILDINGNAME, "").toString())
+
         addressType = arguments?.getString(Constants.ADDDRESS_TYPE, "").toString()
         if (addressType.contains(Constants.WORK)) {
             rg_region.check(R.id.rb_work)
@@ -181,7 +186,7 @@ class AddAddress : Fragment(), LocationListener {
         regionList = readFromAsset(requireActivity())
         if (arguments?.getInt(Constants.FROM) != null && arguments?.getInt(
                 Constants.FROM
-            ) == 1
+            ) != 0
         ) {
             txt_country.text = Preferences.get(activity, Preferences.REGION_NAME)
             txt_country.isEnabled = false
@@ -208,7 +213,10 @@ class AddAddress : Fragment(), LocationListener {
                 ) && Validation.hasText(tv_landmark, Constants.REQUIRED) && Validation.hasText(
                     txt_country,
                     Constants.REQUIRED
-                ) && Validation.hasText(edt_city, Constants.REQUIRED)
+                ) && Validation.hasText(edt_city, Constants.REQUIRED) && Validation.hasText(
+                    tv_buildname,
+                    Constants.REQUIRED
+                ) && validation()
             ) {
                 if (Helper.isNetworkAvailable(requireContext())) {
                     progressaddress.visibility = View.VISIBLE
@@ -239,6 +247,9 @@ class AddAddress : Fragment(), LocationListener {
                                 name = edt_name.text.toString(),
                                 city = edt_city.text.toString(),
                                 country = txt_country.text.toString(),
+                                email = tv_email.text.toString().trim(),
+                                contactNumber = tv_contactno.text.toString().trim(),
+                                buildingName = tv_buildname.text.toString().trim(),
                                 default = if (check_default.isChecked) {
                                     1
                                 } else {
@@ -282,6 +293,9 @@ class AddAddress : Fragment(), LocationListener {
                                 name = edt_name.text.toString(),
                                 city = edt_city.text.toString(),
                                 country = txt_country.text.toString(),
+                                email = tv_email.text.toString().trim(),
+                                contactNumber = tv_contactno.text.toString().trim(),
+                                buildingName = tv_buildname.text.toString().trim(),
                                 default = if (check_default.isChecked) {
                                     1
                                 } else {
@@ -323,7 +337,21 @@ class AddAddress : Fragment(), LocationListener {
         }
     }
 
+    fun validation(): Boolean {
+        if (!Validation.isValidEmilAddress(tv_email.text.toString())) {
+            tv_email.requestFocus()
+            tv_email.setError("Invalid Email Id")
+            return false
+        } else if (tv_contactno.text.trim().length < 7) {
+            tv_contactno.requestFocus()
+            tv_contactno.setError("Invalid Contact Number")
+            return false
+        }
+        return true
+    }
+
     private fun initialiseRegion() {
+        imgDropdown.isVisible = true
         val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
         spnr_region_address.adapter = regionAdapter
         spnr_region_address.setOnItemSelectedListener(object :
@@ -346,14 +374,6 @@ class AddAddress : Fragment(), LocationListener {
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-
-    }
-
-    override fun onProviderEnabled(provider: String?) {
-
-    }
-
-    override fun onProviderDisabled(provider: String?) {
 
     }
 

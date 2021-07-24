@@ -132,7 +132,19 @@ class AddressList(
 
     @field:SerializedName("service_type")
     @field:JsonField(name = arrayOf("service_type"))
-    val service_type: String? = null
+    val service_type: String? = null,
+
+    @field:SerializedName("phone")
+    @field:JsonField(name = arrayOf("phone"))
+    val phone: String? = null,
+
+    @field:SerializedName("email")
+    @field:JsonField(name = arrayOf("email"))
+    val email: String? = null,
+
+    @field:SerializedName("building")
+    @field:JsonField(name = arrayOf("building"))
+    val building: String? = null
 
 
 )

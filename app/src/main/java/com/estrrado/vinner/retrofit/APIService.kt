@@ -37,6 +37,8 @@ interface APIService {
         @Field("otp") otp: String?,
         @Field("c_code") c_code: String?,
         @Field("device_token") devic_token: String?,
+        @Field("deviceId") deviceId: String?,
+        @Field("deviceName") deviceName: String?,
         @Field("os") os: String?
 
     ): Observable<Model>
@@ -156,7 +158,10 @@ interface APIService {
         @Field("default") default: Int?,
         @Field("country_code") country_code: String?,
         @Field("city") city: String?,
-        @Field("name") name: String?
+        @Field("name") name: String?,
+        @Field("phone") phone: String?,
+        @Field("email") email: String?,
+        @Field("building") building: String?
     ): Observable<DataListModel>
 
     @FormUrlEncoded
@@ -171,7 +176,10 @@ interface APIService {
         @Field("default") default: Int?,
         @Field("country_code") country_code: String?,
         @Field("city") city: String?,
-        @Field("name") name: String?
+        @Field("name") name: String?,
+        @Field("phone") phone: String?,
+        @Field("email") email: String?,
+        @Field("building") building: String?
     ): Observable<DataListModel>
 
     @FormUrlEncoded
@@ -301,17 +309,31 @@ interface APIService {
     @POST("payment")
     fun payment(
         @Field("access_token") accessToken: String?,
+        @Field("payment_status") payment_status: String?,
+        @Field("payment_method") payment_method: String?,
+        @Field("operator_id") operator_id: String?,
         @Field("address_type") address_type: String?,
         @Field("housename") housename: String?,
         @Field("roadname") roadname: String?,
         @Field("landmark") landmark: String?,
         @Field("pincode") pincode: String?,
-        @Field("payment_status") payment_status: String?,
-        @Field("payment_method") payment_method: String?,
-        @Field("operator_id") operator_id: String?,
         @Field("country_name") country_name: String?,
         @Field("city") city: String?,
         @Field("name") name: String?,
+        @Field("phone") phone: String?,
+        @Field("email") email: String?,
+        @Field("building") building: String?,
+        @Field("s_address_type") s_address_type: String?,
+        @Field("s_housename") s_housename: String?,
+        @Field("s_roadname") s_roadname: String?,
+        @Field("s_landmark") s_landmark: String?,
+        @Field("s_pincode") s_pincode: String?,
+        @Field("s_country") s_country_name: String?,
+        @Field("s_city") s_city: String?,
+        @Field("s_name") s_name: String?,
+        @Field("s_phone") s_phone: String?,
+        @Field("s_email") s_email: String?,
+        @Field("s_building") s_building: String?,
         @Field("payment_details") payment_details: String?
     ): Observable<Model>
 
@@ -370,16 +392,31 @@ interface APIService {
     fun getsdktoken(
         @Field("access_token") access_token: String?,
         @Field("device_id") device_id: String?,
+        @Field("payment_status") payment_status: String?,
+        @Field("payment_method") payment_method: String?,
         @Field("address_type") address_type: String?,
         @Field("housename") housename: String?,
         @Field("roadname") roadname: String?,
         @Field("landmark") landmark: String?,
         @Field("pincode") pincode: String?,
-        @Field("payment_status") payment_status: String?,
-        @Field("payment_method") payment_method: String?,
         @Field("country_name") country_name: String?,
         @Field("city") city: String?,
         @Field("name") name: String?,
+        @Field("phone") phone: String?,
+        @Field("email") email: String?,
+        @Field("building") building: String?,
+        @Field("s_address_type") s_address_type: String?,
+        @Field("s_housename") s_housename: String?,
+        @Field("s_roadname") s_roadname: String?,
+        @Field("s_landmark") s_landmark: String?,
+        @Field("s_pincode") s_pincode: String?,
+        @Field("s_country") s_country_name: String?,
+        @Field("s_city") s_city: String?,
+        @Field("s_name") s_name: String?,
+        @Field("s_phone") s_phone: String?,
+        @Field("s_email") s_email: String?,
+        @Field("s_building") s_building: String?,
+
         @Field("operator_id") operator_id: String?
     ): Observable<Model>
 
@@ -387,17 +424,31 @@ interface APIService {
     @POST("paymentResponse")
     fun paymentResponse(
         @Field("access_token") accessToken: String?,
+        @Field("payment_status") payment_status: String?,
+        @Field("payment_method") payment_method: String?,
+        @Field("operator_id") operator_id: String?,
         @Field("address_type") address_type: String?,
         @Field("housename") housename: String?,
         @Field("roadname") roadname: String?,
         @Field("landmark") landmark: String?,
         @Field("pincode") pincode: String?,
-        @Field("payment_status") payment_status: String?,
-        @Field("payment_method") payment_method: String?,
-        @Field("operator_id") operator_id: String?,
         @Field("country_name") country_name: String?,
         @Field("city") city: String?,
         @Field("name") name: String?,
+        @Field("phone") phone: String?,
+        @Field("email") email: String?,
+        @Field("building") building: String?,
+        @Field("s_address_type") s_address_type: String?,
+        @Field("s_housename") s_housename: String?,
+        @Field("s_roadname") s_roadname: String?,
+        @Field("s_landmark") s_landmark: String?,
+        @Field("s_pincode") s_pincode: String?,
+        @Field("s_country") s_country_name: String?,
+        @Field("s_city") s_city: String?,
+        @Field("s_name") s_name: String?,
+        @Field("s_phone") s_phone: String?,
+        @Field("s_email") s_email: String?,
+        @Field("s_building") s_building: String?,
         @Field("merchant_reference") merchant_reference: String?,
         @Field("payment_details") payment_details: String?
     ): Observable<Model>

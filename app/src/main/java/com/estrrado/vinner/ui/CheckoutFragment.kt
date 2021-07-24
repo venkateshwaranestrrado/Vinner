@@ -22,8 +22,10 @@ import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.ADDDRESS_TYPE
 import com.estrrado.vinner.helper.Constants.ADDRESS
+import com.estrrado.vinner.helper.Constants.BUILDINGNAME
 import com.estrrado.vinner.helper.Constants.CART_ID
 import com.estrrado.vinner.helper.Constants.CITY
+import com.estrrado.vinner.helper.Constants.CONTACTNO
 import com.estrrado.vinner.helper.Constants.COUNTRY
 import com.estrrado.vinner.helper.Constants.DO_YOU_CONFIRM_TO_CHECK_OUT
 import com.estrrado.vinner.helper.Constants.EMAIL
@@ -34,6 +36,18 @@ import com.estrrado.vinner.helper.Constants.OPERATOR_ID
 import com.estrrado.vinner.helper.Constants.PINCODE
 import com.estrrado.vinner.helper.Constants.ROAD_NAME
 import com.estrrado.vinner.helper.Constants.SUCCESS
+import com.estrrado.vinner.helper.Constants.S_ADDDRESS_TYPE
+import com.estrrado.vinner.helper.Constants.S_ADDRESS
+import com.estrrado.vinner.helper.Constants.S_BUILDINGNAME
+import com.estrrado.vinner.helper.Constants.S_CITY
+import com.estrrado.vinner.helper.Constants.S_CONTACTNO
+import com.estrrado.vinner.helper.Constants.S_COUNTRY
+import com.estrrado.vinner.helper.Constants.S_EMAIL
+import com.estrrado.vinner.helper.Constants.S_HOUSENAME
+import com.estrrado.vinner.helper.Constants.S_LANDMARK
+import com.estrrado.vinner.helper.Constants.S_NAME
+import com.estrrado.vinner.helper.Constants.S_PINCODE
+import com.estrrado.vinner.helper.Constants.S_ROAD_NAME
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
 import com.estrrado.vinner.helper.Constants.reqCode
 import com.estrrado.vinner.helper.Helper.showAlert
@@ -55,13 +69,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
 
     var vModel: HomeVM? = null
     var operatorId: String? = null
-    var address: String? = null
     var totalPayable: String? = null
-    var housename: String? = null
-    var Roadname: String? = null
-    var landmark: String? = null
-    var pincode: String? = null
-    var addressType: String? = null
     var regionList: List<RegionSpinner>? = null
 
     override fun onCreateView(
@@ -83,12 +91,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
 
         val root = inflater.inflate(R.layout.fragment_checkout, container, false)
         operatorId = arguments?.getString(OPERATOR_ID)!!
-        address = arguments?.getString(ADDRESS)
-        housename = arguments?.getString(HOUSENAME)
-        Roadname = arguments?.getString(ROAD_NAME)
-        pincode = arguments?.getString(PINCODE)
-        addressType = arguments?.getString(ADDDRESS_TYPE)
-        landmark = arguments?.getString(LANDMARK)
+
         return root
     }
 
@@ -98,7 +101,8 @@ class CheckoutFragment : Fragment(), AlertCallback {
         pageTitle.text = "Checkout"
         progresscheckout.visibility = View.VISIBLE
         getDeleveryFee()
-        txt_address.setText(address)
+        txt_address.setText(arguments?.getString(ADDRESS))
+        txt_shipaddress.setText(arguments?.getString(S_ADDRESS))
 
         card_payfort.setOnClickListener {
             showAlert(DO_YOU_CONFIRM_TO_CHECK_OUT, 1, this, requireContext())
@@ -153,7 +157,11 @@ class CheckoutFragment : Fragment(), AlertCallback {
                 if (Preferences.get(activity, Constants.PROFILEMAIL) != "") {
                     payFort()
                 } else {
-                    Toast.makeText(requireContext(), "Please update email address in profile.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Please update email address in profile.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             if (from == 2)
                 cod()
@@ -161,20 +169,39 @@ class CheckoutFragment : Fragment(), AlertCallback {
     }
 
     private fun payFort() {
+
+        Constants.addressSelected = null
+        Constants.shipAddressSelected = null
+
         val bundle = Bundle()
         bundle.putString(CART_ID, arguments?.getString(CART_ID)!!)
         bundle.putString(TOTAL_PAYABLE, totalPayable)
         bundle.putString(OPERATOR_ID, operatorId)
-        bundle.putString(ADDRESS, address)
-        bundle.putString(HOUSENAME, housename)
-        bundle.putString(ROAD_NAME, Roadname)
-        bundle.putString(PINCODE, pincode)
-        bundle.putString(ADDDRESS_TYPE, addressType)
-        bundle.putString(LANDMARK, landmark)
+
+        bundle.putString(ADDRESS, arguments?.getString(ADDRESS))
+        bundle.putString(HOUSENAME, arguments?.getString(HOUSENAME))
+        bundle.putString(ROAD_NAME, arguments?.getString(ROAD_NAME))
+        bundle.putString(PINCODE, arguments?.getString(PINCODE))
+        bundle.putString(ADDDRESS_TYPE, arguments?.getString(ADDDRESS_TYPE))
+        bundle.putString(LANDMARK, arguments?.getString(LANDMARK))
         bundle.putString(CITY, arguments?.getString(CITY))
         bundle.putString(COUNTRY, arguments?.getString(COUNTRY))
         bundle.putString(NAME, arguments?.getString(NAME))
-        bundle.putString(EMAIL, Preferences.get(activity, Constants.PROFILEMAIL))
+        bundle.putString(EMAIL, arguments?.getString(EMAIL))
+        bundle.putString(BUILDINGNAME, arguments?.getString(BUILDINGNAME))
+        bundle.putString(CONTACTNO, arguments?.getString(CONTACTNO))
+        bundle.putString(S_ADDRESS, arguments?.getString(S_ADDRESS))
+        bundle.putString(S_HOUSENAME, arguments?.getString(S_HOUSENAME))
+        bundle.putString(S_ROAD_NAME, arguments?.getString(S_ROAD_NAME))
+        bundle.putString(S_PINCODE, arguments?.getString(S_PINCODE))
+        bundle.putString(S_ADDDRESS_TYPE, arguments?.getString(S_ADDDRESS_TYPE))
+        bundle.putString(S_LANDMARK, arguments?.getString(S_LANDMARK))
+        bundle.putString(S_CITY, arguments?.getString(S_CITY))
+        bundle.putString(S_COUNTRY, arguments?.getString(S_COUNTRY))
+        bundle.putString(S_NAME, arguments?.getString(S_NAME))
+        bundle.putString(S_EMAIL, arguments?.getString(S_EMAIL))
+        bundle.putString(S_BUILDINGNAME, arguments?.getString(S_BUILDINGNAME))
+        bundle.putString(S_CONTACTNO, arguments?.getString(S_CONTACTNO))
         bundle.putString(Constants.CCURRENCY, arguments?.getString(Constants.CCURRENCY))
         val intent = Intent(activity, PayFortActivity::class.java)
         intent.putExtras(bundle)
@@ -182,6 +209,10 @@ class CheckoutFragment : Fragment(), AlertCallback {
     }
 
     private fun cod() {
+
+        Constants.addressSelected = null
+        Constants.shipAddressSelected = null
+
         progresscheckout.visibility = View.VISIBLE
         vModel!!.PaymentStatus(
             RequestModel(
@@ -196,7 +227,21 @@ class CheckoutFragment : Fragment(), AlertCallback {
                 operatorId = operatorId,
                 country = arguments?.getString(COUNTRY),
                 city = arguments?.getString(CITY),
-                name = arguments?.getString(NAME)
+                name = arguments?.getString(NAME),
+                email = arguments?.getString(EMAIL),
+                phone = arguments?.getString(CONTACTNO),
+                building = arguments?.getString(BUILDINGNAME),
+                s_address_type = arguments?.getString(S_ADDDRESS_TYPE),
+                s_housename = arguments?.getString(S_HOUSENAME),
+                s_road_name = arguments?.getString(S_ROAD_NAME),
+                s_landmark = arguments?.getString(S_LANDMARK),
+                s_pincode = arguments?.getString(S_PINCODE),
+                s_country = arguments?.getString(S_COUNTRY),
+                s_city = arguments?.getString(S_CITY),
+                s_name = arguments?.getString(S_NAME),
+                s_phone = arguments?.getString(S_CONTACTNO),
+                s_email = arguments?.getString(S_EMAIL),
+                s_building = arguments?.getString(S_BUILDINGNAME)
             )
         ).observe(requireActivity(),
             Observer {

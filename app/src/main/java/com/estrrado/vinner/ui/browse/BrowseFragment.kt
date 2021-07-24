@@ -24,6 +24,7 @@ import com.estrrado.vinner.adapters.IndustryAdapter
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Constants.logo
@@ -115,6 +116,8 @@ class BrowseFragment : Fragment(), AlertCallback {
                 position: Int,
                 id: Long
             ) {
+                Constants.addressSelected = null
+                Constants.shipAddressSelected = null
                 spnrPosition = position
                 if ((regionList!!.get(spnrPosition).code != Preferences.get(
                         activity,

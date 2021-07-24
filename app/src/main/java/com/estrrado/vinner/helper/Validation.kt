@@ -43,7 +43,6 @@ object Validation {
         return true
     }
 
-
     fun TextInputEditText.isValidEmail(): Boolean {
         if (validate()) {
             val text = text.toString().trim { it <= ' ' }
@@ -55,6 +54,14 @@ object Validation {
             }
             return true
         }
+        return false
+    }
+
+    fun isValidEmilAddress(text: String): Boolean {
+        if (text.trim().isNotEmpty())
+            if (Pattern.matches(emailPattern, text)) {
+                return true
+            }
         return false
     }
 
