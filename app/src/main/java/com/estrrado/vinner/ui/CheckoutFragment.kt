@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -50,6 +49,7 @@ import com.estrrado.vinner.helper.Constants.S_PINCODE
 import com.estrrado.vinner.helper.Constants.S_ROAD_NAME
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
 import com.estrrado.vinner.helper.Constants.reqCode
+import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Helper.showAlert
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
@@ -117,6 +117,7 @@ class CheckoutFragment : Fragment(), AlertCallback {
 
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+        requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
         requestModel.operatorId = operatorId
         progresscheckout.visibility = View.VISIBLE
         vModel!!.deliveryFee(requestModel).observe(requireActivity(),
@@ -135,6 +136,19 @@ class CheckoutFragment : Fragment(), AlertCallback {
                     if (it?.message.equals("Invalid access token")) {
                         startActivity(Intent(activity, LoginActivity::class.java))
                         requireActivity().finish()
+                    } else if (it?.httpcode == 402) {
+                        Helper.showSingleAlert(
+                            it.message ?: "",
+                            requireContext(),
+                            object : AlertCallback {
+                                override fun alertSelected(isSelected: Boolean, from: Int) {
+                                    Helper.setCountry(
+                                        it.data?.country_code!!,
+                                        requireActivity()
+                                    )
+                                    getDeleveryFee()
+                                }
+                            })
                     } else {
                         printToast(requireContext(), it?.message!!)
                     }
@@ -154,15 +168,16 @@ class CheckoutFragment : Fragment(), AlertCallback {
     override fun alertSelected(isSelected: Boolean, from: Int) {
         if (isSelected) {
             if (from == 1)
-                if (Preferences.get(activity, Constants.PROFILEMAIL) != "") {
-                    payFort()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Please update email address in profile.",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                payFort()
+            /*if (arguments?.getString(EMAIL) != "") {
+
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Please update email address in profile.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }*/
             if (from == 2)
                 cod()
         }
@@ -241,7 +256,8 @@ class CheckoutFragment : Fragment(), AlertCallback {
                 s_name = arguments?.getString(S_NAME),
                 s_phone = arguments?.getString(S_CONTACTNO),
                 s_email = arguments?.getString(S_EMAIL),
-                s_building = arguments?.getString(S_BUILDINGNAME)
+                s_building = arguments?.getString(S_BUILDINGNAME),
+                countryCode = Preferences.get(activity, Preferences.REGION_NAME)
             )
         ).observe(requireActivity(),
             Observer {

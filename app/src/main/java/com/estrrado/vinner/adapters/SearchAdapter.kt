@@ -58,6 +58,10 @@ class SearchAdapter(private var activity: FragmentActivity) :
         holder.prdctname.text = mSearch?.get(position)!!.product_title
         holder.price.text =
             mSearch?.get(position)!!.currency + " " + priceFormat(mSearch.get(position).price)
+
+        holder.price.visibility =
+            if (mSearch.get(position).price == "0") View.INVISIBLE else View.VISIBLE
+
         holder.unit.text = mSearch?.get(position)!!.unit
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(activity)

@@ -3,8 +3,8 @@ package com.estrrado.vinner.data.models.response
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-
 class DataListModel {
+
     @SerializedName("httpcode")
     @Expose
     var httpcode: Int? = null
@@ -19,6 +19,6 @@ class DataListModel {
 
     @SerializedName("data")
     @Expose
-    var data: List<Datum>? = null
+    var data: Any? = null
 
 }

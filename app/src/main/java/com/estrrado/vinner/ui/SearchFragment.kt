@@ -12,10 +12,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.adapters.SearchAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
+import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
@@ -127,12 +130,25 @@ class SearchFragment : Fragment() {
             )
         ).observe(requireActivity(),
             Observer {
-                recycle_search.setLayoutManager(GridLayoutManager(context, 2))
-                if (it != null) {
-                    mSearch.addAll(it.data!!)
-
-                    updateSearchList()
-
+                if (it?.status.equals(Constants.SUCCESS)) {
+                    recycle_search.setLayoutManager(GridLayoutManager(context, 2))
+                    if (it != null) {
+                        mSearch.addAll(it.data!!)
+                        updateSearchList()
+                    }
+                } else {
+                    if (it?.httpcode == 402) {
+                        Helper.showSingleAlert(
+                            it.message ?: "",
+                            requireContext(),
+                            object : AlertCallback {
+                                override fun alertSelected(isSelected: Boolean, from: Int) {
+                                    requireActivity().onBackPressed()
+                                }
+                            })
+                    } else {
+                        Validation.printToast(requireContext(), it?.message!!)
+                    }
                 }
             })
 

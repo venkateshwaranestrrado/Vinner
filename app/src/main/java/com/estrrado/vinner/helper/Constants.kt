@@ -43,6 +43,7 @@ object Constants {
     const val CCURRENCY = "CCURRENCY"
     const val CITY = "CITY"
     const val COUNTRY = "COUNTRY"
+    const val COUNTRY_NAME = "COUNTRY_NAME"
     const val PHONE = "PHONE"
     const val IS_DEFAULT = "IS_DEFAULT"
     const val IS_EDIT = "isEdit"

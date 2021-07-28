@@ -39,7 +39,7 @@ object Preferences {
         editor.apply()
     }
 
-    fun get(context: FragmentActivity?, KeyName: String): String? {
+    fun get(context: Context?, KeyName: String): String? {
         val preferencesData =
             context?.applicationContext?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         return preferencesData?.getString(KeyName, "")
@@ -51,7 +51,7 @@ object Preferences {
         return preferencesData?.getString(KeyName, "")
     }
 
-    fun put(activity: FragmentActivity?, key: String, value: String) {
+    fun put(activity: Context?, key: String, value: String) {
         val sharedPreferences =
             activity?.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         val spe = sharedPreferences?.edit()

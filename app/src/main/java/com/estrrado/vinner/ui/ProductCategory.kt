@@ -13,18 +13,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.adapters.CategryList
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
 import com.estrrado.vinner.helper.Constants.PRODUCT_NAME
+import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Preferences.get
+import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import kotlinx.android.synthetic.main.fragment_product_category.*
 import kotlinx.android.synthetic.main.toolbar_back.*
+import org.json.JSONObject
 
 class ProductCategory : Fragment() {
 
@@ -124,17 +129,32 @@ class ProductCategory : Fragment() {
         vModel!!.getCategorylist(requestModel)
             .observe(requireActivity(),
                 Observer {
-                    if (it!!.data!!.size > 0) {
-                        progresscategorylist.visibility = View.GONE
-                        adapter = CategryList(requireActivity(), it!!.data, view)
-                        recy_categry_lst.adapter = adapter
-                        recy_categry_lst.layoutManager = (GridLayoutManager(activity, 2))
+                    if (it?.status.equals(Constants.SUCCESS)) {
+                        if (it!!.data!!.size > 0) {
+                            progresscategorylist.visibility = View.GONE
+                            adapter = CategryList(requireActivity(), it!!.data, view)
+                            recy_categry_lst.adapter = adapter
+                            recy_categry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
+                        } else {
+                            progresscategorylist.visibility = View.GONE
+                            emptylist.visibility = View.VISIBLE
+                        }
                     } else {
-                        progresscategorylist.visibility = View.GONE
-                        emptylist.visibility = View.VISIBLE
+                        if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        requireActivity().onBackPressed()
+                                    }
+                                })
+                        } else {
+                            Validation.printToast(requireContext(), it?.message!!)
+                        }
                     }
-
                 })
 
     }

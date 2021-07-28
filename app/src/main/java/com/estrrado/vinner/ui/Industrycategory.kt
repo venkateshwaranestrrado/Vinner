@@ -198,6 +198,10 @@ class Industrycategory : Fragment() {
                 holder.name.text = dataItem!!.get(position).product_title
                 holder.price.text =
                     dataItem?.get(position)!!.price + " " + dataItem?.get(position)!!.currency
+
+                holder.price.visibility =
+                    if (dataItem?.get(position)!!.price == "0") View.INVISIBLE else View.VISIBLE
+
                 holder.qty.text = dataItem?.get(position)!!.unit
 
                 if (rating != null && !rating.equals(""))

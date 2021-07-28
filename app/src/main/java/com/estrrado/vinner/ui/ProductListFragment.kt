@@ -15,21 +15,24 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.adapters.ProductsAdapter
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.SUCCESS
 import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Preferences.REGION_NAME
 import com.estrrado.vinner.helper.Validation.printToast
-import com.estrrado.vinner.helper.Validation.printToastCenter
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_product_list.*
 import kotlinx.android.synthetic.main.toolbar_back.*
+import org.json.JSONObject
 
 
 class ProductListFragment : Fragment() {
@@ -124,17 +127,36 @@ class ProductListFragment : Fragment() {
                 Observer {
                     progressproductlist.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
+                        val json = Helper.getGson().toJson(it!!.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<Datum>>() {}.type
+                            ) as ArrayList<Datum>
                         adapter =
-                            ProductsAdapter(this.requireActivity(), null, it!!.data, view)
+                            ProductsAdapter(this.requireActivity(), null, list, view)
                         recycle_products.adapter = adapter
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        Helper.setCountry(
+                                            json.getString("country_code"),
+                                            requireActivity()
+                                        )
+                                        getProductList()
+                                    }
+                                })
                         } else {
                             printToast(requireContext(), it?.message!!)
                         }
-                        printToast(this!!.requireContext()!!, it?.message.toString())
                     }
 
                 })
@@ -143,6 +165,5 @@ class ProductListFragment : Fragment() {
             progressproductlist.visibility = View.GONE
         }
     }
-
 
 }

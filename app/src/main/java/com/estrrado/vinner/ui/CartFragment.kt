@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.CartAdapter
@@ -69,10 +70,12 @@ import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.empty_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar_prev.*
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -312,12 +315,33 @@ class CartFragment : Fragment(), CartadapterCallBack {
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         progresscart.visibility = View.GONE
-                        operators = it!!.data
+                        val json = Helper.getGson().toJson(it!!.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<Datum>>() {}.type
+                            ) as ArrayList<Datum>
+                        operators = list
                         setOperators()
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        Helper.setCountry(
+                                            json.getString("country_code"),
+                                            requireActivity()
+                                        )
+                                        getCart()
+                                        getOperators()
+                                    }
+                                })
                         }
                     }
                 })
@@ -365,6 +389,9 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
     @SuppressLint("SetTextI18n")
     private fun getCart() {
+
+        Log.e("token", Preferences.get(activity, ACCESS_TOKEN)!!)
+
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
@@ -384,14 +411,15 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         }
                         if (it.data!!.getAddress() != null) {
                             cardview_deliveryaddress?.visibility = View.VISIBLE
+                            cardview_shippingaddress?.visibility = View.VISIBLE
 
-                            img_edit_address?.setOnClickListener {
+                            txtChangeAddress?.setOnClickListener {
                                 val bundle = bundleOf(Constants.FROM to 1)
                                 Navigation.findNavController(it)
                                     .navigate(R.id.action_navigation_cart_to_address_list, bundle)
                             }
 
-                            img_edit_shipaddress?.setOnClickListener {
+                            txtChangeShipAddress?.setOnClickListener {
                                 val bundle = bundleOf(Constants.FROM to 2)
                                 Navigation.findNavController(it)
                                     .navigate(R.id.action_navigation_cart_to_address_list, bundle)
@@ -447,6 +475,8 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
                         } else {
                             layout_add_address?.visibility = View.VISIBLE
+                            cardview_shippingaddress?.visibility = View.GONE
+                            cardview_deliveryaddress?.visibility = View.GONE
                         }
                         progresscart?.visibility = View.GONE
                         cartItems = it.data.getCartItems()
@@ -477,6 +507,21 @@ class CartFragment : Fragment(), CartadapterCallBack {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        Helper.setCountry(
+                                            json.getString("country_code"),
+                                            requireActivity()
+                                        )
+                                        getCart()
+                                        getOperators()
+                                    }
+                                })
                         }
                     }
                 })

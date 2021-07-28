@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
 import com.estrrado.vinner.adapters.ProductImageAdapter
@@ -225,6 +226,19 @@ class ProductDetails : Fragment(), View.OnClickListener {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        Helper.setCountry(
+                                            it.data?.country_code!!,
+                                            requireActivity()
+                                        )
+                                        getProductdetail()
+                                    }
+                                })
                         } else {
                             printToast(requireContext(), it?.message!!)
                         }

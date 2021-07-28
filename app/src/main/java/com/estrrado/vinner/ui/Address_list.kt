@@ -2,7 +2,6 @@ package com.estrrado.vinner.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -29,6 +28,7 @@ import com.estrrado.vinner.helper.Constants.BUILDINGNAME
 import com.estrrado.vinner.helper.Constants.CITY
 import com.estrrado.vinner.helper.Constants.CONTACTNO
 import com.estrrado.vinner.helper.Constants.COUNTRY
+import com.estrrado.vinner.helper.Constants.COUNTRY_NAME
 import com.estrrado.vinner.helper.Constants.EMAIL
 import com.estrrado.vinner.helper.Constants.HOUSENAME
 import com.estrrado.vinner.helper.Constants.IS_DEFAULT
@@ -183,15 +183,10 @@ class Address_list : Fragment() {
         }
 
         class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            //val name = itemView.findViewById<TextView?>(R.id.tv_name)
             val address1 = itemView.findViewById<TextView?>(R.id.tv_address1)
             val number = itemView.findViewById<TextView?>(R.id.tv_number)
             val starimage = itemView.findViewById<ImageView?>(R.id.img_star)
 
-            //val txtRoadName = itemView.findViewById<TextView?>(R.id.tv_road_name)
-            //val txtCity = itemView.findViewById<TextView?>(R.id.tv_city)
-            //val txtCountry = itemView.findViewById<TextView?>(R.id.tv_country)
-            //val txtLandMark = itemView.findViewById<TextView?>(R.id.tv_landmark)
             val txtAddressType = itemView.findViewById<TextView?>(R.id.tv_address_type)
             val txtZip = itemView.findViewById<TextView?>(R.id.tv_zipcode)
             val constContainer = itemView.findViewById<ConstraintLayout?>(R.id.const_container)
@@ -283,8 +278,8 @@ class Address_list : Fragment() {
                 holder.txtZip?.text = addressFilterList?.get(position)!!.zip
 
                 val model = addressFilterList!!.get(position)
-                var address =
-                    model?.name + ", " + model?.house_flat + ", " + model?.road_name + ", " + model?.city + ", " + model?.country + ", " + model?.landmark
+                val address =
+                    model?.name + ", " + model?.email + ", " + model?.phone + ", " + model?.house_flat + ", " + model?.building + ", " + model?.road_name + ", " + model?.city + ", " + model?.country + ", " + model?.landmark
                 holder.address1?.text = address
                 if (addressFilterList!!.get(position)!!.default == "1") {
                     holder.starimage!!.visibility = View.VISIBLE
@@ -306,6 +301,7 @@ class Address_list : Fragment() {
                     bundle.putString(NAME, addressFilterList!!.get(position)!!.name)
                     bundle.putString(CITY, addressFilterList!!.get(position)!!.city)
                     bundle.putString(COUNTRY, addressFilterList!!.get(position)!!.country_code)
+                    bundle.putString(COUNTRY_NAME, addressFilterList!!.get(position)!!.country_name)
                     bundle.putString(IS_DEFAULT, addressFilterList!!.get(position)!!.default)
                     bundle.putString(CONTACTNO, addressFilterList!!.get(position)!!.phone)
                     bundle.putString(EMAIL, addressFilterList!!.get(position)!!.email)

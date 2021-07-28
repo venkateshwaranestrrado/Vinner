@@ -5,7 +5,7 @@ import com.estrrado.vinner.data.models.Datum
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class Model (
+data class Model(
 
     @field:SerializedName("data")
     @field:JsonField(name = arrayOf("data"))
@@ -21,6 +21,10 @@ data class Model (
 
     @field:SerializedName("status")
     @field:JsonField(name = arrayOf("status"))
-    val status: String? = null
+    val status: String? = null,
+
+    @field:SerializedName("httpcode")
+    @field:JsonField(name = arrayOf("httpcode"))
+    val httpcode: Int? = 0
 
 )

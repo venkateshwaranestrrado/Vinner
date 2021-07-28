@@ -99,6 +99,10 @@ class OtpActivity : AppCompatActivity(), View.OnClickListener {
                                         )
                                         Preferences.put(this, IS_LOGIN, TRUE)
                                         FROM_LOGIN = 1
+                                        Helper.setCountry(
+                                            it.data?.country_code!!,
+                                            this
+                                        )
                                         val intent = Intent(this, VinnerActivity::class.java)
                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                         startActivity(intent)

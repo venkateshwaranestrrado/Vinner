@@ -1,11 +1,5 @@
 [
   {
-    "name": "AE",
-    "fullname": "United Arab Emirates",
-    "url": "uae",
-    "code": "971"
-  },
-  {
     "name": "BH",
     "fullname": "Bahrain",
     "url": "baharin",
@@ -16,5 +10,11 @@
     "fullname": "Saudi Arabia",
     "url": "saudi",
     "code": "966"
+  },
+  {
+    "name": "AE",
+    "fullname": "United Arab Emirates",
+    "url": "uae",
+    "code": "971"
   }
 ]

@@ -24,13 +24,43 @@ import androidx.fragment.app.FragmentActivity
 import com.estrrado.vinner.R
 import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.helper.Constants.regions
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.dialog_signout.*
+import kotlinx.android.synthetic.main.toolbar.*
 import java.io.ByteArrayOutputStream
 
 
 object Helper {
 
     private var dialog: Dialog? = null
+
+    fun getGson(): Gson {
+        return GsonBuilder().setLenient().create()
+    }
+
+    fun setCountry(ccode: String, context: Activity) {
+        val regionList = readFromAsset(context)
+        val indx =
+            regionList.indexOfFirst { model -> ccode.contains(model.name) }
+        indx.let { ind ->
+            if (ind >= -1) {
+                if (regionList.get(ind).code != Preferences.get(
+                        context,
+                        Preferences.REGION_CODE
+                    )
+                ) {
+                    val code = regionList.get(indx).code
+                    val name = regionList.get(indx).name
+                    val fullname = regionList.get(indx).fullname
+                    Preferences.put(context, Preferences.REGION_NAME, name)
+                    Preferences.put(context, Preferences.REGION_FULLNAME, fullname)
+                    Preferences.put(context, Preferences.COUNTRY_POSITION, indx.toString())
+                    Preferences.put(context, Preferences.REGION_CODE, code!!)
+                }
+            }
+        }
+    }
 
     //
     fun isNetworkAvailable(context: Context): Boolean {
@@ -250,6 +280,25 @@ object Helper {
         malertDialog?.yes?.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
                 malertDialog.cancel()
+            }
+        })
+    }
+
+    fun showSingleAlert(msg: String, context: Context, alertCallback: AlertCallback) {
+        val mbuilder = AlertDialog.Builder(context)
+        mbuilder.setCancelable(false)
+        val dialogview =
+            LayoutInflater.from(context).inflate(R.layout.dialog_signout, null, false);
+        mbuilder.setView(dialogview)
+        val malertDialog = mbuilder.show()
+        malertDialog.txt_msg.setText(msg)
+        malertDialog?.window?.setBackgroundDrawableResource(R.color.transparent)
+        malertDialog?.no?.visibility = View.GONE
+        malertDialog?.yess?.text = "Ok"
+        malertDialog?.yes?.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(p0: View?) {
+                malertDialog.cancel()
+                alertCallback.alertSelected(true, 1)
             }
         })
     }

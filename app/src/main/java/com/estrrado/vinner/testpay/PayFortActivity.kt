@@ -70,7 +70,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     var city: String? = ""
     var name: String? = ""
     var phone: String? = ""
-    var email: String? = ""
+    var email: String = ""
     var building: String? = ""
 
     var s_address_type: String? = ""
@@ -121,7 +121,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         city = getIntent().getExtras()!!.getString(CITY)
         name = getIntent().getExtras()!!.getString(NAME)
         phone = getIntent().getExtras()!!.getString(CONTACTNO)
-        email = getIntent().getExtras()!!.getString(EMAIL)
+        email = getIntent().getExtras()!!.getString(EMAIL) ?: "test123@gmail.com"
         building = getIntent().getExtras()!!.getString(BUILDINGNAME)
 
         s_address_type = getIntent().getExtras()!!.getString(S_ADDDRESS_TYPE)
@@ -171,6 +171,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
         val requestModel = RequestModel()
         requestModel.accessToken = Preferences.get(this, ACCESS_TOKEN)
+        requestModel.countryCode = Preferences.get(this, Preferences.REGION_NAME)
         requestModel.device_id = deviceId
         requestModel.payment_status = "due"
         requestModel.payment_method = "Payfort"
@@ -284,8 +285,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         hash.put("command", "PURCHASE")
         //hash.put("command", "AUTHORIZATION")
         hash.put(
-            "customer_email",
-            Preferences.get(this, Constants.PROFILEMAIL) ?: "test123@gmail.com"
+            "customer_email", if (email == "") "test123@gmail.com" else email
         )
         hash.put("currency", intent.getStringExtra(Constants.CCURRENCY)!!)
         /**
@@ -368,7 +368,8 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                 merchant_reference = merchant_reference,
                                 payment_details = "Payfort ID:" + p1?.get("fort_id")
                                     .toString() + " Payment Option:" + p1?.get("payment_option")
-                                    .toString()
+                                    .toString(),
+                                countryCode = Preferences.get(this@PayFortActivity, Preferences.REGION_NAME)
 
                             )
                         ).observe(this@PayFortActivity,

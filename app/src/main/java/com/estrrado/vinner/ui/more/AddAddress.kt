@@ -26,7 +26,7 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.activity.GMapActivity
 import com.estrrado.vinner.activity.LoginActivity
-import com.estrrado.vinner.adapters.RegionAdapter
+import com.estrrado.vinner.adapters.RegionAdapter2
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.helper.*
@@ -177,8 +177,10 @@ class AddAddress : Fragment(), LocationListener {
             check_default.isChecked = true
         }
         Handler().postDelayed({
-            if (txt_country != null)
-                txt_country.setText(arguments?.getString(Constants.COUNTRY, "").toString())
+            if (txt_country != null) {
+                txt_country.setText(arguments?.getString(Constants.COUNTRY_NAME, "").toString())
+                txt_country.setTag(arguments?.getString(Constants.COUNTRY, "").toString())
+            }
         }, 1500)
     }
 
@@ -188,7 +190,8 @@ class AddAddress : Fragment(), LocationListener {
                 Constants.FROM
             ) != 0
         ) {
-            txt_country.text = Preferences.get(activity, Preferences.REGION_NAME)
+            txt_country.tag = Preferences.get(activity, Preferences.REGION_NAME)
+            txt_country.text = Preferences.get(activity, Preferences.REGION_FULLNAME)
             txt_country.isEnabled = false
         } else
             initialiseRegion()
@@ -206,7 +209,7 @@ class AddAddress : Fragment(), LocationListener {
                     tvaddress,
                     Constants.REQUIRED
                 ) &&
-                validateRegion(txt_country.text.toString()) &&
+                validateRegion(txt_country.tag.toString()) &&
                 Validation.hasText(tv_zipcode, Constants.REQUIRED) && Validation.hasText(
                     tv_roadname,
                     Constants.REQUIRED
@@ -246,7 +249,7 @@ class AddAddress : Fragment(), LocationListener {
                                 landmark = tv_landmark.text.toString(),
                                 name = edt_name.text.toString(),
                                 city = edt_city.text.toString(),
-                                country = txt_country.text.toString(),
+                                country = txt_country.tag.toString(),
                                 email = tv_email.text.toString().trim(),
                                 contactNumber = tv_contactno.text.toString().trim(),
                                 buildingName = tv_buildname.text.toString().trim(),
@@ -292,7 +295,7 @@ class AddAddress : Fragment(), LocationListener {
                                 landmark = tv_landmark.text.toString(),
                                 name = edt_name.text.toString(),
                                 city = edt_city.text.toString(),
-                                country = txt_country.text.toString(),
+                                country = txt_country.tag.toString(),
                                 email = tv_email.text.toString().trim(),
                                 contactNumber = tv_contactno.text.toString().trim(),
                                 buildingName = tv_buildname.text.toString().trim(),
@@ -352,7 +355,7 @@ class AddAddress : Fragment(), LocationListener {
 
     private fun initialiseRegion() {
         imgDropdown.isVisible = true
-        val regionAdapter = RegionAdapter(requireContext()!!, regionList!!)
+        val regionAdapter = RegionAdapter2(requireContext()!!, regionList!!)
         spnr_region_address.adapter = regionAdapter
         spnr_region_address.setOnItemSelectedListener(object :
             AdapterView.OnItemSelectedListener {
@@ -362,7 +365,8 @@ class AddAddress : Fragment(), LocationListener {
                 position: Int,
                 id: Long
             ) {
-                txt_country.text = regionList!!.get(position).name
+                txt_country.tag = regionList!!.get(position).name
+                txt_country.text = regionList!!.get(position).fullname
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -536,7 +540,7 @@ class AddAddress : Fragment(), LocationListener {
     fun validateRegion(region: String): Boolean {
         if (arguments?.getInt(Constants.FROM) != null && arguments?.getInt(
                 Constants.FROM
-            ) == 1
+            ) != 0
         ) {
             if (region.equals(Preferences.get(activity, Preferences.REGION_NAME)))
                 return true

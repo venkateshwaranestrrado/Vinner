@@ -2,7 +2,6 @@ package com.estrrado.vinner.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -132,6 +131,7 @@ class HomeFragment : Fragment(), AlertCallback {
                 else {
                     setCountry()
                     initControl()
+                    changeLocation()
                 }
                 spnrSelected = spnrSelected + 1
             }
@@ -243,10 +243,18 @@ class HomeFragment : Fragment(), AlertCallback {
                             progresshome.visibility = View.GONE
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        changeRegions(it.data?.country_code!!)
+                                    }
+                                })
                         } else {
                             printToast(requireContext(), it?.message!!)
                         }
-                        printToast(this!!.requireContext()!!, it?.message.toString())
                     }
                 }
 
@@ -415,6 +423,43 @@ class HomeFragment : Fragment(), AlertCallback {
         } else {
             progresshome.visibility = View.GONE
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun changeLocation() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, REGION_NAME)
+            progresshome.visibility = View.VISIBLE
+            vModel!!.ChangeLocation(requestModel).observe(requireActivity(),
+                Observer {
+                    progresshome.visibility = View.GONE
+                }
+            )
+        } else {
+            progresshome.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun changeRegions(ccode: String) {
+        val indx =
+            regionList?.indexOfFirst { model -> ccode.contains(model.name) }
+        indx?.let { ind ->
+            if (ind >= -1) {
+                if (regionList!!.get(ind).code != Preferences.get(
+                        activity,
+                        REGION_CODE
+                    )
+                ) {
+                    spnrPosition = ind
+                    //setCountry()
+                    spnr_region.setSelection(ind)
+                } else {
+                    gotoShareProduct()
+                }
+            }
         }
     }
 

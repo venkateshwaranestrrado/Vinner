@@ -22,15 +22,18 @@ import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.data.models.OrderModel
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.DELIVERED
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
+import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_order_list.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -133,13 +136,19 @@ class OrderList : Fragment() {
                 )
             ).observe(requireActivity(), Observer {
                 progressorderlist.visibility = View.GONE
-                if (it!!.data != null && it.data!!.size > 0) {
+                if (it!!.data != null) {
+                    val json = Helper.getGson().toJson(it!!.data)
+                    val list = Helper.getGson()
+                        .fromJson(
+                            json,
+                            object : TypeToken<List<Datum>>() {}.type
+                        ) as ArrayList<Datum>
                     recy_order_list.layoutManager = LinearLayoutManager(requireContext())
                     val orders = ArrayList<OrderModel>()
-                    for (i in 0..it.data!!.size - 1) {
-                        for (j in 0..it.data!![i].getProductDetails()!!.size - 1) {
-                            val ord = it.data!![i]
-                            val item = it.data!![i].getProductDetails()?.get(j)
+                    for (i in 0..list.size - 1) {
+                        for (j in 0..list[i].getProductDetails()!!.size - 1) {
+                            val ord = list[i]
+                            val item = list[i].getProductDetails()?.get(j)
                             orders.add(
                                 OrderModel(
                                     ord.getSaleId(),

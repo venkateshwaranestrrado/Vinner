@@ -79,7 +79,8 @@ interface APIService {
     @FormUrlEncoded
     @POST("cart_page")
     fun cartPage(
-        @Field("access_token") accessToken: String?
+        @Field("access_token") accessToken: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded
@@ -124,7 +125,8 @@ interface APIService {
     @POST("delivery_fee")
     fun deliveryFee(
         @Field("access_token") accessToken: String?,
-        @Field("operator_id") operatorId: String?
+        @Field("operator_id") operatorId: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded
@@ -334,7 +336,8 @@ interface APIService {
         @Field("s_phone") s_phone: String?,
         @Field("s_email") s_email: String?,
         @Field("s_building") s_building: String?,
-        @Field("payment_details") payment_details: String?
+        @Field("payment_details") payment_details: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded
@@ -416,8 +419,8 @@ interface APIService {
         @Field("s_phone") s_phone: String?,
         @Field("s_email") s_email: String?,
         @Field("s_building") s_building: String?,
-
-        @Field("operator_id") operator_id: String?
+        @Field("operator_id") operator_id: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded
@@ -450,8 +453,14 @@ interface APIService {
         @Field("s_email") s_email: String?,
         @Field("s_building") s_building: String?,
         @Field("merchant_reference") merchant_reference: String?,
-        @Field("payment_details") payment_details: String?
+        @Field("payment_details") payment_details: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
-
+    @FormUrlEncoded
+    @POST("change_location")
+    fun changeLocation(
+        @Field("access_token") accessToken: String?,
+        @Field("country_code") country_code: String?
+    ): Observable<Model>
 }

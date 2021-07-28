@@ -24,6 +24,7 @@ import com.estrrado.vinner.adapters.IndustryAdapter
 import com.estrrado.vinner.adapters.RegionAdapter
 import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.data.models.response.Datum
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.SUCCESS
@@ -35,9 +36,12 @@ import com.estrrado.vinner.helper.readFromAsset
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.browse_fragment.*
 import kotlinx.android.synthetic.main.fragment_cart.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.toolbar.*
+import org.json.JSONObject
 
 class BrowseFragment : Fragment(), AlertCallback {
 
@@ -131,11 +135,9 @@ class BrowseFragment : Fragment(), AlertCallback {
                         context = requireContext()
                     )
                 else {
-                    /*if ((requireActivity() as VinnerActivity).getCartCount() <= 0 && spnrSelected > 0) {
-                        clearCart()
-                    }*/
                     setCountry()
                     initControl()
+                    changeLocation()
                 }
                 spnrSelected = spnrSelected + 1
             }
@@ -180,14 +182,28 @@ class BrowseFragment : Fragment(), AlertCallback {
             vModel!!.getCategory(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-
-
+                        val json = Helper.getGson().toJson(it!!.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<Datum>>() {}.type
+                            ) as ArrayList<Datum>
                         progressbrowse.visibility = View.GONE
-                        recycle_cat.adapter = CategoryAdapter(requireActivity(), null, it!!.data)
+                        recycle_cat.adapter = CategoryAdapter(requireActivity(), null, list)
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        changeRegions(json.getString("country_code"))
+                                    }
+                                })
                         } else {
                             printToast(requireContext(), it?.message!!)
                         }
@@ -210,12 +226,28 @@ class BrowseFragment : Fragment(), AlertCallback {
             vModel!!.getIndustries(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
+                        val json = Helper.getGson().toJson(it!!.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<Datum>>() {}.type
+                            ) as ArrayList<Datum>
                         progressbrowse.visibility = View.GONE
-                        recycle_industry.adapter = IndustryAdapter(requireActivity(), it!!.data)
+                        recycle_industry.adapter = IndustryAdapter(requireActivity(), list)
                     } else {
                         if (it?.message.equals("Invalid access token")) {
                             startActivity(Intent(activity, LoginActivity::class.java))
                             requireActivity().finish()
+                        } else if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        changeRegions(json.getString("country_code"))
+                                    }
+                                })
                         } else {
                             printToast(requireContext(), it?.message!!)
                         }
@@ -269,6 +301,41 @@ class BrowseFragment : Fragment(), AlertCallback {
                 Observer {
                     progressbrowse.visibility = View.GONE
                     (activity as VinnerActivity).refreshBadgeView("0")
+                }
+            )
+        } else {
+            progressbrowse.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun changeRegions(ccode: String) {
+        val indx =
+            regionList?.indexOfFirst { model -> ccode.contains(model.name) }
+        indx?.let { ind ->
+            if (ind >= -1) {
+                if (regionList!!.get(ind).code != Preferences.get(
+                        activity,
+                        Preferences.REGION_CODE
+                    )
+                ) {
+                    spnrPosition = ind
+                    //setCountry()
+                    spnr_region.setSelection(ind)
+                }
+            }
+        }
+    }
+
+    fun changeLocation() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
+            progressbrowse.visibility = View.VISIBLE
+            vModel!!.ChangeLocation(requestModel).observe(requireActivity(),
+                Observer {
+                    progressbrowse.visibility = View.GONE
                 }
             )
         } else {
