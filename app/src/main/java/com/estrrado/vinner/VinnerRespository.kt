@@ -206,7 +206,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
             input.accessToken,
             input.cartId,
             input.productId,
-            input.productQty
+            input.productQty, input.countryCode
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -224,7 +224,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         apiService?.deleteCart(
             input.accessToken,
             input.cartId,
-            input.productId
+            input.productId, input.countryCode
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -240,7 +240,7 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
         val data = MutableLiveData<Model?>()
         apiService?.emptyCart(
             input.accessToken,
-            input.cartId
+            input.cartId, input.countryCode
         )!!.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({

@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.os.bundleOf
@@ -157,30 +156,10 @@ class CartFragment : Fragment(), CartadapterCallBack {
         initControl()
         getCart()
         getOperators()
-        textView8.setOnClickListener {
-            spinner_operators.visibility = View.VISIBLE
-            textView8.visibility = View.INVISIBLE
-
-        }
-
-        spinner_operators.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-            }
-
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                getDeleveryFee(position)
-            }
-
-        }
 
         checkout.setOnClickListener {
             if (cartFound == true) {
-                if (operatorId != null) {
+                if (operatorId != null && spinner_operators.selectedItemPosition > 0) {
                     if (address != null && s_address != null) {
                         if (weightMsg == "") {
                             if (Preferences.get(
@@ -257,7 +236,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
             requestModel.operatorId = operatorId
             requestModel.countryCode = Preferences.get(activity, REGION_NAME)
-            vModel!!.deliveryFee(requestModel).observe(this,
+            vModel!!.deliveryFee(requestModel).observe(viewLifecycleOwner,
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
                         weightMsg = ""
@@ -285,10 +264,17 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                 deliveryFee = it.data!!.getDeliveryFee()!!.toDouble()
                             price.text =
                                 it.data.getCurrency() + " " + priceFormat(it.data.getPrice())
-                            txt_sub_total.text =
-                                it.data.getCurrency() + " " + priceFormat(it.data.getSubTotal())
-                            totalAmount.text =
-                                it.data.getCurrency() + " " + priceFormat(it.data.getTotalAmount())
+
+                            if (operatorId?.length ?: 0 > 0) {
+                                txt_sub_total.text =
+                                    it.data.getCurrency() + " " + priceFormat(it.data.getSubTotal())
+                                totalAmount.text =
+                                    it.data.getCurrency() + " " + priceFormat(it.data.getTotalAmount())
+                            } else {
+                                totalAmount.text = it.data.getCurrency() + " 0.00"
+                                txt_sub_total.text = it.data.getCurrency() + " 0.00"
+                                txt_delivery_fee.text = it.data.getCurrency() + " 0.00"
+                            }
                         }
                     } else {
                         txt_delivery_fee.text = " 0.00"
@@ -314,7 +300,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             vModel!!.shippingOperators(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
-                        progresscart.visibility = View.GONE
+                        progresscart?.visibility = View.GONE
                         val json = Helper.getGson().toJson(it!!.data)
                         val list = Helper.getGson()
                             .fromJson(
@@ -358,13 +344,16 @@ class CartFragment : Fragment(), CartadapterCallBack {
         for (i in 0 until operators!!.size) {
             dOperator.add(operators!!.get(i).getOperator()!!)
         }
+        context?.let {
+            val adapter = ArrayAdapter<String>(it, android.R.layout.simple_spinner_item, dOperator)
+            spinner_operators.setAdapter(adapter)
 
-        val aa = ArrayAdapter(requireContext(), R.layout.spinner_item, dOperator.toTypedArray())
-        spinner_operators.adapter = aa
-        if (dOperator.size > 0) {
-            spinner_operators.visibility = View.VISIBLE
-            textView8.visibility = View.GONE
+            spinner_operators.setOnSpinnerItemClickListener { position, itemAtPosition ->
+                getDeleveryFee(position)
+            }
+
         }
+
     }
 
     private fun initControl() {
@@ -483,8 +472,10 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
                         if (cartItems != null) {
                             cartId = it.data.getCartItems()!!.get(0)!!.cartId
-                            cartAdapter = CartAdapter(requireActivity(), cartItems, this)
-                            productList?.adapter = cartAdapter
+                            activity?.let {
+                                cartAdapter = CartAdapter(requireActivity(), cartItems, this)
+                                productList?.adapter = cartAdapter
+                            }
                             itemCount?.text = cartItems!!.size.toString() + " Items"
                             cartFound = true
                             activity?.let { activity ->
@@ -495,10 +486,12 @@ class CartFragment : Fragment(), CartadapterCallBack {
                                 }
                             }
                         } else {
-                            clearCart()
-                            empty?.visibility = View.VISIBLE
-                            cart?.visibility = View.GONE
-                            cartFound = false
+                            context?.let {
+                                clearCart()
+                                empty?.visibility = View.VISIBLE
+                                cart?.visibility = View.GONE
+                                cartFound = false
+                            }
                         }
                         view?.let { view ->
                             setCartDetails(it.data.getCart())
@@ -535,12 +528,17 @@ class CartFragment : Fragment(), CartadapterCallBack {
     private fun setCartDetails(cart: Cart?) {
         if (!cart!!.totalAmount.equals("null")) {
             price.text = cart.currency + " " + priceFormat(cart.totalAmount)
-            totalAmount.text =
-                cart.currency + " " + priceFormat((cart.grandTotal!!.toDouble() + deliveryFee).toString())
-            txt_sub_total.text =
-                cart.currency + " " + priceFormat((cart.grandTotal!!.toDouble() + deliveryFee).toString())
+            if (operatorId?.length ?: 0 > 0) {
+                totalAmount.text =
+                    cart.currency + " " + priceFormat((cart.grandTotal!!.toDouble() + deliveryFee).toString())
+                txt_sub_total.text =
+                    cart.currency + " " + priceFormat((cart.grandTotal!!.toDouble() + deliveryFee).toString())
+            } else {
+                totalAmount.text = cart.currency + " 0.00"
+                txt_sub_total.text = cart.currency + " 0.00"
+                txt_delivery_fee.text = cart.currency + " 0.00"
+            }
             currency = cart.currency
-            Log.e("currency ", "" + currency)
         } else {
             price.text = cart.currency + " 0.00"
             txt_sub_total.text = cart.currency + " 0.00"
@@ -560,27 +558,44 @@ class CartFragment : Fragment(), CartadapterCallBack {
             requestModel.countryCode = Preferences.get(activity, REGION_NAME)
             vModel!!.updateCart(requestModel).observe(this,
                 Observer {
+                    progresscart.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
                         printToast(requireContext(), it?.message.toString())
-                        progresscart.visibility = View.GONE
                         cartItems!!.get(position)!!.productTotal = it!!.data!!.getProductTotal()
                         cartItems!!.get(position)!!.productQuantity = it.data!!.getProductQty()
                         cartAdapter!!.notifyDataSetChanged()
                         price.text = currency + " " + priceFormat(it.data.getTotalAmount())
-                        totalAmount.text = currency + " " + priceFormat(it.data.getGrandTotal())
+                        //totalAmount.text = currency + " " + priceFormat(it.data.getGrandTotal())
 
-                        totalAmount.text =
-                            currency + " " + priceFormat(
-                                (it.data.getGrandTotal()!!
-                                    .toDouble() + deliveryFee).toString()
-                            )
-                        txt_sub_total.text =
-                            currency + " " + priceFormat(
-                                (it.data.getGrandTotal()!!
-                                    .toDouble() + deliveryFee).toString()
-                            )
-                        if (spinner_operators.count > 0)
+                        if (operatorId?.length ?: 0 > 0) {
                             getDeleveryFee(spinner_operators.selectedItemPosition)
+                        }
+
+                        /*totalAmount.text =
+                                currency + " " + priceFormat(
+                                    (it.data.getGrandTotal()!!
+                                        .toDouble() + deliveryFee).toString()
+                                )
+                            txt_sub_total.text =
+                                currency + " " + priceFormat(
+                                    (it.data.getGrandTotal()!!
+                                        .toDouble() + deliveryFee).toString()
+                                )*/
+
+                    } else if (it?.httpcode == 402) {
+                        Helper.showSingleAlert(
+                            it.message ?: "",
+                            requireContext(),
+                            object : AlertCallback {
+                                override fun alertSelected(isSelected: Boolean, from: Int) {
+                                    Helper.setCountry(
+                                        it.data?.country_code!!,
+                                        requireActivity()
+                                    )
+                                    getCart()
+                                    getOperators()
+                                }
+                            })
                     }
                 })
         } else {
@@ -600,16 +615,30 @@ class CartFragment : Fragment(), CartadapterCallBack {
             requestModel.productId = productId
             vModel!!.deleteCart(requestModel).observe(this,
                 Observer {
-                    printToast(requireContext(), it?.message.toString())
+                    progresscart.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
-                        progresscart.visibility = View.GONE
+                        printToast(requireContext(), it?.message.toString())
                         cartItems!!.removeAt(position)
                         cartAdapter!!.notifyDataSetChanged()
                         getCart()
                         itemCount.text = cartItems!!.size.toString() + " Items"
                         (activity as VinnerActivity).refreshBadgeView(it!!.data!!.getItemsTotal())
-                        if (spinner_operators.count > 0)
+                        if (operatorId?.length ?: 0 > 0)
                             getDeleveryFee(spinner_operators.selectedItemPosition)
+                    } else if (it?.httpcode == 402) {
+                        Helper.showSingleAlert(
+                            it.message ?: "",
+                            requireContext(),
+                            object : AlertCallback {
+                                override fun alertSelected(isSelected: Boolean, from: Int) {
+                                    Helper.setCountry(
+                                        it.data?.country_code!!,
+                                        requireActivity()
+                                    )
+                                    getCart()
+                                    getOperators()
+                                }
+                            })
                     }
                 })
         } else {

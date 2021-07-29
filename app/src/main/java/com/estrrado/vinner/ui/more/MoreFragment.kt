@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,27 +18,35 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.activity.LoginActivity
 import com.estrrado.vinner.activity.VinnerActivity
+import com.estrrado.vinner.adapters.RegionAdapter
+import com.estrrado.vinner.data.RegionSpinner
 import com.estrrado.vinner.data.models.request.RequestModel
-import com.estrrado.vinner.helper.ClickListener
-import com.estrrado.vinner.helper.Constants
+import com.estrrado.vinner.helper.*
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.PROFILENAME
 import com.estrrado.vinner.helper.Constants.PROFILE_IMAGE
 import com.estrrado.vinner.helper.Constants.SUCCESS
-import com.estrrado.vinner.helper.Helper
-import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation.printToast
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import kotlinx.android.synthetic.main.browse_fragment.*
 import kotlinx.android.synthetic.main.dialog_signout.*
 import kotlinx.android.synthetic.main.moree_fragment.*
-import kotlinx.android.synthetic.main.toolbar_more.*
+import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.toolbar_more.notifyCount
+import kotlinx.android.synthetic.main.toolbar_more.notifyView
+import kotlinx.android.synthetic.main.toolbar_more.searchtool
 
-class MoreFragment : Fragment(), View.OnClickListener {
+class MoreFragment : Fragment(), View.OnClickListener, AlertCallback {
+
     var vModel: HomeVM? = null
+    var regionList: List<RegionSpinner>? = null
+    var spnrSelected: Int = 0
+    var spnrPosition: Int = 0
 
     companion object {
         fun newInstance() = MoreFragment()
@@ -68,8 +77,53 @@ class MoreFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        textView5.text = "Settings"
         (activity as VinnerActivity).open()
+        spnr_region.visibility = View.VISIBLE
+
+        regionList = readFromAsset(requireActivity())
+        val regionAdapter = RegionAdapter(requireContext(), regionList!!)
+        spnr_region.adapter = regionAdapter
+
+        spnr_region.setOnItemSelectedListener(object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                Constants.addressSelected = null
+                Constants.shipAddressSelected = null
+                spnrPosition = position
+                if ((regionList!!.get(spnrPosition).code != Preferences.get(
+                        activity,
+                        Preferences.REGION_CODE
+                    )) && (requireActivity() as VinnerActivity).getCartCount() > 0
+                )
+                    Helper.showAlert(
+                        "If you change Region, Your cart items will be removed.",
+                        1,
+                        alertCallback = this@MoreFragment,
+                        context = requireContext()
+                    )
+                else {
+                    if ((regionList!!.get(spnrPosition).code != Preferences.get(
+                            activity,
+                            Preferences.REGION_CODE
+                        ))
+                    ) {
+                        setCountry()
+                        changeLocation()
+                    } else {
+                        setCountry()
+                    }
+                }
+                spnrSelected = spnrSelected + 1
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        })
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -164,6 +218,11 @@ class MoreFragment : Fragment(), View.OnClickListener {
             view.findNavController().navigate(R.id.action_navigation_more_to_navigation_track)
         }
 
+        Glide.with(requireContext())
+            .load(Constants.logo)
+            .thumbnail(0.1f)
+            .into(img_logo)
+
     }
 
     private fun signout() {
@@ -222,5 +281,72 @@ class MoreFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    override fun alertSelected(isSelected: Boolean, from: Int) {
+        if (isSelected) {
+            setCountry()
+            if (Helper.isNetworkAvailable(requireContext())) {
+                val requestModel = RequestModel()
+                requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+                requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
+                requestModel.cartId = "0"
+                progressmore.visibility = View.VISIBLE
+                vModel!!.emptyCart(requestModel).observe(requireActivity(),
+                    Observer {
+                        (activity as VinnerActivity).refreshBadgeView("0")
+                        progressmore.visibility = View.GONE
+                        printToast(requireContext(), it?.message!!)
+                    }
+
+                )
+            } else {
+                progressmore.visibility = View.GONE
+                Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            spnrSelected = 0
+            if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals(""))
+                spnr_region.setSelection(
+                    Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
+                )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!Preferences.get(activity, Preferences.COUNTRY_POSITION).equals("")) {
+            spnrSelected = 0
+            spnr_region.setSelection(
+                Preferences.get(activity, Preferences.COUNTRY_POSITION)!!.toInt()
+            )
+        }
+    }
+
+    private fun setCountry() {
+        val code = regionList!!.get(spnrPosition).code
+        val name = regionList!!.get(spnrPosition).name
+        val fullname = regionList!!.get(spnrPosition).fullname
+        Preferences.put(activity, Preferences.REGION_NAME, name)
+        Preferences.put(activity, Preferences.REGION_FULLNAME, fullname)
+        Preferences.put(activity, Preferences.COUNTRY_POSITION, spnrPosition.toString())
+        Preferences.put(activity, Preferences.REGION_CODE, code)
+    }
+
+    fun changeLocation() {
+        if (Helper.isNetworkAvailable(requireContext())) {
+            val requestModel = RequestModel()
+            requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, Preferences.REGION_NAME)
+            progressmore.visibility = View.VISIBLE
+            vModel!!.ChangeLocation(requestModel).observe(requireActivity(),
+                Observer {
+                    progressmore.visibility = View.GONE
+                    initControl()
+                }
+            )
+        } else {
+            progressmore.visibility = View.GONE
+            Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

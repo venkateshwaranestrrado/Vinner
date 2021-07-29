@@ -186,13 +186,14 @@ class Industrycategory : Fragment() {
             var rating = ""
             if (dataItem != null) {
                 if (dataItem!!.get(position).current_stock == "0") {
-
+                    holder.image.alpha = 0.35f
                     holder.INDname?.text = "OUT OF STOCK"
-//                    holder.name?.visibility=View.GONE
                     holder.INDname?.visibility = View.VISIBLE
                     holder.INDname?.setTextColor(activity.getResources().getColor(R.color.red));
                     holder.cardView.setEnabled(false);
                     holder.cardView.setClickable(false);
+                } else {
+                    holder.image.alpha = 1f
                 }
                 rating = dataItem?.get(position)!!.rating!!
                 holder.name.text = dataItem!!.get(position).product_title

@@ -69,11 +69,13 @@ class ProductsAdapter(
                 holder.homename.setTextColor(activity.getResources().getColor(R.color.red));
                 holder.cardView.setEnabled(false);
                 holder.cardView.setClickable(false);
+                holder.image.alpha = 0.35f
             } else {
                 holder.homename.text = ""
                 holder.homename.visibility = View.GONE
                 holder.cardView.setEnabled(true)
                 holder.cardView.setClickable(true)
+                holder.image.alpha = 1f
             }
 
             name = dataList?.get(holder.adapterPosition)!!.prdName!!
@@ -91,12 +93,14 @@ class ProductsAdapter(
             productId = dataList?.get(holder.adapterPosition)!!.prdId!!
         } else {
             if (productList!!.get(holder.adapterPosition).current_stock == "0") {
-
                 holder.homename.text = "OUT OF STOCK"
                 holder.homename.visibility = View.VISIBLE
                 holder.homename.setTextColor(activity.getResources().getColor(R.color.red));
                 holder.cardView.setEnabled(false)
                 holder.cardView.setClickable(false)
+                holder.image.alpha = 0.35f
+            } else {
+                holder.image.alpha = 1f
             }
             name = productList?.get(holder.adapterPosition)!!.productTitle!!
             qty = productList?.get(holder.adapterPosition)!!.unit!!

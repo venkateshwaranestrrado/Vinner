@@ -169,8 +169,8 @@ class ProductDetails : Fragment(), View.OnClickListener {
             requestModel.productId = productId
             vModel!!.productDetail(requestModel).observe(requireActivity(),
                 Observer {
+                    progressproductdetail.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
-                        progressproductdetail.visibility = View.GONE
                         setProductDetail(it!!.data!!)
                         return_policy = ""
                         it.data!!.getProduct()!!.return_policy?.let {
@@ -183,8 +183,22 @@ class ProductDetails : Fragment(), View.OnClickListener {
                                 )
                             }
                         }
-                    } else
+                    } else if (it?.httpcode == 402) {
+                        Helper.showSingleAlert(
+                            it.message ?: "",
+                            requireContext(),
+                            object : AlertCallback {
+                                override fun alertSelected(isSelected: Boolean, from: Int) {
+                                    Helper.setCountry(
+                                        it.data?.country_code!!,
+                                        requireActivity()
+                                    )
+                                    getProductdetail()
+                                }
+                            })
+                    } else {
                         printToast(this.requireContext(), it?.message.toString())
+                    }
                 })
         } else {
             Toast.makeText(context, "No Network Available", Toast.LENGTH_SHORT).show()

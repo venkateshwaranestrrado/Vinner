@@ -62,17 +62,17 @@ class CategryList(
             holder.qty?.text = dataItem?.get(position)!!.unit
 
             if (dataItem!!.get(position).current_stock == "0") {
-
+                holder.image.alpha = 0.35f
                 holder.newname?.text = "OUT OF STOCK"
-//                holder.name?.visibility=View.GONE
                 holder.newname?.visibility = View.VISIBLE
                 holder.newname?.setTextColor(activity.getResources().getColor(R.color.red));
                 holder.cardView.setEnabled(false);
                 holder.cardView.setClickable(false);
+            } else {
+                holder.image.alpha = 1f
             }
 
             if (rating != null && !rating.equals(""))
-
                 holder.rating.rating = rating!!.toFloat()
 
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)

@@ -227,22 +227,23 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/productList">
 
-                    <Spinner
+                    <com.isapanah.awesomespinner.AwesomeSpinner
                         android:id="@+id/spinner_operators"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:paddingLeft="@dimen/_minus5sdp"
-                        android:visibility="invisible"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:spinnerDirection="ltr"
+                        app:spinnerHint="Select Shipping Opreator" />
 
                     <TextView
                         android:id="@+id/textView21"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:text="Expected Delivery"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spinner_operators" />
@@ -365,17 +366,6 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/ic_down"
-                        android:text="Select Shipping Opreator"
-                        app:layout_constraintBottom_toBottomOf="@+id/spinner_operators"
-                        app:layout_constraintEnd_toEndOf="@+id/spinner_operators"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/spinner_operators" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

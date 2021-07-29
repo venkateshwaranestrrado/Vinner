@@ -281,89 +281,26 @@
 
                 <TextView
                     android:id="@+id/txt_bill_house"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="5dp"
+                    app:layout_constraintEnd_toStartOf="@id/txt_ship_house"
                     app:layout_constraintStart_toStartOf="@+id/textView13"
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
                 <TextView
-                    android:id="@+id/txt_road"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="@+id/txt_bill_house"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_bill_house" />
-
-                <TextView
-                    android:id="@+id/txt_lnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintStart_toStartOf="@+id/txt_road"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_road" />
-
-                <TextView
-                    android:id="@+id/txt_ship_lnd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_ship_road"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_ship_road" />
-
-                <TextView
                     android:id="@+id/txt_ship_house"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="8dp"
+                    android:gravity="end"
+                    android:layout_marginBottom="5dp"
                     app:layout_constraintEnd_toEndOf="@+id/textView14"
+                    app:layout_constraintStart_toEndOf="@id/txt_bill_house"
                     app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-                <TextView
-                    android:id="@+id/txt_ship_road"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_ship_house"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_ship_house" />
-
-                <TextView
-                    android:id="@+id/txt_zip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintStart_toStartOf="@+id/txt_lnd"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_lnd" />
-
-                <TextView
-                    android:id="@+id/txt_region"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/txt_zip"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_zip" />
-
-                <TextView
-                    android:id="@+id/txt_ship_zip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_ship_lnd"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_ship_lnd" />
-
-                <TextView
-                    android:id="@+id/txt_ship_region"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_ship_zip"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_ship_zip" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -464,31 +401,31 @@
                     app:layout_constraintEnd_toEndOf="@+id/txt_items"
                     app:layout_constraintTop_toBottomOf="@+id/txt_items" />
 
-              <!--  <TextView
-                    android:id="@+id/txt_before_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_packing"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_packing" />
+                <!--  <TextView
+                      android:id="@+id/txt_before_tax"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="8dp"
+                      android:visibility="gone"
+                      app:layout_constraintEnd_toEndOf="@+id/txt_packing"
+                      app:layout_constraintTop_toBottomOf="@+id/txt_packing" />
 
-                <TextView
-                    android:id="@+id/txt_tax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="17dp"
-                    android:layout_marginTop="8dp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_before_tax"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_before_tax" />
+                  <TextView
+                      android:id="@+id/txt_tax"
+                      android:layout_width="wrap_content"
+                      android:layout_height="17dp"
+                      android:layout_marginTop="8dp"
+                      android:visibility="gone"
+                      app:layout_constraintEnd_toEndOf="@+id/txt_before_tax"
+                      app:layout_constraintTop_toBottomOf="@+id/txt_before_tax" />
 
-                <TextView
-                    android:id="@+id/txt_total"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_tax"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_tax" />-->
+                  <TextView
+                      android:id="@+id/txt_total"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="8dp"
+                      app:layout_constraintEnd_toEndOf="@+id/txt_tax"
+                      app:layout_constraintTop_toBottomOf="@+id/txt_tax" />-->
 
                 <TextView
                     android:id="@+id/txt_Orderstotal"

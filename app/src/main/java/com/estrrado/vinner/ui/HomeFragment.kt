@@ -129,9 +129,17 @@ class HomeFragment : Fragment(), AlertCallback {
                         context = requireContext()
                     )
                 else {
-                    setCountry()
-                    initControl()
-                    changeLocation()
+                    if ((regionList!!.get(spnrPosition).code != Preferences.get(
+                            activity,
+                            Preferences.REGION_CODE
+                        ))
+                    ) {
+                        setCountry()
+                        changeLocation()
+                    } else {
+                        setCountry()
+                        initControl()
+                    }
                 }
                 spnrSelected = spnrSelected + 1
             }
@@ -279,6 +287,7 @@ class HomeFragment : Fragment(), AlertCallback {
         if (Helper.isNetworkAvailable(requireContext())) {
             val requestModel = RequestModel()
             requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+            requestModel.countryCode = Preferences.get(activity, REGION_NAME)
             vModel!!.getCartPage(requestModel).observe(requireActivity(),
                 Observer {
                     if (it?.status.equals(SUCCESS)) {
@@ -388,6 +397,7 @@ class HomeFragment : Fragment(), AlertCallback {
             if (Helper.isNetworkAvailable(requireContext())) {
                 val requestModel = RequestModel()
                 requestModel.accessToken = Preferences.get(activity, ACCESS_TOKEN)
+                requestModel.countryCode = Preferences.get(activity, REGION_NAME)
                 requestModel.cartId = "0"
                 progresshome.visibility = View.VISIBLE
                 vModel!!.emptyCart(requestModel).observe(requireActivity(),
@@ -435,6 +445,7 @@ class HomeFragment : Fragment(), AlertCallback {
             vModel!!.ChangeLocation(requestModel).observe(requireActivity(),
                 Observer {
                     progresshome.visibility = View.GONE
+                    initControl()
                 }
             )
         } else {

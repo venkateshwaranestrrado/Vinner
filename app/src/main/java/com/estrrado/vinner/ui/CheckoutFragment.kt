@@ -146,11 +146,12 @@ class CheckoutFragment : Fragment(), AlertCallback {
                                         it.data?.country_code!!,
                                         requireActivity()
                                     )
-                                    getDeleveryFee()
+                                    requireActivity().onBackPressed()
                                 }
                             })
                     } else {
                         printToast(requireContext(), it?.message!!)
+                        requireActivity().onBackPressed()
                     }
                     printToast(this!!.requireContext()!!, it?.message.toString())
                 }

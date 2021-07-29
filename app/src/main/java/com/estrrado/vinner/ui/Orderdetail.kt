@@ -105,17 +105,36 @@ class Orderdetail : Fragment() {
                         txt_orderd.setText(it.data.ordered)
                         txt_dlvrd.setText(it.data.delivered)
                         txt_pymntmthd.setText(it.data.payment_method)
-                        txt_bill_house.setText(it.data.billing_address!!.get(0)!!.house_flat)
-                        txt_road.setText(it.data.billing_address!!.get(0)!!.road_name)
-                        txt_lnd.setText(it.data.billing_address!!.get(0)!!.landmark)
-                        txt_zip.setText(it.data.billing_address!!.get(0)!!.zip)
-                        txt_region.setText(it.data.billing_address!!.get(0)!!.country)
 
-                        txt_ship_house.setText(it.data.shipping_address!!.get(0)!!.s_house_flat)
-                        txt_ship_road.setText(it.data.shipping_address!!.get(0)!!.s_road_name)
+                        it.data.billing_address?.let {
+                            it.get(0)?.let {
+                                val address =
+                                    it.name + ", " + it.house_flat + ", " + it.building + ", " + it.road_name + ", " + it.landmark + ", " + it.country + ", " +
+                                            it.zip + ".\n" + it.email + "\n" + it.phone
+                                txt_bill_house.setText(address)
+                            }
+                        }
+
+                        it.data.shipping_address?.let {
+                            it.get(0)?.let {
+                                val address =
+                                    it.name + ", " + it.s_house_flat + ", " + it.s_building + ", " + it.s_road_name + ", " + it.s_landmark + ", " + it.s_country + ", " +
+                                            it.s_zip + ".\n" + it.s_email + "\n" + it.s_phone
+                                txt_ship_house.setText(address)
+                            }
+                        }
+
+                        /*txt_bill_house.setText(it.data.billing_address!!.get(0)!!.name + "," + it.data.billing_address!!.get(0)!!.house_flat)
+                        txt_road.setText(it.data.billing_address!!.get(0)!!.building + ", " + it.data.billing_address!!.get(0)!!.road_name)
+                        txt_lnd.setText(it.data.billing_address!!.get(0)!!.landmark)
+                        txt_zip.setText(it.data.billing_address!!.get(0)!!.country + ", " + it.data.billing_address!!.get(0)!!.zip)
+                        txt_region.setText(it.data.billing_address!!.get(0)!!.email + "\n" + it.data.billing_address!!.get(0)!!.phone)*/
+
+                        /*txt_ship_house.setText(it.data.shipping_address!!.get(0)!!.s_name+", "+it.data.shipping_address!!.get(0)!!.s_house_flat)
+                        txt_ship_road.setText(it.data.shipping_address!!.get(0)!!.s_building+", "+it.data.shipping_address!!.get(0)!!.s_road_name)
                         txt_ship_lnd.setText(it.data.shipping_address!!.get(0)!!.s_landmark)
-                        txt_ship_zip.setText(it.data.shipping_address!!.get(0)!!.s_zip)
-                        txt_ship_region.setText(it.data.shipping_address!!.get(0)!!.s_country)
+                        txt_ship_zip.setText(it.data.shipping_address!!.get(0)!!.s_country+", "+it.data.shipping_address!!.get(0)!!.s_zip)
+                        txt_ship_region.setText(it.data.shipping_address!!.get(0)!!.s_email+"\n"+it.data.shipping_address!!.get(0)!!.s_phone)*/
 
                         txt_items.setText(it.data.getCurrency() + " " + priceFormat(it.data.getTotalAmount()))
                         txt_packing.setText(it.data.getCurrency() + " " + priceFormat(it.data.shipping_cost))

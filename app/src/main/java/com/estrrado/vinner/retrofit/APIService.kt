@@ -97,7 +97,8 @@ interface APIService {
         @Field("access_token") accessToken: String?,
         @Field("cart_id") cartId: String?,
         @Field("product_id") productId: String?,
-        @Field("product_qty") productQty: String?
+        @Field("product_qty") productQty: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded
@@ -105,14 +106,16 @@ interface APIService {
     fun deleteCart(
         @Field("access_token") accessToken: String?,
         @Field("cart_id") cartId: String?,
-        @Field("product_id") productId: String?
+        @Field("product_id") productId: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded
     @POST("clear_cart")
     fun emptyCart(
         @Field("access_token") accessToken: String?,
-        @Field("cart_id") cartId: String?
+        @Field("cart_id") cartId: String?,
+        @Field("country_code") country_code: String?
     ): Observable<Model>
 
     @FormUrlEncoded

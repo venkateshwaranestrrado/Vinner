@@ -48,7 +48,9 @@ class SearchAdapter(private var activity: FragmentActivity) :
             holder.srchname.visibility = View.VISIBLE
             holder.view.setEnabled(false)
             holder.view.setClickable(false)
+            holder.prdctimage.alpha = 0.35f
         } else {
+            holder.prdctimage.alpha = 1f
             holder.srchname.visibility = View.GONE
             holder.view.setEnabled(true)
             holder.view.setClickable(true)
