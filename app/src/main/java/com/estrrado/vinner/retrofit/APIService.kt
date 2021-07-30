@@ -3,6 +3,7 @@ package com.estrrado.vinner.retrofit
 import com.estrrado.vinner.data.models.response.AddressModel
 import com.estrrado.vinner.data.models.response.DataListModel
 import com.estrrado.vinner.data.models.response.Model
+import com.estrrado.vinner.data.models.response.ProductsResModel
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -227,7 +228,7 @@ interface APIService {
         @Field("access_token") accessToken: String?,
         @Field("country_code") countryCode: String?,
         @Field("category_id") category_id: String?
-    ): Observable<AddressModel>
+    ): Observable<ProductsResModel>
 
     @FormUrlEncoded
     @POST("browse_industry")
@@ -235,7 +236,7 @@ interface APIService {
         @Field("access_token") accessToken: String?,
         @Field("country_code") countryCode: String?,
         @Field("industry_id") industry_id: String?
-    ): Observable<AddressModel>
+    ): Observable<ProductsResModel>
 
     @FormUrlEncoded
     @POST("search")
@@ -243,7 +244,7 @@ interface APIService {
         @Field("access_token") accessToken: String?,
         @Field("country_code") countryCode: String?,
         @Field("search") search: String?
-    ): Observable<AddressModel>
+    ): Observable<ProductsResModel>
 
 
     @FormUrlEncoded

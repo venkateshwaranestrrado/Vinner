@@ -24,8 +24,10 @@ import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.searchtoolbar.*
+import org.json.JSONObject
 
 class SearchFragment : Fragment() {
 
@@ -133,17 +135,28 @@ class SearchFragment : Fragment() {
                 if (it?.status.equals(Constants.SUCCESS)) {
                     recycle_search.setLayoutManager(GridLayoutManager(context, 2))
                     if (it != null) {
-                        mSearch.addAll(it.data!!)
+                        val json = Helper.getGson().toJson(it.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<AddressList>>() {}.type
+                            ) as ArrayList<AddressList>
+                        mSearch.addAll(list)
                         updateSearchList()
                     }
                 } else {
                     if (it?.httpcode == 402) {
+                        val json = JSONObject(Helper.getGson().toJson(it.data))
                         Helper.showSingleAlert(
                             it.message ?: "",
                             requireContext(),
                             object : AlertCallback {
                                 override fun alertSelected(isSelected: Boolean, from: Int) {
-                                    requireActivity().onBackPressed()
+                                    Helper.setCountry(
+                                        json.getString("country_code"),
+                                        requireActivity()
+                                    )
+                                    initcntroll()
                                 }
                             })
                     } else {

@@ -66,7 +66,7 @@ class ProductListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        pageTitle.setText("Featured Product List")
+        pageTitle.setText("")
         recycle_products.setLayoutManager(GridLayoutManager(context, 2))
         getProductList()
 

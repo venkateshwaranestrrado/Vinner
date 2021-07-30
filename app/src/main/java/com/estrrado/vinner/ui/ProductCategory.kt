@@ -16,6 +16,7 @@ import com.estrrado.vinner.VinnerRespository
 import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.adapters.CategryList
 import com.estrrado.vinner.data.models.request.RequestModel
+import com.estrrado.vinner.data.models.response.AddressList
 import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
@@ -27,6 +28,7 @@ import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_product_category.*
 import kotlinx.android.synthetic.main.toolbar_back.*
 import org.json.JSONObject
@@ -120,24 +122,32 @@ class ProductCategory : Fragment() {
     }
 
     private fun initcontroll() {
+
         categoryId = arguments?.getString(PRODUCT_ID)!!
         categoryName = arguments?.getString(PRODUCT_NAME)!!
         val requestModel = RequestModel()
         requestModel.accessToken = get(activity, ACCESS_TOKEN)
         requestModel.countryCode = get(activity, REGION_NAME)
+
         requestModel.category_id = categoryId
         vModel!!.getCategorylist(requestModel)
             .observe(requireActivity(),
                 Observer {
+                    progresscategorylist.visibility = View.GONE
                     if (it?.status.equals(Constants.SUCCESS)) {
-                        if (it!!.data!!.size > 0) {
-                            progresscategorylist.visibility = View.GONE
-                            adapter = CategryList(requireActivity(), it!!.data, view)
+                        val json = Helper.getGson().toJson(it!!.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<AddressList>>() {}.type
+                            ) as ArrayList<AddressList>
+
+                        if (list.size > 0) {
+                            adapter = CategryList(requireActivity(), list, view)
                             recy_categry_lst.adapter = adapter
                             recy_categry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
                         } else {
-                            progresscategorylist.visibility = View.GONE
                             emptylist.visibility = View.VISIBLE
                         }
                     } else {
@@ -148,7 +158,11 @@ class ProductCategory : Fragment() {
                                 requireContext(),
                                 object : AlertCallback {
                                     override fun alertSelected(isSelected: Boolean, from: Int) {
-                                        requireActivity().onBackPressed()
+                                        Helper.setCountry(
+                                            json.getString("country_code"),
+                                            requireActivity()
+                                        )
+                                        initcontroll()
                                     }
                                 })
                         } else {

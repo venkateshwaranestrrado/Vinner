@@ -66,6 +66,7 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:textSize="@dimen/_10sdp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/name" />
@@ -74,14 +75,11 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="2dp"
             android:textColor="@color/green"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/ratingBar2"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/qty" />
+            app:layout_constraintTop_toBottomOf="@id/qty" />
 
         <RatingBar
             android:id="@+id/ratingBar2"
@@ -89,11 +87,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginTop="2dp"
             android:progressTint="@color/yellow"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@+id/price"
+            app:layout_constraintTop_toBottomOf="@id/price"
             tools:ignore="UnusedAttribute" />
 
 

@@ -88,6 +88,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
     var currency: String? = null
     var operators: List<Datum>? = null
     var operatorId: String? = null
+    var operatorSelPon: Int? = null
 
     //billing Address
     var address: String? = null
@@ -159,7 +160,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
 
         checkout.setOnClickListener {
             if (cartFound == true) {
-                if (operatorId != null && spinner_operators.selectedItemPosition > 0) {
+                if (operatorId != null) {
                     if (address != null && s_address != null) {
                         if (weightMsg == "") {
                             if (Preferences.get(
@@ -349,7 +350,12 @@ class CartFragment : Fragment(), CartadapterCallBack {
             spinner_operators.setAdapter(adapter)
 
             spinner_operators.setOnSpinnerItemClickListener { position, itemAtPosition ->
+                operatorSelPon = position
                 getDeleveryFee(position)
+            }
+
+            operatorSelPon?.let {
+                spinner_operators.setSelection(it)
             }
 
         }
@@ -387,6 +393,7 @@ class CartFragment : Fragment(), CartadapterCallBack {
             requestModel.countryCode = Preferences.get(activity, REGION_NAME)
             vModel!!.getCartPage(requestModel).observe(requireActivity(),
                 Observer {
+                    viewEmpty?.visibility = View.GONE
                     if (it?.status.equals(SUCCESS)) {
                         if ((it!!.data!!.getItemsTotal() == null) || (it.data!!.getItemsTotal() == "0")) {
                             empty?.visibility = View.VISIBLE

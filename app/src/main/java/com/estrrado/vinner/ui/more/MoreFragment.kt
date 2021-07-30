@@ -173,7 +173,7 @@ class MoreFragment : Fragment(), View.OnClickListener, AlertCallback {
                     shareIntent.type = "text/plain"
                     shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Vinshopify")
                     val shareMessage =
-                        "https://vinshopify.page.link/N8fh"
+                        "https://play.google.com/store/apps/details?id=com.estrrado.vinner&hl=en-GB"
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage)
                     startActivity(Intent.createChooser(shareIntent, "choose one"))
                 } catch (e: Exception) {

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.cardview.widget.CardView
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
@@ -20,19 +21,24 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
 import com.estrrado.vinner.VinnerRespository
+import com.estrrado.vinner.`interface`.AlertCallback
 import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressList
+import com.estrrado.vinner.helper.Constants
 import com.estrrado.vinner.helper.Constants.ACCESS_TOKEN
 import com.estrrado.vinner.helper.Constants.BRAND_ID
 import com.estrrado.vinner.helper.Constants.PRODUCT_ID
+import com.estrrado.vinner.helper.Helper
 import com.estrrado.vinner.helper.Preferences
 import com.estrrado.vinner.helper.Validation
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_industry_category.*
 import kotlinx.android.synthetic.main.fragment_product_category.emptylist
 import kotlinx.android.synthetic.main.toolbar_back.*
+import org.json.JSONObject
 
 
 class Industrycategory : Fragment() {
@@ -127,15 +133,40 @@ class Industrycategory : Fragment() {
         vModel!!.getIndustrylist(requestModel)
             .observe(requireActivity(),
                 Observer {
-                    if (it!!.data!!.size > 0) {
-                        progressindustrylist.visibility = View.GONE
-                        adapter = IndstryList(requireActivity(), it!!.data, view)
-                        recy_indstry_lst.adapter = adapter
-                        recy_indstry_lst.layoutManager = (GridLayoutManager(activity, 2))
 
+                    progressindustrylist.visibility = View.GONE
+                    if (it?.status.equals(Constants.SUCCESS)) {
+                        val json = Helper.getGson().toJson(it!!.data)
+                        val list = Helper.getGson()
+                            .fromJson(
+                                json,
+                                object : TypeToken<List<AddressList>>() {}.type
+                            ) as ArrayList<AddressList>
+                        if (list.size > 0) {
+                            adapter = IndstryList(requireActivity(), list, view)
+                            recy_indstry_lst.adapter = adapter
+                            recy_indstry_lst.layoutManager = (GridLayoutManager(activity, 2))
+                        } else {
+                            emptylist.visibility = View.VISIBLE
+                        }
                     } else {
-                        progressindustrylist.visibility = View.GONE
-                        emptylist.visibility = View.VISIBLE
+                        if (it?.httpcode == 402) {
+                            val json = JSONObject(Helper.getGson().toJson(it.data))
+                            Helper.showSingleAlert(
+                                it.message ?: "",
+                                requireContext(),
+                                object : AlertCallback {
+                                    override fun alertSelected(isSelected: Boolean, from: Int) {
+                                        Helper.setCountry(
+                                            json.getString("country_code"),
+                                            requireActivity()
+                                        )
+                                        initcontroll()
+                                    }
+                                })
+                        } else {
+                            Validation.printToast(requireContext(), it?.message!!)
+                        }
                     }
 
                 })
@@ -204,6 +235,7 @@ class Industrycategory : Fragment() {
                     if (dataItem?.get(position)!!.price == "0") View.INVISIBLE else View.VISIBLE
 
                 holder.qty.text = dataItem?.get(position)!!.unit
+                holder.qty.isVisible = false
 
                 if (rating != null && !rating.equals(""))
 

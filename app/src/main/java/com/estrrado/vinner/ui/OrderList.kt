@@ -159,7 +159,8 @@ class OrderList : Fragment() {
                                     item?.reviewId,
                                     ord.getOrderDate(),
                                     ord.getDeliveryStatus(),
-                                    ord.getDelivaryDatetime()
+                                    ord.getDelivaryDatetime(),
+                                    item?.rating
                                 )
                             )
                         }
@@ -191,7 +192,7 @@ class OrderList : Fragment() {
             val name: TextView = itemView.findViewById(R.id.tv_prdct_name)
             val image: ImageView = itemView.findViewById(R.id.Productimage)
 
-            //val rating: RatingBar = itemView.findViewById(R.id.product_rating)
+            val rating: RatingBar = itemView.findViewById(R.id.product_rating)
             val orderlist: CardView = itemView.findViewById(R.id.ordrlist)
             val tvreview: TextView = itemView.findViewById(R.id.tv_review)
             val tvOrderId: TextView = itemView.findViewById(R.id.tv_order_id)
@@ -214,15 +215,19 @@ class OrderList : Fragment() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            var rating = 0.0
+
+            holder.rating.rating = 0f
             if (dataItem.get(position).delivery_status == DELIVERED) {
                 holder.tvreview.visibility = View.VISIBLE
                 if (dataItem.get(position).review_id == 0)
                     holder.tvreview.text = Constants.WRITE_A_REVIEW
-                else
+                else {
                     holder.tvreview.text = Constants.VIEW_REVIEW
-            } else
-                holder.tvreview.visibility = View.GONE
+                    if (dataItem.get(position).rating ?: "" != "")
+                        holder.rating.rating = dataItem.get(position).rating?.toFloat() ?: 0f
+                }
+            } else holder.tvreview.visibility = View.GONE
+
 
             val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
             Glide.with(activity)

@@ -9,7 +9,8 @@ class OrderModel(
     val review_id: Int? = 0,
     val order_date: String? = "",
     val delivery_status: String? = "",
-    val delivary_datetime: String? = ""
+    val delivary_datetime: String? = "",
+    val rating: String? = ""
 ) {
 
 }

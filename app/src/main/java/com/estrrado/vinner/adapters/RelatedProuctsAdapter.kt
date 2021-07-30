@@ -9,15 +9,15 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.estrrado.vinner.R
-import com.estrrado.vinner.data.models.Product
 import com.estrrado.vinner.data.models.RelatedProducts
-import com.estrrado.vinner.data.models.Review
 import com.estrrado.vinner.helper.Constants
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.ui.ProductDetails
 
 class RelatedProuctsAdapter(
@@ -40,15 +40,17 @@ class RelatedProuctsAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var productId=dataList.get(position)!!.product_id
+        var productId = dataList.get(position)!!.product_id
         var rating = ""
-        rating= dataList?.get(position)!!.rating!!
+        rating = dataList?.get(position)!!.rating!!
         holder.name.text = dataList?.get(position)!!.product_title
         holder.qty.text = dataList?.get(position)!!.unit
+        holder.qty.isVisible = false
         if (rating != null && !rating.equals("")) {
             holder.ratingBar.rating = rating!!.toFloat().toFloat()
         }
-        holder.price.text = dataList?.get(position)!!.price +" "+ dataList?.get(position)!!.currency
+        holder.price.text =
+            dataList?.get(position)!!.currency + " " + priceFormat(dataList.get(position)!!.price)
         val radius = activity.resources.getDimensionPixelSize(R.dimen._15sdp)
         Glide.with(activity)
             .load(dataList?.get(position)!!.product_image)
@@ -57,8 +59,8 @@ class RelatedProuctsAdapter(
             .into(holder.image)
         val bundle = Bundle()
         bundle.putString(Constants.PRODUCT_ID, productId)
-        val mfragment= ProductDetails()
-        mfragment.arguments=bundle
+        val mfragment = ProductDetails()
+        mfragment.arguments = bundle
         holder.card.setOnClickListener {
             activity.getSupportFragmentManager().beginTransaction().replace(
                 R.id.nav_host_fragment,
@@ -67,6 +69,7 @@ class RelatedProuctsAdapter(
                 .addToBackStack(null).commit()
         }
     }
+
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val name: TextView = v.findViewById(R.id.name)
         val image: ImageView = v.findViewById(R.id.image)

@@ -10,6 +10,7 @@ import com.estrrado.vinner.data.models.request.RequestModel
 import com.estrrado.vinner.data.models.response.AddressModel
 import com.estrrado.vinner.data.models.response.DataListModel
 import com.estrrado.vinner.data.models.response.Model
+import com.estrrado.vinner.data.models.response.ProductsResModel
 import com.estrrado.vinner.helper.getMultipartString
 import com.estrrado.vinner.retrofit.APIService
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -448,8 +449,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
-    fun Category(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel?>()
+    fun Category(input: RequestModel): MutableLiveData<ProductsResModel?> {
+        val data = MutableLiveData<ProductsResModel?>()
         apiService?.category(
             input.accessToken, input.countryCode, input.category_id
         )!!.subscribeOn(Schedulers.io())
@@ -464,8 +465,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
-    fun BrowseIndustry(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel?>()
+    fun BrowseIndustry(input: RequestModel): MutableLiveData<ProductsResModel?> {
+        val data = MutableLiveData<ProductsResModel?>()
         apiService?.browseindustry(
             input.accessToken, input.countryCode, input.industry_id
         )!!.subscribeOn(Schedulers.io())
@@ -480,8 +481,8 @@ class VinnerRespository(var context: Context?, var apiService: APIService?) {
     }
 
     @SuppressLint("CheckResult")
-    fun Search(input: RequestModel): MutableLiveData<AddressModel?> {
-        val data = MutableLiveData<AddressModel?>()
+    fun Search(input: RequestModel): MutableLiveData<ProductsResModel?> {
+        val data = MutableLiveData<ProductsResModel?>()
         apiService?.search(
             input.accessToken, input.countryCode, input.search
         )!!.subscribeOn(Schedulers.io())
