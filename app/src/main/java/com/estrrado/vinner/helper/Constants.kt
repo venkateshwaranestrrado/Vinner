@@ -19,7 +19,7 @@ object Constants {
     const val SUCCESS = "success"
     const val VERIFIED = "verified"
     const val MOBILE = "Mobile"
-    const val IS_LOGIN = "Is Login"
+    const val IS_LOGIN = "IsLogin"
     var FROM_LOGIN = 0
     const val ACCESS_TOKEN = "Access Token"
     const val TRUE = "true"

@@ -93,20 +93,20 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     lateinit var deviceId: String
 
     //Demo
-    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
-    val merchant_identifier = "879b45fb"
-    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
-    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
-    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
-    val environment = FortSdk.ENVIRONMENT.TEST
+//    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
+//    val merchant_identifier = "879b45fb"
+//    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
+//    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
+//    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
+//    val environment = FortSdk.ENVIRONMENT.TEST
 
     //Live
-//    val access_code = "6lUbMI3TtImE92epfeJ1"
-//    val merchant_identifier = "WaGobKuL"
-//    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
-//    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
-//    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
-//    val environment = FortSdk.ENVIRONMENT.PRODUCTION
+    val access_code = "6lUbMI3TtImE92epfeJ1"
+    val merchant_identifier = "WaGobKuL"
+    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
+    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
+    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
+    val environment = FortSdk.ENVIRONMENT.PRODUCTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -369,7 +369,10 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                                 payment_details = "Payfort ID:" + p1?.get("fort_id")
                                     .toString() + " Payment Option:" + p1?.get("payment_option")
                                     .toString(),
-                                countryCode = Preferences.get(this@PayFortActivity, Preferences.REGION_NAME)
+                                countryCode = Preferences.get(
+                                    this@PayFortActivity,
+                                    Preferences.REGION_NAME
+                                )
 
                             )
                         ).observe(this@PayFortActivity,
