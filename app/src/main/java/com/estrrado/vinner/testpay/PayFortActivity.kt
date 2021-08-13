@@ -3,9 +3,12 @@ package com.estrrado.vinner.testpay
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.estrrado.vinner.R
@@ -41,6 +44,7 @@ import com.estrrado.vinner.helper.Constants.S_PINCODE
 import com.estrrado.vinner.helper.Constants.S_ROAD_NAME
 import com.estrrado.vinner.helper.Constants.TOTAL_PAYABLE
 import com.estrrado.vinner.helper.Preferences
+import com.estrrado.vinner.helper.priceFormat
 import com.estrrado.vinner.retrofit.ApiClient
 import com.estrrado.vinner.vm.HomeVM
 import com.estrrado.vinner.vm.MainViewModel
@@ -48,9 +52,12 @@ import com.payfort.fort.android.sdk.base.FortSdk
 import com.payfort.fort.android.sdk.base.callbacks.FortCallBackManager
 import com.payfort.sdk.android.dependancies.base.FortInterfaces
 import com.payfort.sdk.android.dependancies.models.FortRequest
+import kotlinx.android.synthetic.main.activity_main.*
 import webconnect.com.webconnect.WebConnect
 import webconnect.com.webconnect.listener.OnWebCallback
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * this activity is PayFort Demo
@@ -59,6 +66,7 @@ import java.security.MessageDigest
  *
  * */
 class PayFortActivity : AppCompatActivity(), OnWebCallback {
+
     var vModel: HomeVM? = null
 
     var address_type: String? = ""
@@ -93,20 +101,20 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
     lateinit var deviceId: String
 
     //Demo
-//    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
-//    val merchant_identifier = "879b45fb"
-//    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
-//    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
-//    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
-//    val environment = FortSdk.ENVIRONMENT.TEST
+    val access_code = "WGG6Avj6KSL4SX4zfWGQ"
+    val merchant_identifier = "879b45fb"
+    val baseUrl = "https://sbpaymentservices.payfort.com/FortAPI/"
+    val signature1 = "27aVEaXzC8qDf5aHJhze6o?}"
+    val signature2 = "27aVEaXzC8qDf5aHJhze6o?}"
+    val environment = FortSdk.ENVIRONMENT.TEST
 
     //Live
-    val access_code = "6lUbMI3TtImE92epfeJ1"
-    val merchant_identifier = "WaGobKuL"
-    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
-    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
-    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
-    val environment = FortSdk.ENVIRONMENT.PRODUCTION
+//    val access_code = "6lUbMI3TtImE92epfeJ1"
+//    val merchant_identifier = "WaGobKuL"
+//    val baseUrl = "https://paymentservices.payfort.com/FortAPI/"
+//    val signature1 = "94QSRWC0rNrBtlZokOc6xe?)"
+//    val signature2 = "94QSRWC0rNrBtlZokOc6xe?)"//71zW3My3/M9lT2M3aCQca6(!
+//    val environment = FortSdk.ENVIRONMENT.PRODUCTION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -156,6 +164,13 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
 
         getSdkTokenFromApi()
         //getToknSdk()
+
+        btnBack.setOnClickListener {
+            val intent = Intent()
+            intent.putExtra(STATUS, SUCCESS)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
 
     }
 
@@ -278,7 +293,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
         /**
          * to see response in log
          * */
-        model.isShowResponsePage = true
+        model.isShowResponsePage = false
         val hash = hashMapOf<String, String>()
         val tsLong = System.currentTimeMillis() / 1000
         val ts = tsLong.toString()
@@ -336,6 +351,7 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         p0: MutableMap<String, Any>?,
                         p1: MutableMap<String, Any>?
                     ) {
+                        Log.e("MutableMap", p1.toString())
                         vModel!!.PaymentResponse(
                             RequestModel(
                                 accessToken = Preferences.get(this@PayFortActivity, ACCESS_TOKEN),
@@ -378,10 +394,28 @@ class PayFortActivity : AppCompatActivity(), OnWebCallback {
                         ).observe(this@PayFortActivity,
                             Observer {
                                 if (it?.status.equals(SUCCESS)) {
-                                    val intent = Intent()
-                                    intent.putExtra(STATUS, SUCCESS)
-                                    setResult(Activity.RESULT_OK, intent)
-                                    finish()
+
+                                    clSuccess.isVisible = true
+                                    llTop.isVisible = true
+                                    tvTransaction.text =
+                                        String.format("Transaction Number : %s", p1?.get("fort_id"))
+                                    tvAmount.text = String.format(
+                                        "%s %s",
+                                        intent.getStringExtra(Constants.CCURRENCY)!!,
+                                        priceFormat(intent.getExtras()!!.getString(TOTAL_PAYABLE)!!)
+                                    )
+                                    tvDate.text =
+                                        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(
+                                            Date()
+                                        )
+                                    Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
+                                        override fun run() {
+                                            val intent = Intent()
+                                            intent.putExtra(STATUS, SUCCESS)
+                                            setResult(Activity.RESULT_OK, intent)
+                                            finish()
+                                        }
+                                    }, 10000)
                                 } else {
                                     if (it?.message.equals("Invalid access token")) {
                                         startActivity(

@@ -106,7 +106,6 @@ class EditProfile : Fragment() {
                     ) {
                         var multiImg: MultipartBody.Part? = null
                         imageUri?.let { fileUri ->
-
                             multiImg = getMultipartImage(fileUri, "profile_pic", activity)
                         }
 
