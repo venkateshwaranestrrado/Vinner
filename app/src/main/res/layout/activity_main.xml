@@ -120,21 +120,21 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingVertical="10dp"
-                android:text="Total Amount Paid"
+                android:paddingVertical="6dp"
+                android:text="Order Id"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvTransaction" />
 
             <TextView
-                android:id="@+id/tvAmount"
+                android:id="@+id/tvOrderId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingVertical="10dp"
+                android:paddingVertical="6dp"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -159,22 +159,21 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingVertical="10dp"
-                android:text="Payment Method"
+                android:paddingVertical="6dp"
+                android:text="Total Amount Paid"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view1" />
 
             <TextView
-                android:id="@+id/tvPaymentMethod"
+                android:id="@+id/tvAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingVertical="10dp"
-                android:text="Card"
+                android:paddingVertical="6dp"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -199,21 +198,22 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingVertical="10dp"
-                android:text="Transaction Date"
+                android:paddingVertical="6dp"
+                android:text="Payment Method"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view2" />
 
             <TextView
-                android:id="@+id/tvDate"
+                android:id="@+id/tvPaymentMethod"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:paddingVertical="10dp"
+                android:paddingVertical="6dp"
+                android:text="Card"
                 android:textColor="@color/gray"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -230,6 +230,45 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text4" />
+
+            <TextView
+                android:id="@+id/text5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:text="Transaction Date"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view3" />
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:paddingVertical="6dp"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view3" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/l_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
